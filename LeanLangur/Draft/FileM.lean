@@ -46,8 +46,6 @@ inductive SafeVal : {α : Type} → α → Prop where
 | space : SafeVal " "
 | newline : SafeVal "\n"
 | semicolon : SafeVal ";"
-| padLeft (s : String) : SafeVal s → SafeVal (" " ++ s)
-| padRight (s : String) : SafeVal s → SafeVal (s ++ " ")
 
 theorem blocks (s t : String) (h1 : SafeVal s) (h2 : SafeVal t) : SafeVal (s ++ "\n" ++ t) := by
     apply SafeVal.strAppend (s ++ "\n")

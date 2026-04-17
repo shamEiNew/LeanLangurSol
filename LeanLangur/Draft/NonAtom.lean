@@ -45,6 +45,6 @@ instance [Inhabited α] [NonAtom β] : NonAtom (α × β) where
     secondAtom := ((default : α), secondAtom β)
     firstNeqSecond := by simp [firstAtomNeqSecond β]
 
-#eval firstAtom <| Nat × Unit
+#eval firstAtom (Nat × Unit)
 
 #eval secondAtom <| Nat × Nat

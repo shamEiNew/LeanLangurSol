@@ -72,7 +72,7 @@ theorem valid_program_pop (h : ValidProgram n p') :
   ValidProgram (n + 1) (pop :: p') :=
   ValidProgram.pop h
 
-example (a b: Nat) : ValidProgram 0 [push a, push b, add] := by
+example (a b: Nat) : ValidProgram n [push a, push b, add] := by
   grind
 
 example (a b c : Nat) : ValidProgram 0 [push a, push b, add, push c, add] := by

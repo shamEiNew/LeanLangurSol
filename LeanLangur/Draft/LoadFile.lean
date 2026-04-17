@@ -1,6 +1,4 @@
 import Lean
--- import LeanAideCore.Kernel
--- import LeanAideCore.Syntax.Kernel
 
 open IO FS System Lean
 
@@ -46,9 +44,9 @@ syntax (name:= loadFileTerm) "load_file%" (ppSpace filepath)? " ; " : term
     return mkStrLit content
   | _ => throwUnsupportedSyntax
 
--- def egFile := load_file% "README.md" ;
+def egFile := load_file% "README.md" ;
 
--- #eval egFile
+#eval egFile
 
 syntax (name:= loadJsonTerm) "load_json%" (ppSpace filepath)? " ; " : term
 @[term_elab loadJsonTerm] def loadJsonTermImpl : TermElab := fun stx _ => do

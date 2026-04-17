@@ -53,6 +53,9 @@ def eg : List Nat :=
   ) [[1, 2], [3, 4]]
 #eval eg
 
+#eval [2, 3, 4].map (fun x => [x * 2, x* x])
+
+#eval [2, 3, 4].flatMap (fun x => [x * 2, x* x])
 
 /-!
 We can define a custom syntax for Python-style for comprehensions.
