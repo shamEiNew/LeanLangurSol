@@ -25,7 +25,7 @@ structure Voter extends Person where
 def bob : Voter :=
   { name := "Bob", age := 25, voterId := 12345}
 
-abbrev Even := { n : Nat // n % 2 = 0}
+abbrev EvenNat := { n : Nat // n % 2 = 0}
 
 example {α : Prop} (pf₁ pf₂ : α) : pf₁ = pf₂ := by
   rfl
