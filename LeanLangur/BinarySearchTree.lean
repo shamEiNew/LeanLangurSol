@@ -2,6 +2,8 @@ import Mathlib
 
 variable {α : Type}[LinearOrder α]
 
+namespace binary_search_tree
+
 inductive BinarySearchTree (α : Type) where
   | leaf : α → BinarySearchTree α
   | node : α → BinarySearchTree α → BinarySearchTree α → BinarySearchTree α
@@ -130,3 +132,5 @@ theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered 
         grind
       else
         grind
+
+end binary_search_tree
