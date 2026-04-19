@@ -12,4 +12,4 @@ def hello := "world"
 #check hello -- checks the type of `hello`, which is `String`
 
 
-macro_rules | `(tactic | decreasing_tactic) => `(tactic | grind)
+macro_rules | `(tactic | decreasing_trivial) => `(tactic | grind)
