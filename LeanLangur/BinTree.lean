@@ -24,11 +24,12 @@ def exampleTree : BinTree Nat :=
 
 #eval exampleTree.toList  -- Output: [1, 2, 3]
 
+@[grind .]
 def Bintree.mem {α : Type} : BinTree α → α → Prop
   | leaf x, y => x = y
   | node l r, y => Bintree.mem l y ∨ Bintree.mem r y
 
-@[grind .]
+@[grind ., simp]
 instance {α : Type} : Membership α (BinTree α) where
   mem := Bintree.mem
 

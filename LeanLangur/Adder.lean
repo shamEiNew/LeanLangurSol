@@ -38,9 +38,3 @@ instance {α β : Type}[Add α][Add β] :
       (a₁ + a₂, b₁ + b₂)
 
 #eval (1, 2, "Hello") +(3, 4, "world")
-
-
-#check 1
-#check Nat
-#check Type 3
-#check (0 = 1)
