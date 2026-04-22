@@ -8,6 +8,7 @@ The following is a mermaid diagram of dependencies:
 
 ```mermaid
 graph TD;
+  %% Core file dependencies
   Basic --> SmallestNat;
   SmallestNat --> ListOps;
   SmallestNat --> FibM;
@@ -15,7 +16,6 @@ graph TD;
   ListOps --> BinTree;
   ListOps --> Adder;
   FibM --> CatalanM;
-  FibM --> TryInterpret;
   Adder --> Largest;
   Adder --> FibM;
   BinTree --> BinarySearchTree;
@@ -25,16 +25,39 @@ graph TD;
   IsEven --> Smallest;
   Sorted --> QuickSort;
   Sorted --> SelectionSort;
-  NonAtom --> TryInterpret;
-
   FibM --> PyFor;
 
+  %% Correction Edge
+  BinTree --> IsEven;
+
+  %% Metaprogramming Subgraph
   subgraph metaprogramming
+    TryInterpret
     PyFor --> LoadFile;
     LoadFile --> FileM;
     PyFor --> LangurLang;
     LangurLang --> LangurLeaps;
   end
+
+  %% Connections to the TryInterpret node
+  FibM --> TryInterpret;
+  NonAtom --> TryInterpret;
+
+  %% Concepts mapping (reversed direction and uniformly capitalized)
+  c1(["Functions and Proofs"]) -.-> SmallestNat
+  c2(["Macros"]) -.-> SmallestNat
+  c3(["Implicit and Explicit Parameters"]) -.-> ListOps
+  c4(["(Monadic) Do Notation"]) -.-> ListOps
+  c5(["Typeclasses"]) -.-> Adder
+  c6(["State Monad"]) -.-> FibM
+  c7(["Inductive Types"]) -.-> BinTree
+  c8(["Inductive Propositions"]) -.-> IsEven
+  c9(["Constructing Typeclasses"]) -.-> NonAtom
+  c10(["Structures"]) -.-> People
+
+  %% Styling for concept nodes
+  classDef concept fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+  class c1,c2,c3,c4,c5,c6,c7,c8,c9,c10 concept;
 ```
 
 ## File Descriptions
