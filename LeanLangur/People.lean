@@ -3,6 +3,9 @@
 
 A simple datatype in Lean is a `Structure`. This is a special case of an *inductive type* with some additional conveniences for working with named fields. We consider some examples.
 -/
+
+namespace langur
+
 structure Person where
   name : String
   age  : Nat
@@ -55,3 +58,5 @@ example (f g : Nat → Nat): ∀ h:f = g,
   f 0 = g 0 := by
   intro h
   rw [h]
+
+end langur

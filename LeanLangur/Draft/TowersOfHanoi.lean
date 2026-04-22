@@ -1,5 +1,7 @@
 import Mathlib
 
+namespace langur
+
 namespace TowersOfHanoi
 
 abbrev Disk := Nat
@@ -249,3 +251,5 @@ def puzzle (n : Nat) : BoardState.TransitionGraph.Walk
         finish
 
 end TowersOfHanoi
+
+end langur

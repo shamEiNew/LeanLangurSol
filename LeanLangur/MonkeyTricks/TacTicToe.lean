@@ -2,6 +2,8 @@ import Lean
 import ProofWidgets
 import Mathlib
 
+namespace langur
+
 open Lean
 
 namespace TacTicToe
@@ -127,3 +129,5 @@ example : findWinningPositionFor .X .refl := by
 
 
 end TacTicToe
+
+end langur

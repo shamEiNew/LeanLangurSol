@@ -1,4 +1,7 @@
 import Lean
+
+namespace langur
+
 open IO FS System
 
 /-!
@@ -196,3 +199,5 @@ theorem safe_mergePubs (p1 p2 out : FilePath) : SafeProg (mergePubs p1 p2 out) :
         grind
 
 end file_access
+
+end langur

@@ -1,6 +1,8 @@
 import Lean
 import Mathlib
 
+namespace langur
+
 open Lean Meta Elab Parser Tactic
 
 namespace LeanAide
@@ -115,3 +117,5 @@ example (x : Nat) : 0 < match x with
   aesop? "
 
 end LeanAide
+
+end langur

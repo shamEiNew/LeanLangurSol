@@ -1,6 +1,8 @@
 
 import Lean
 
+namespace langur
+
 /-- The `use` tactic is for supplying a candidate value
     for an existential goal. -/
 macro "use" t:term : tactic =>
@@ -447,3 +449,5 @@ end AvianArithmetic
   3. SKI Combinator calculus (https://en.wikipedia.org/wiki/SKI_combinator_calculus)
   4. The Natural Number Game (https://www.ma.imperial.ac.uk/~buzzard/xena/natural_number_game/)
 -/
+
+end langur

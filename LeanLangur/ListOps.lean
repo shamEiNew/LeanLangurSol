@@ -8,6 +8,9 @@ We illustrate:
 * `do` notation for lists.
 * Why we need typeclasses.
 -/
+
+namespace langur
+
 def doubleList (α : Type) (l: List α) : List α :=
   l ++ l
 
@@ -51,3 +54,5 @@ def sums {α : Type}[Add α] (l₁: List α) (l₂: List α ) : List α := do
   let x ← l₁
   let y ← l₂
   return x + y
+
+end langur

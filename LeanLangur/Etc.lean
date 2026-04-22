@@ -9,6 +9,8 @@ A collection of various examples in Lean 4, including:
 * Simple proofs and exercises.
 -/
 
+namespace langur
+
 /--
 A custom empty type.
 -/
@@ -87,3 +89,5 @@ def IsRational (x : ℝ) : Prop :=
 
 set_option pp.all true in
 #print IsRational
+
+end langur

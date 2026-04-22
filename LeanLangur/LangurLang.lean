@@ -1,6 +1,8 @@
 import Lean
 import Std
 
+namespace langur
+
 open Lean Meta Elab Term
 
 /-!
@@ -163,3 +165,5 @@ macro "climb%" ss:langur_program "from%" init:langur_program
     | _, _ => Macro.throwError "Invalid syntax in climb% from% ... return ..."
 
 end LangurLang
+
+end langur

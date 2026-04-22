@@ -8,6 +8,8 @@ It includes definitions for the tree structure, membership, order properties,
 and basic operations like adding labels and searching.
 -/
 
+namespace langur
+
 variable {α : Type}[LinearOrder α]
 
 namespace binary_search_tree
@@ -199,3 +201,5 @@ theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered 
         grind
 
 end binary_search_tree
+
+end langur

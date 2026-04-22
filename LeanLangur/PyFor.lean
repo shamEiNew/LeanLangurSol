@@ -1,5 +1,8 @@
 import Lean
 import Mathlib
+
+namespace langur
+
 open Lean Elab Meta Term
 
 /-!
@@ -111,3 +114,5 @@ macro_rules
 Using `List.filter` modify the `pyfor` syntax to support `if` conditions in for comprehensions.
 -/
 end PyForComprehension
+
+end langur

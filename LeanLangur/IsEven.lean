@@ -7,6 +7,8 @@ This module defines the property of being an even natural number using an induct
 and provides several proofs about even numbers.
 -/
 
+namespace langur
+
 /--
 Inductive predicate for even natural numbers.
 * `0` is even.
@@ -55,3 +57,5 @@ For any natural number `n`, either `n` is even or `n + 1` is even.
 theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1)
   := by
   induction n <;> grind
+
+end langur

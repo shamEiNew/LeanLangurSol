@@ -7,6 +7,9 @@ We illustrate:
 * How to create new instances of `Add` for custom types.
 * Typeclass inference.
 -/
+
+namespace langur
+
 #eval 3 + 4
 
 #eval "hello " ++ "world"
@@ -38,3 +41,5 @@ instance {α β : Type}[Add α][Add β] :
       (a₁ + a₂, b₁ + b₂)
 
 #eval (1, 2, "Hello") +(3, 4, "world")
+
+end langur

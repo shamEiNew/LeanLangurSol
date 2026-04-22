@@ -8,6 +8,9 @@ We illustrate how to write programs with proofs in Lean by implementing a functi
 
 * We then generalize this to lists of any type with a linear order, implementing `largest` for *non-empty* lists along with proofs `largest_mem` and `largest_ge_all`.
 -/
+
+namespace langur
+
 def largestNat : List Nat → Nat
 | []       => 0  -- placeholder for empty list
 | [x]      => x
@@ -106,3 +109,5 @@ def largestImp (l: List Nat): Nat := Id.run do
     if x > maxSoFar then
       maxSoFar := x
   return maxSoFar
+
+end langur

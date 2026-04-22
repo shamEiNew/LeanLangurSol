@@ -1,6 +1,8 @@
 import Mathlib
 import ProofWidgets
 
+namespace langur
+
 open ProofWidgets Jsx in
 #html < iframe src="https://math.iisc.ac.in/~gadgil/TowerOfHanoi/index.html" width="1200" height="600"></iframe>
 
@@ -272,3 +274,5 @@ def puzzle (n : Nat) : BoardState.TransitionGraph.Walk
         finish
 
 end TowersOfHanoi
+
+end langur

@@ -1,6 +1,8 @@
 import LeanLangur.People
 import Mathlib
 
+namespace langur
+
 variable {α β : Type}[LinearOrder α]
 
 @[grind .]
@@ -43,3 +45,5 @@ theorem zero_not_succ (n : Nat) :
   cases h
 
 #check Nat.rec
+
+end langur

@@ -1,5 +1,8 @@
 import Std
 import Mathlib
+
+namespace langur
+
 open Std
 
 /-!
@@ -47,3 +50,6 @@ partial def catalanMemo (n : Nat) : CatalanM Nat := do
       return sum
 
 #eval catalanMemo 23 |>.run' {}
+end Catalan
+
+end langur

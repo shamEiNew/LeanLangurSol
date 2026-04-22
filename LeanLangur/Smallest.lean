@@ -7,6 +7,8 @@ import Mathlib
 * We return to this file to see typeclasses in action to generalize from `Nat` to any type with a linear order.
 -/
 
+namespace langur
+
 namespace nat
 
 /--
@@ -91,3 +93,5 @@ theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) :
   fun_induction smallest <;> grind
 
 end general
+
+end langur

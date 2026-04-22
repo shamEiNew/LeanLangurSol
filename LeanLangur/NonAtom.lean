@@ -6,6 +6,8 @@ two distinct elements. It provides instances for several common types like `Nat`
 `List`, `Option`, and products.
 -/
 
+namespace langur
+
 /--
 A typeclass for types that have at least two distinct elements.
 -/
@@ -81,3 +83,5 @@ instance [Inhabited α] [NonAtom β] : NonAtom (α × β) where
 #eval firstAtom (Nat × Unit)
 
 #eval secondAtom <| Nat × Nat
+
+end langur

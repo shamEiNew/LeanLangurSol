@@ -1,6 +1,8 @@
 import Lean
 import ProofWidgets
 
+namespace langur
+
 open Lean Elab Parser Command Meta Macro ProofWidgets Tactic
 
 /-!
@@ -104,3 +106,5 @@ macro_rules
 [PUZZLE test] Zoey says Mel is a knave. Mel says ((not Zoey is a knave) and (not Mel is a knave)). Zoey is a knight and Mel is a knave.
 
 #print test
+
+end langur

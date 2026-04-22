@@ -8,6 +8,8 @@ popping values, and performing addition. It includes both unsafe and safe (optio
 execution engines, as well as a verified evaluator that uses a `ValidProgram` predicate.
 -/
 
+namespace langur
+
 namespace stack_machine
 
 /--
@@ -257,3 +259,5 @@ theorem valid_iff_eval?_some (p: Program) (s: Stack) : ValidProgram s.length p â
             grind
 
 end stack_machine
+
+end langur

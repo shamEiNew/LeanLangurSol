@@ -9,6 +9,8 @@ In this exercise, we implement Selection Sort using a helper function `smallest`
 The theorems you need to prove are marked with `sorry` as placeholders.
 -/
 
+namespace langur
+
 variable {α : Type}[LinearOrder α]
 /-!
 We now do the same for smallest.
@@ -50,3 +52,5 @@ theorem mem_iff_mem_selectionSort (l: List α)(x : α) :
 theorem selectionSort_sorted (l : List α) :
     Sorted (selectionSort l) := by
   sorry
+
+end langur

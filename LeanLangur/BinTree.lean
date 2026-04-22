@@ -4,6 +4,9 @@ import Mathlib
 
 We consider an example of a data structure: binary trees. We define a binary tree datatype, a function to convert a binary tree to a list, and prove that membership in the tree corresponds to membership in the list.
 -/
+
+namespace langur
+
 variable {α : Type}
 
 inductive BinTree (α : Type) where
@@ -53,3 +56,5 @@ theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) :
     · induction t with
     | leaf a => grind
     | node l r ihl ihr => grind
+
+end langur

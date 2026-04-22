@@ -7,6 +7,8 @@ This module provides examples of programs written in `LangurLang` using the `#le
 and the `climb%` macro. It includes implementations of summation and primality testing.
 -/
 
+namespace langur
+
 open LangurLang
 
 /-!
@@ -93,3 +95,5 @@ Implement a `for` loop construct in LangurLang following `C` syntax:
 for (init; cond; step) { body }
 ```
 -/
+
+end langur

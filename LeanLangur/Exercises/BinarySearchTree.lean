@@ -32,6 +32,9 @@ These main goals are stated with `sorry` as placeholders. It will be helpful to 
 * Define the pivot (root label) of an ordered tree and prove it is a member of the tree.
 
 -/
+
+namespace langur
+
 variable {α : Type}[LinearOrder α]
 
 inductive BinarySearchTree (α : Type) where
@@ -106,3 +109,5 @@ theorem buildBST_mem_correct (labels : List α)
     (label : α) :
     fastCheckMem label (buildBST labels) = true ↔ label ∈ labels := by
   sorry
+
+end langur

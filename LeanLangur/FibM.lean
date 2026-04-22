@@ -10,6 +10,9 @@ We can naively implement this recurrence relation in Lean, but it will be ineffi
 
 In the specific case of Fibonacci numbers, we can instead just use pairs. But this example illustrates the general technique of memoization using the State monad.
 -/
+
+namespace langur
+
 namespace FibM
 
 def slowFib : Nat → Nat
@@ -47,3 +50,5 @@ def fibM (n : Nat) : FibM Nat := do
 
 
 end FibM
+
+end langur

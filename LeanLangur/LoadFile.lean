@@ -7,6 +7,8 @@ This module provides tools for loading and parsing external files (like Markdown
 directly into Lean 4 environments, both as terms and via commands.
 -/
 
+namespace langur
+
 open IO FS System Lean
 
 /--
@@ -206,3 +208,5 @@ syntax (name:= rt_json) "#rt_json" ppSpace json : command
 | _ => throwUnsupportedSyntax
 
 -- #rt_json {"c": {"d": -3.4}, "b": [true, false, null], "a": 1}
+
+end langur
