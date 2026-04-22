@@ -5,6 +5,8 @@ import Mathlib
 * We begin with our simplest examples of programs and proofs.
 * We show how to add notation.
 * We return to this file to see typeclasses in action to generalize from `Nat` to any type with a linear order.
+
+This module is a good starting point for learning how to write simple programs and proofs in Lean 4. The only background required is basic Lean proving as in *A glimpse of Lean*.
 -/
 
 namespace langur
@@ -63,6 +65,25 @@ macro "smallest%" l:term : term => do
 #print smallest_mem._proof_1_2
 #print smallest_mem._proof_1_3
 #print smallest.induct_unfolding
+
+
+/-!
+## Exercise: Show that the properties characterizing the smallest element uniquely determine it.
+
+Fill in the `sorry` below with a proof that if `y` is an element of the list `l` and is less than or equal to all elements of `l`, then `y` must be equal to `smallest l h`.
+
+The tactic `fun_induction` is not enough here. You will need to do a more manual induction on the structure of the list, and further case analysis on the structure of the list in the inductive step. You can use `cases` or `match` for this.
+-/
+abbrev IsSmallest (l: List Nat) (x: Nat) : Prop :=
+  x ∈ l ∧ ∀ y, y ∈ l → x ≤ y
+
+theorem smallest_unique (l: List Nat) (h: l ≠ []) (y: Nat) :
+    IsSmallest l y → y = smallest l h := by
+    sorry
+
 end nat
+/-!
+To continue the introduction, move to the file `ListOps.lean`.
+-/
 
 end langur
