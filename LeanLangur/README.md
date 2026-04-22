@@ -54,10 +54,12 @@ graph TD;
   c8(["Inductive Propositions"]) -.-> IsEven
   c9(["Constructing Typeclasses"]) -.-> NonAtom
   c10(["Structures"]) -.-> People
+  c11(["Termination"]) -.-> QuickSort
+
 
   %% Styling for concept nodes
   classDef concept fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
-  class c1,c2,c3,c4,c5,c6,c7,c8,c9,c10 concept;
+  class c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11 concept;
 ```
 
 ## File Descriptions
