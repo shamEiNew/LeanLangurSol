@@ -7,6 +7,10 @@ We illustrate:
 * Explicit and Implicit parameters.
 * `do` notation for lists.
 * Why we need typeclasses.
+
+When you reach this, we expect that you have already worked through:
+
+* `SmallestNat.lean`
 -/
 
 namespace langur

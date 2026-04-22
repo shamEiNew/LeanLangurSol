@@ -6,6 +6,12 @@ We illustrate:
 * How to use addition in the presence of the typeclass `Add`.
 * How to create new instances of `Add` for custom types.
 * Typeclass inference.
+
+When you reach this, we expect that you have already worked through:
+
+* `SmallestNat.lean`
+* `ListOps.lean`
+
 -/
 
 namespace langur
@@ -41,5 +47,16 @@ instance {α β : Type}[Add α][Add β] :
       (a₁ + a₂, b₁ + b₂)
 
 #eval (1, 2, "Hello") +(3, 4, "world")
+
+/-!
+## Exercise: Pointwise addition
+
+Given a function `f: α → β` and a typeclass `Add β`, we can define pointwise addition on functions. Implement the instance of `Add (α → β)` that defines pointwise addition on functions. If correct, you should be able to uncomment the example below so it compiles.
+-/
+
+
+-- example : (fun x ↦ x + 1) + (fun x ↦ x * 2) = (fun x ↦  x + 1 + (x * 2)) := by
+--   funext x
+--   rfl
 
 end langur

@@ -2,6 +2,10 @@
 ## Structures
 
 A simple datatype in Lean is a `Structure`. This is a special case of an *inductive type* with some additional conveniences for working with named fields. We consider some examples.
+
+When you reach this, we expect that you have already worked through:
+
+* `SmallestNat.lean`
 -/
 
 namespace langur
@@ -39,5 +43,11 @@ structure Voter extends Person where
 def bob : Voter :=
   { name := "Bob", age := 25, voterId := 12345}
 
+
+/-!
+## Exercise: Even numbers
+
+Define a structure `EvenNumber` that represents an even natural number. It should have a field `value : Nat` and a proof that `value` is even (i.e., there exists some `k : Nat` such that `value = 2 * k`). Then, create an instance of `EvenNumber` for the number 10. Also define a function ``double: Nat → EvenNumber`` that takes a natural number `n` and returns an `EvenNumber` representing `2 * n`.
+-/
 
 end langur

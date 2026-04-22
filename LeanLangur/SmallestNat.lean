@@ -83,7 +83,7 @@ theorem smallest_unique (l: List Nat) (h: l ≠ []) (y: Nat) :
 
 end nat
 /-!
-To continue the introduction, move to the file `ListOps.lean`.
+Continue to the file `ListOps.lean`.
 -/
 
 end langur
