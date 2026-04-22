@@ -1,15 +1,31 @@
 import Lean
 
+/-!
+# Loading Files into Lean
+
+This module provides tools for loading and parsing external files (like Markdown and JSON)
+directly into Lean 4 environments, both as terms and via commands.
+-/
+
 open IO FS System Lean
 
+/--
+Reads the content of `README.md`.
+-/
 def readme : IO String := readFile "README.md"
 
 #eval readme
 
+/--
+Reads the content of `lake-manifest.json`.
+-/
 def lakeManifest : IO String := readFile "lake-manifest.json"
 
 #eval lakeManifest
 
+/--
+Parses the `lake-manifest.json` file into a `Json` object.
+-/
 def lakeManifestJson : IO Json := do
   let content ← lakeManifest
   match Json.parse content with
@@ -18,6 +34,9 @@ def lakeManifestJson : IO Json := do
 
 #eval lakeManifestJson
 
+/--
+An example of using the `json%` macro.
+-/
 def jsonEg := json% {"name": "LeanLangur", "version": "0.1.0", "dependencies": {"lean": "4.0.0"}}
 
 #eval jsonEg
@@ -28,11 +47,18 @@ declare_syntax_cat filepath
 syntax str : filepath
 syntax filepath " / " str : filepath
 
+/--
+Helper function to convert `filepath` syntax into a `System.FilePath`.
+-/
 partial def filePath : TSyntax `filepath → System.FilePath
   | `(filepath| $s:str) => s.getString
   | `(filepath| $fs:filepath / $s) => (filePath fs / s.getString)
   | _ => System.FilePath.mk ""
 
+/--
+A term-level macro to load the contents of a file as a string.
+Usage: `load_file% "path/to/file" ;`
+-/
 syntax (name:= loadFileTerm) "load_file%" (ppSpace filepath)? " ; " : term
 @[term_elab loadFileTerm] def loadFileTermImpl : TermElab := fun stx _ => do
   match stx with
@@ -44,10 +70,17 @@ syntax (name:= loadFileTerm) "load_file%" (ppSpace filepath)? " ; " : term
     return mkStrLit content
   | _ => throwUnsupportedSyntax
 
+/--
+Example of loading `README.md` as a string.
+-/
 def egFile := load_file% "README.md" ;
 
 #eval egFile
 
+/--
+A term-level macro to load and parse a JSON file.
+Usage: `load_json% "path/to/file" ;`
+-/
 syntax (name:= loadJsonTerm) "load_json%" (ppSpace filepath)? " ; " : term
 @[term_elab loadJsonTerm] def loadJsonTermImpl : TermElab := fun stx _ => do
   match stx with
@@ -65,6 +98,10 @@ syntax (name:= loadJsonTerm) "load_json%" (ppSpace filepath)? " ; " : term
 
 -- #eval egJson
 
+/--
+A command-level macro to load a file and define it as a constant.
+Usage: `#load_file identifier "path/to/file"`
+-/
 syntax (name:= loadFile) "#load_file" (ppSpace ident)? (ppSpace filepath)? : command
 @[command_elab loadFile] def loadFileImpl : CommandElab := fun stx  =>
  Command.liftTermElabM  do
@@ -137,6 +174,9 @@ syntax (name:= loadFile) "#load_file" (ppSpace ident)? (ppSpace filepath)? : com
 declare_syntax_cat json_wrap
 syntax json : json_wrap
 
+/--
+Converts a `Json` object into a `json` syntax object.
+-/
 def getJsonSyntax (js : Json) : MetaM <| TSyntax `json := do
   let .ok stx :=
     runParserCategory (← getEnv) `json_wrap js.pretty | throwError "Failed to parse JSON: {js}"
@@ -145,7 +185,9 @@ def getJsonSyntax (js : Json) : MetaM <| TSyntax `json := do
     return j
   | _ => throwError "Unexpected syntax: {stx}"
 
--- Test code
+/--
+A command to parse and display a JSON snippet.
+-/
 syntax (name:= rt_json) "#rt_json" ppSpace json : command
 
 @[command_elab rt_json] def elabRtJsonImpl : CommandElab

@@ -1,13 +1,34 @@
 import Mathlib
 
+/-!
+# Miscellaneous Examples
+
+A collection of various examples in Lean 4, including:
+* Custom empty and false types.
+* Real numbers and irrationality.
+* Simple proofs and exercises.
+-/
+
+/--
+A custom empty type.
+-/
 inductive MyEmpty where
   deriving Repr
 
+/--
+A custom false proposition.
+-/
 inductive MyFalse : Prop where
 
+/--
+Principle of explosion for the custom empty type.
+-/
 def ofEmpty{α : Type} : MyEmpty → α
   | e => by cases e
 
+/--
+Principle of explosion for the custom false proposition.
+-/
 theorem myFalse_elim (f : MyFalse) : ∀ {P : Prop}, P := by
   intro P
   cases f
@@ -46,6 +67,9 @@ theorem irrational_power_irrational_rational :
     simp [irrational_sqrt_two]
     assumption
 
+/--
+A very simple proof that `1 ≤ 5`.
+-/
 theorem easy : 1 ≤ 5 := by
   apply Nat.le_succ_of_le
   apply Nat.le_succ_of_le
@@ -55,6 +79,9 @@ theorem easy : 1 ≤ 5 := by
 
 #print easy
 
+/--
+Predicate for checking if a real number is rational.
+-/
 def IsRational (x : ℝ) : Prop :=
   ∃ (α  : ℚ), x = α
 
