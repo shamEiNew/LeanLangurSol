@@ -7,6 +7,7 @@ This directory contains examples and experiments with the Lean 4 programming lan
 The following is a mermaid diagram of dependencies:
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph TD;
   %% Core file dependencies
   Basic --> SmallestNat;
