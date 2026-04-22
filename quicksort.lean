@@ -1,4 +1,5 @@
 import LeanLangur.QuickSort
+open langur
 
 def main (args: List String) : IO Unit := do
   let n := args.head? |>.bind String.toNat? |>.getD 100000

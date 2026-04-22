@@ -1,6 +1,6 @@
 import Mathlib
 import LeanLangur.QuickSort
-
+namespace langur
 variable {α : Type}[LinearOrder α]
 /-!
 We now do the same for smallest.
@@ -76,3 +76,4 @@ theorem selectionSort_sorted (l : List α) :
     have ih := selectionSort_sorted ((head ::tail).erase (smallest (head :: tail) (by simp)))
     grind [selectionSort]
 termination_by l.length
+end langur

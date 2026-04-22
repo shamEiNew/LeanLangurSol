@@ -11,5 +11,7 @@ def hello := "world"
 
 #check hello -- checks the type of `hello`, which is `String`
 
-
+/-!
+The following is for importing to make termination proofs easier in later files. You can ignore it for now.
+-/
 macro_rules | `(tactic | decreasing_trivial) => `(tactic | grind)

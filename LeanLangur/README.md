@@ -28,7 +28,7 @@ This directory contains examples and experiments with the Lean 4 programming lan
 * **[FibM.lean](FibM.lean)**: Efficiently computing Fibonacci numbers using memoization with the `State` monad.
 * **[CatalanM.lean](CatalanM.lean)**: Memoized computation of Catalan numbers.
 
-### IO and File Handling
+### IO and File Handling (with Metaprogramming)
 
 * **[LoadFile.lean](LoadFile.lean)**: Examples of performing file I/O operations in Lean.
 * **[FileM.lean](FileM.lean)**: A custom monad (`FileM`) designed for managing file operations.
