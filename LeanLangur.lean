@@ -19,6 +19,7 @@ import LeanLangur.People
 import LeanLangur.PyFor
 import LeanLangur.QuickSort
 import LeanLangur.SelectionSort
+import LeanLangur.SmallestNat
 import LeanLangur.Smallest
 import LeanLangur.StackMachine
 import LeanLangur.TryInterpret

@@ -18,8 +18,10 @@ This directory contains examples and experiments with the Lean 4 programming lan
 
 * **[BinTree.lean](BinTree.lean)**: Defines a basic binary tree, conversion to lists, and membership proofs.
 * **[BinarySearchTree.lean](BinarySearchTree.lean)**: A more advanced implementation of Binary Search Trees.
-* **[Smallest.lean](Smallest.lean)**: Finding the smallest element in a list, introducing notation and generalizing with typeclasses.
+* **[SmallestNat.lean](SmallestNAt.lean)**: Finding the smallest element in a list of natural numbers, introducing notation.
+* **[Smallest.lean](Smallest.lean)**: Finding the smallest element in a list in general using typeclasses.
 * **[Largest.lean](Largest.lean)**: Implementing the "largest element" function with proofs of correctness, generalized for any linear order.
+* **[Sorted.lean](Sorted.lean)**: A typeclass representing a list being sorted, a proof that this is equivalent to another definition.
 * **[SelectionSort.lean](SelectionSort.lean)**: An implementation of the Selection Sort algorithm.
 * **[QuickSort.lean](QuickSort.lean)**: A complete implementation of the Quicksort algorithm with associated proofs.
 
