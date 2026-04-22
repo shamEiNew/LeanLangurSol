@@ -57,4 +57,8 @@ def IsRational (x : ℝ) : Prop :=
 set_option pp.all true in
 #print IsRational
 
+/-- A subtype representing natural numbers that are even. -/
+abbrev EvenNat := { n : Nat // n % 2 = 0}
+
+
 end langur

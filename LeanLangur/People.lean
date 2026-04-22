@@ -6,6 +6,10 @@ A simple datatype in Lean is a `Structure`. This is a special case of an *induct
 
 namespace langur
 
+/--
+A structure representing a person with a name and an age.
+Uses `deriving Repr` for printable output and `DecidableEq` for equality checking.
+-/
 structure Person where
   name : String
   age  : Nat
@@ -13,6 +17,7 @@ structure Person where
 
 #check Person.mk
 
+/-- An example instance of the `Person` structure. -/
 def alice : Person :=
   { name := "Alice", age := 30 }
 
@@ -20,43 +25,19 @@ def alice : Person :=
 #eval alice.age   -- evaluates to 30
 #eval alice        -- { name := "Alice", age := 30 }
 
+/--
+A structure representing a voter, extending the `Person` structure.
+Includes a `voterId` and a proof of voting eligibility based on age.
+-/
 structure Voter extends Person where
   voterId : Nat
+  /-- Proof that the voter is at least 18 years old. -/
   is_voting_eligible : 18 ≤ age := by grind
   deriving Repr, DecidableEq
 
+/-- An example instance of the `Voter` structure. -/
 def bob : Voter :=
   { name := "Bob", age := 25, voterId := 12345}
 
-abbrev EvenNat := { n : Nat // n % 2 = 0}
-
-example {α : Prop} (pf₁ pf₂ : α) : pf₁ = pf₂ := by
-  rfl
-
-#print Decidable
-
-instance : DecidableEq (Bool → Nat) := by
-  intro f g
-  if c₁ : f true = g true then
-    if c₂ : f false = g false then
-      apply isTrue
-      funext b
-      cases b <;> simp [c₁, c₂]
-    else
-      apply isFalse
-      grind
-  else
-    apply isFalse
-    grind
-
-structure Complicated where
-  n : Nat
-  f : Bool → Nat
-deriving DecidableEq
-
-example (f g : Nat → Nat): ∀ h:f = g,
-  f 0 = g 0 := by
-  intro h
-  rw [h]
 
 end langur

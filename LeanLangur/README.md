@@ -2,6 +2,41 @@
 
 This directory contains examples and experiments with the Lean 4 programming language and theorem prover. The files are organized from basic concepts to more advanced topics like metaprogramming and domain-specific languages.
 
+## Relations between files
+
+The following is a mermaid diagram of dependencies:
+
+```mermaid
+graph TD;
+  Basic --> SmallestNat;
+  SmallestNat --> ListOps;
+  SmallestNat --> FibM;
+  People --> IsEven;
+  ListOps --> BinTree;
+  ListOps --> Adder;
+  FibM --> CatalanM;
+  FibM --> TryInterpret;
+  Adder --> Largest;
+  Adder --> FibM;
+  BinTree --> BinarySearchTree;
+  BinTree --> FunEquality;
+  IsEven --> Sorted;
+  IsEven --> NonAtom;
+  IsEven --> Smallest;
+  Sorted --> QuickSort;
+  Sorted --> SelectionSort;
+  NonAtom --> TryInterpret;
+
+  FibM --> PyFor;
+
+  subgraph metaprogramming
+    PyFor --> LoadFile;
+    LoadFile --> FileM;
+    PyFor --> LangurLang;
+    LangurLang --> LangurLeaps;
+  end
+```
+
 ## File Descriptions
 
 ### Introduction and Basics
