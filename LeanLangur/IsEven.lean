@@ -58,4 +58,9 @@ theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1)
   := by
   induction n <;> grind
 
+/-!
+## Exercise: Odd numbers
+
+Define an inductive predicate `IsOdd : Nat → Prop` for odd natural numbers, and prove that any natural number is either even or odd, but not both (As two separate propositions).
+-/
 end langur

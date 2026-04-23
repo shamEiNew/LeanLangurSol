@@ -49,6 +49,13 @@ theorem cons_sorted (l : List α) :  Sorted l → (a : α) →
   | x :: l' =>
     grind [Sorted.step]
 
+/-!
+## Sorted lists and monotone lists
+
+We in some sense axiomatized the property of being sorted by saying that the head is less than or equal to the next element, and so on. We can also give an alternative characterization of sorted lists by saying that a list is sorted if it is monotone (i.e., non-decreasing). We show that these two characterizations are equivalent.
+
+Such results are useful in making sure that our definitions are robust and capture the intended concept. They also allow us to use whichever characterization is more convenient in a given proof.
+-/
 /--
 Predicate for checking if a list is monotone (non-decreasing).
 -/
@@ -108,5 +115,16 @@ theorem sorted_of_monotone (l : List α)
       apply Sorted.step
       · apply h 0 1 (by simp) (by simp)
       · grind
+
+/-!
+## Exercise: Sorted lists with equal counts
+
+Suppose we have two lists `l₁` and `l₂` such that:
+
+* Both lists are sorted.
+* Both lists contain the same elements with the same multiplicities (i.e., for every element `x`, the count of `x` in `l₁` is the same as the count of `x` in `l₂`).
+
+Show that `l₁ = l₂`. You may find it useful to first show that the head of both lists must be the same, and then use induction on the tail of the lists.
+-/
 
 end langur
