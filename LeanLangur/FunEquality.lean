@@ -29,8 +29,19 @@ example (f g : Nat → Nat): (∀ x, f x = g x) → f = g := by
   funext x
   apply h
 
+/-!
+## Decidable propositions and decidable equality
+
+The `Decidable` typeclass allows us to express whether a proposition is decidable (i.e., we can algorithmically determine whether it is true or false). For example, equality of natural numbers is decidable, but equality of functions is not always decidable.
+
+Special cases of decidable propositions include decidable equality, which allows us to determine whether two elements of a type are equal. For example, we can provide an instance of `DecidableEq` for natural numbers, which allows us to decide whether two natural numbers are equal. However, for function types, decidable equality is not always possible because it would require checking equality on all inputs, which is in general not possible if the domain is infinite.
+-/
 #eval decide (1 = 1)
 #eval decide (1 = 2)
+
+/-!
+When defining a function with an `if` expression, we need that the condition is decidable. For example, we can define a `min` function for natural numbers using an `if` expression, and it works because we have decidable equality for natural numbers. However, if we try to define a `min` function for a general type with only a `LE` instance, we run into issues because we do not have decidable equality for that type.
+-/
 
 def minNat (a b : Nat) : Nat := if a ≤ b then a else b
 
@@ -42,6 +53,13 @@ Hint: Type class instance resolution failures can be inspected with the `set_opt
 -/
 #guard_msgs in
 def minBad {α : Type}[LE α] (a b : α) : α := if a ≤ b then a else b
+
+/-!
+We can make it work by providing a decidable instance for the comparison by opening `Classical`. This allows us to use the law of excluded middle to decide the comparison. Concretely, the function `Classical.decidableInhabited` provides a decidable instance for any proposition, which allows us to use it to decide the comparison.
+
+However, this makes the function noncomputable because it relies on a decision procedure that may not be computable.
+-/
+#check Classical.decidableInhabited
 
 open Classical in
 noncomputable def minExist {α : Type}[LE α]
@@ -72,6 +90,9 @@ Hint: Additional diagnostic information may be available using the `set_option d
 #guard_msgs in
 #eval (fun x => x + 1) = (fun x => 1 + x)
 
+/-!
+We can provide an instance of `Decidbale`, which is a *decision procedure*. For example, we can provide an instance of `DecidableEq` for functions from `Bool` to `Nat`, which allows us to decide whether two such functions are equal by checking their outputs on both `true` and `false`.
+-/
 #print Decidable
 
 /--
@@ -101,5 +122,19 @@ structure Complicated where
   f : Bool → Nat
 deriving DecidableEq
 
+
+/-!
+## Exercises
+
+1. The unit type has only one term, i.e., all terms of type `Unit` are equal. Using this fact using proof irrelevance, and then use it to show that any two functions from any type `α` to the type `Unit` are equal.
+-/
+
+/-!
+2. Show that if the type `α` has decidable equality, then the type of functions from `Bool` to `α` also has decidable equality.
+-/
+
+/-!
+3. Conversely, show that if the type of functions from `Bool` to `α` has decidable equality, then the type `α` also has decidable equality.
+-/
 
 end langur
