@@ -38,4 +38,16 @@ theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) :
 
 end general
 
+/-!
+## Exercise: Smallest element for partial orders
+
+Define a function analogous to `smallest` for lists of elements of a type with a partial order, and prove the corresponding properties. You will need to use `DecidableLE` to be able to compare elements in the list, and the definition will use `if` expressions in place of `min`.
+
+One of the above theorems is true for partial orders, but the other is not. Which one is it? Prove the one that is true, and give a counterexample for the one that is not using the partial order on `Nat × Nat`.
+-/
+namespace partial_order
+variable {α : Type} [PartialOrder α][DecidableLE α]
+
+end partial_order
+
 end langur

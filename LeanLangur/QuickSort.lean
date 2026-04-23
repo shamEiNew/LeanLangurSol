@@ -88,7 +88,7 @@ theorem mem_iff_mem_quickSort (l: List α)(x : α) :
 
 section Count
 /-!
-### Exercises
+## Exercises
 
 Prove that quickSort preserves the count of each element. A useful lemma was not annotated with `grind` so this is done below.
 -/
