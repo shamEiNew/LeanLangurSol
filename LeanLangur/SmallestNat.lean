@@ -66,20 +66,16 @@ macro "smallest%" l:term : term => do
 #print smallest_mem._proof_1_3
 #print smallest.induct_unfolding
 
-
 /-!
-## Exercise: Show that the properties characterizing the smallest element uniquely determine it.
+## Exercise: smallest element of a filtered list
 
-Fill in the `sorry` below with a proof that if `y` is an element of the list `l` and is less than or equal to all elements of `l`, then `y` must be equal to `smallest l h`.
+Prove that if `p` is a predicate on natural numbers and `l` is a list of natural numbers such that the filtered list `l.filter p` is non-empty, then the smallest element of `l` is less than or equal to the smallest element of `l.filter p`.
 
-The tactic `fun_induction` is not enough here. You will need to do a more manual induction on the structure of the list, and further case analysis on the structure of the list in the inductive step. You can use `cases` or `match` for this.
+It will be useful to use the above results. Think about the mathematical argument for this fact, and then try to translate it into Lean. You may find it helpful to introduce some intermediate variables and hypotheses to structure the proof.
 -/
-abbrev IsSmallest (l: List Nat) (x: Nat) : Prop :=
-  x ∈ l ∧ ∀ y, y ∈ l → x ≤ y
-
-theorem smallest_unique (l: List Nat) (h: l ≠ []) (y: Nat) :
-    IsSmallest l y → y = smallest l h := by
-    sorry
+theorem smallest_le_smallest_of_filter (l: List Nat) (p: Nat → Bool) (h: l.filter p ≠ []) :
+  smallest l (by grind) ≤ smallest (l.filter p) h := by
+  sorry
 
 end nat
 /-!

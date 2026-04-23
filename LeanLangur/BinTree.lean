@@ -3,6 +3,12 @@ import Mathlib
 ## Binary Trees
 
 We consider an example of a data structure: binary trees. We define a binary tree datatype, a function to convert a binary tree to a list, and prove that membership in the tree corresponds to membership in the list.
+
+This is our first example of defining an *inductive type*.
+
+When you reach this, we expect that you have already worked through:
+* `SmallestNat.lean`
+* `ListOps.lean`
 -/
 
 namespace langur
@@ -80,4 +86,9 @@ theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) :
     | leaf a => grind
     | node l r ihl ihr => grind
 
+/-!
+## Exercise: List to BinTree
+
+Define a function `listToBinTree : List α → BinTree α` that converts a list to a binary tree (this is not unique). Then, prove that for any list `l` and element `x`, `x ∈ listToBinTree l` if and only if `x ∈ l`.
+-/
 end langur
