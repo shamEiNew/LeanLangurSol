@@ -200,6 +200,12 @@ theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered 
       else
         grind
 
+/-!
+## Exercise: Deletion
+
+Define a function `deleteLabel` that removes a label from an ordered binary search tree while maintaining the tree structure and order properties. Prove that after deletion, the label is no longer in the tree, and that all other labels are still present.
+-/
+
 end binary_search_tree
 
 end langur
