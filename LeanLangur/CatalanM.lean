@@ -52,4 +52,8 @@ partial def catalanMemo (n : Nat) : CatalanM Nat := do
 #eval catalanMemo 23 |>.run' {}
 end Catalan
 
+/-!
+The exercise for this file and `FibM.lean` is the last exercise in `Combinations.lean`.
+-/
+
 end langur

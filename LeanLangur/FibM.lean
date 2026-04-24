@@ -51,4 +51,10 @@ def fibM (n : Nat) : FibM Nat := do
 
 end FibM
 
+/-!
+As mentioned earlier, we can also implement Fibonacci numbers using pairs to achieve a linear time complexity without needing memoization. A more realistic example is the computation of Catalan numbers in `CatalanM.lean`.
+
+The exercise for this file and `CatalanM.lean` is the last exercise in `Combinations.lean`.
+-/
+
 end langur

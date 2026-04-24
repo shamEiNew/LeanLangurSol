@@ -74,6 +74,9 @@ graph TD;
   Sorted --> QuickSort;
   Sorted --> SelectionSort;
   FibM --> PyFor;
+  FibM --> CatalanM;
+  CatalanM --> Combinations
+  IsEven --> Eratosthenes
 
   %% Correction Edge
   BinTree --> IsEven;
