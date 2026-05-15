@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib -- imports definitions and theorems used below
 /-!
 ## Binary Trees
 
@@ -11,84 +11,84 @@ When you reach this, we expect that you have already worked through:
 * `ListOps.lean`
 -/
 
-namespace langur
+namespace langur -- starts a namespace to group the tutorial definitions
 
-variable {α : Type}
+variable {α : Type} -- continues the Lean declaration above
 
 /--
 A simple binary tree where each leaf carries a value of type `α`,
 and nodes represent branches with two subtrees.
 -/
-inductive BinTree (α : Type) where
-  | leaf : α → BinTree α
-  | node : BinTree α → BinTree α → BinTree α
-deriving Repr, Inhabited
+inductive BinTree (α : Type) where -- declares the inductive type or proposition `BinTree`
+  | leaf : α → BinTree α -- declares another constructor or syntax alternative
+  | node : BinTree α → BinTree α → BinTree α -- declares another constructor or syntax alternative
+deriving Repr, Inhabited -- asks Lean to generate standard instances automatically
 
-open BinTree
+open BinTree -- opens names so constructors or helpers can be written unqualified
 
 /--
 Converts a binary tree to a list by performing an in-order traversal.
 -/
-@[grind .]
-def BinTree.toList {α : Type} : BinTree α → List α
-  | leaf x => [x]
-  | node l r =>
-    BinTree.toList l ++ BinTree.toList r
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+def BinTree.toList {α : Type} : BinTree α → List α -- defines `BinTree.toList`
+  | leaf x => [x] -- handles this pattern-matching case
+  | node l r => -- handles this pattern-matching case
+    BinTree.toList l ++ BinTree.toList r -- continues the Lean declaration above
 
 /-- An example binary tree containing natural numbers. -/
-def exampleTree : BinTree Nat :=
-  node (node (leaf 1) (leaf 2)) (leaf 3)
+def exampleTree : BinTree Nat := -- defines `exampleTree`
+  node (node (leaf 1) (leaf 2)) (leaf 3) -- continues the Lean declaration above
 
 #eval exampleTree.toList  -- Output: [1, 2, 3]
 
 /--
 Inductive predicate for membership in a binary tree.
 -/
-@[grind .]
-def Bintree.mem {α : Type} : BinTree α → α → Prop
-  | leaf x, y => x = y
-  | node l r, y => Bintree.mem l y ∨ Bintree.mem r y
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+def Bintree.mem {α : Type} : BinTree α → α → Prop -- defines `Bintree.mem`
+  | leaf x, y => x = y -- handles this pattern-matching case
+  | node l r, y => Bintree.mem l y ∨ Bintree.mem r y -- handles this pattern-matching case
 
 /--
 Instance for using the `∈` notation with `BinTree`.
 -/
-@[grind ., simp]
-instance {α : Type} : Membership α (BinTree α) where
-  mem := Bintree.mem
+@[grind ., simp] -- annotation controlling elaboration, simplification, or automation
+instance {α : Type} : Membership α (BinTree α) where -- provides an instance for typeclass search
+  mem := Bintree.mem -- gives the value or proof for this declaration
 
 /--
 An element `y` is in a leaf carrying `x` if and only if `x = y`.
 -/
-@[grind ., simp]
-theorem mem_leaf {α : Type} (x y : α) :
-    y ∈ leaf x ↔ x = y := by
-    simp [Bintree.mem, Membership.mem]
+@[grind ., simp] -- annotation controlling elaboration, simplification, or automation
+theorem mem_leaf {α : Type} (x y : α) : -- states and proves theorem `mem_leaf`
+    y ∈ leaf x ↔ x = y := by -- gives the value or proof for this declaration
+    simp [Bintree.mem, Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
 An element `y` is in a node if and only if it is in either the left or the right subtree.
 -/
-@[grind ., simp]
-theorem mem_node {α : Type} (l r : BinTree α) (y : α) :
-    y ∈ node l r ↔ y ∈ l ∨ y ∈ r := by
-    simp [Bintree.mem, Membership.mem]
+@[grind ., simp] -- annotation controlling elaboration, simplification, or automation
+theorem mem_node {α : Type} (l r : BinTree α) (y : α) : -- states and proves theorem `mem_node`
+    y ∈ node l r ↔ y ∈ l ∨ y ∈ r := by -- gives the value or proof for this declaration
+    simp [Bintree.mem, Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
 Theorem stating that an element is in the tree if and only if it is in the list
 produced by `toList`.
 -/
-theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) :
-    x ∈ t ↔ x ∈ BinTree.toList t := by
-    apply Iff.intro
-    · induction t with
-    | leaf a => grind
-    | node l r ihl ihr => grind
-    · induction t with
-    | leaf a => grind
-    | node l r ihl ihr => grind
+theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) : -- states and proves theorem `mem_iff_mem_toList`
+    x ∈ t ↔ x ∈ BinTree.toList t := by -- gives the value or proof for this declaration
+    apply Iff.intro -- reduces the goal using this theorem or constructor
+    · induction t with -- focuses the next proof branch
+    | leaf a => grind -- handles this pattern-matching case
+    | node l r ihl ihr => grind -- handles this pattern-matching case
+    · induction t with -- focuses the next proof branch
+    | leaf a => grind -- handles this pattern-matching case
+    | node l r ihl ihr => grind -- handles this pattern-matching case
 
 /-!
 ## Exercise: List to BinTree
 
 Define a function `listToBinTree : List α → BinTree α` that converts a list to a binary tree (this is not unique). Then, prove that for any list `l` and element `x`, `x ∈ listToBinTree l` if and only if `x ∈ l`.
 -/
-end langur
+end langur -- closes the current namespace or section

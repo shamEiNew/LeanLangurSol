@@ -1,79 +1,79 @@
-import Mathlib
-import LeanLangur.QuickSort
-namespace langur
-variable {α : Type}[LinearOrder α]
+import Mathlib -- imports definitions and theorems used below
+import LeanLangur.QuickSort -- imports definitions and theorems used below
+namespace langur -- starts a namespace to group the tutorial definitions
+variable {α : Type}[LinearOrder α] -- continues the Lean declaration above
 /-!
 We now do the same for smallest.
 -/
-def smallest (l: List α) (h: l ≠ []) : α :=
-  match l with
-  | [] => by contradiction
-  | [x] => x
-  | x :: y :: xs =>
-    min x (smallest (y :: xs) (by simp))
+def smallest (l: List α) (h: l ≠ []) : α := -- defines `smallest`
+  match l with -- splits computation into cases by pattern matching
+  | [] => by contradiction -- handles this pattern-matching case
+  | [x] => x -- handles this pattern-matching case
+  | x :: y :: xs => -- handles this pattern-matching case
+    min x (smallest (y :: xs) (by simp)) -- continues the Lean declaration above
 
-@[grind .]
-theorem smallest_mem (l: List α) (h: l ≠ []) :
-  smallest l h ∈ l := by
-  match l with
-  | [x] => simp [smallest]
-  | x :: y :: xs =>
-    have ih := smallest_mem (y :: xs) (by simp)
-    grind [smallest]
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+theorem smallest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
+  smallest l h ∈ l := by -- gives the value or proof for this declaration
+  match l with -- splits computation into cases by pattern matching
+  | [x] => simp [smallest] -- handles this pattern-matching case
+  | x :: y :: xs => -- handles this pattern-matching case
+    have ih := smallest_mem (y :: xs) (by simp) -- records an intermediate fact for the proof
+    grind [smallest] -- asks the `grind` automation to finish the proof
 
-@[grind .]
-theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) :
-  x ∈ l → smallest l h ≤ x := by
-  match l with
-  | [y] =>
-    grind [smallest]
-  | y :: z :: xs =>
-    have ih :=
-      smallest_le_all (z :: xs) (by simp) x
-    grind [smallest]
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `smallest_le_all`
+  x ∈ l → smallest l h ≤ x := by -- gives the value or proof for this declaration
+  match l with -- splits computation into cases by pattern matching
+  | [y] => -- handles this pattern-matching case
+    grind [smallest] -- asks the `grind` automation to finish the proof
+  | y :: z :: xs => -- handles this pattern-matching case
+    have ih := -- records an intermediate fact for the proof
+      smallest_le_all (z :: xs) (by simp) x -- continues the Lean declaration above
+    grind [smallest] -- asks the `grind` automation to finish the proof
 
 /-!
 We now implement Selection Sort using smallest.
 -/
-def selectionSort : List α → List α
-  | [] => []
-  | x :: ys =>
-    let s := smallest (x :: ys) (by simp)
-    have : ((x :: ys).erase s).length < (x :: ys).length := by grind
-    have : ((x :: ys).erase (smallest (x :: ys) (by simp))).length ≤ ys.length := by
-      grind
-    s :: selectionSort ((x :: ys).erase s)
-termination_by l => l.length
+def selectionSort : List α → List α -- defines `selectionSort`
+  | [] => [] -- handles this pattern-matching case
+  | x :: ys => -- handles this pattern-matching case
+    let s := smallest (x :: ys) (by simp) -- binds an intermediate value for the following expression
+    have : ((x :: ys).erase s).length < (x :: ys).length := by grind -- records an intermediate fact for the proof
+    have : ((x :: ys).erase (smallest (x :: ys) (by simp))).length ≤ ys.length := by -- records an intermediate fact for the proof
+      grind -- asks the `grind` automation to finish the proof
+    s :: selectionSort ((x :: ys).erase s) -- continues the Lean declaration above
+termination_by l => l.length -- tells Lean which expression decreases for termination
 
-@[grind .]
-theorem mem_iff_mem_selectionSort (l: List α)(x : α) :
-    x ∈ l ↔ x ∈ selectionSort l := by
-  apply Iff.intro
-  match l with
-  | [] => grind
-  | head ::tail =>
-    simp [selectionSort]
-    if p:x = smallest (head :: tail) (by simp) then
-      grind
-    else
-      have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤  tail.length := by grind
-      have ih := mem_iff_mem_selectionSort ((head ::tail).erase (smallest (head :: tail) (by simp))) x
-      grind
-  · match l with
-  | [] => grind [selectionSort]
-  | head :: tail =>
-    have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤ tail.length := by grind
-    have ih := mem_iff_mem_selectionSort ((head ::tail).erase (smallest (head :: tail) (by simp))) x
-    grind [selectionSort]
-termination_by l.length
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+theorem mem_iff_mem_selectionSort (l: List α)(x : α) : -- states and proves theorem `mem_iff_mem_selectionSort`
+    x ∈ l ↔ x ∈ selectionSort l := by -- gives the value or proof for this declaration
+  apply Iff.intro -- reduces the goal using this theorem or constructor
+  match l with -- splits computation into cases by pattern matching
+  | [] => grind -- handles this pattern-matching case
+  | head ::tail => -- handles this pattern-matching case
+    simp [selectionSort] -- simplifies the current goal or hypotheses
+    if p:x = smallest (head :: tail) (by simp) then -- branches on this decidable condition
+      grind -- asks the `grind` automation to finish the proof
+    else -- handles the alternative branch
+      have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤  tail.length := by grind -- records an intermediate fact for the proof
+      have ih := mem_iff_mem_selectionSort ((head ::tail).erase (smallest (head :: tail) (by simp))) x -- records an intermediate fact for the proof
+      grind -- asks the `grind` automation to finish the proof
+  · match l with -- focuses the next proof branch
+  | [] => grind [selectionSort] -- handles this pattern-matching case
+  | head :: tail => -- handles this pattern-matching case
+    have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤ tail.length := by grind -- records an intermediate fact for the proof
+    have ih := mem_iff_mem_selectionSort ((head ::tail).erase (smallest (head :: tail) (by simp))) x -- records an intermediate fact for the proof
+    grind [selectionSort] -- asks the `grind` automation to finish the proof
+termination_by l.length -- tells Lean which expression decreases for termination
 
-theorem selectionSort_sorted (l : List α) :
-  Sorted (selectionSort l) := by
-  match l with
-  | [] => grind [selectionSort, Sorted.nil]
-  | head :: tail =>
-    have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤ tail.length := by grind
-    have ih := selectionSort_sorted ((head ::tail).erase (smallest (head :: tail) (by simp)))
-    grind [selectionSort]
-termination_by l.length
-end langur
+theorem selectionSort_sorted (l : List α) : -- states and proves theorem `selectionSort_sorted`
+  Sorted (selectionSort l) := by -- gives the value or proof for this declaration
+  match l with -- splits computation into cases by pattern matching
+  | [] => grind [selectionSort, Sorted.nil] -- handles this pattern-matching case
+  | head :: tail => -- handles this pattern-matching case
+    have : ((head ::tail).erase (smallest (head :: tail) (by simp))).length ≤ tail.length := by grind -- records an intermediate fact for the proof
+    have ih := selectionSort_sorted ((head ::tail).erase (smallest (head :: tail) (by simp))) -- records an intermediate fact for the proof
+    grind [selectionSort] -- asks the `grind` automation to finish the proof
+termination_by l.length -- tells Lean which expression decreases for termination
+end langur -- closes the current namespace or section

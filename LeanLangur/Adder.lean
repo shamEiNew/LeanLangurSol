@@ -14,16 +14,16 @@ When you reach this, we expect that you have already worked through:
 
 -/
 
-namespace langur
+namespace langur -- starts a namespace to group the tutorial definitions
 
-#eval 3 + 4
+#eval 3 + 4 -- runs this expression as a tutorial check
 
-#eval "hello " ++ "world"
+#eval "hello " ++ "world" -- runs this expression as a tutorial check
 
-open Add
-#eval add 1 3
+open Add -- opens names so constructors or helpers can be written unqualified
+#eval add 1 3 -- runs this expression as a tutorial check
 
-#check add
+#check add -- asks Lean to display the inferred type
 
 /--
 error: failed to synthesize instance of type class
@@ -31,22 +31,22 @@ error: failed to synthesize instance of type class
 
 Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
 -/
-#guard_msgs in
-#eval add "Hello" "world"
+#guard_msgs in -- checks that the following command produces the expected message
+#eval add "Hello" "world" -- runs this expression as a tutorial check
 
-instance : Add String where
-  add s t := s ++ " " ++ t
+instance : Add String where -- provides an instance for typeclass search
+  add s t := s ++ " " ++ t -- gives the value or proof for this declaration
 
-#eval add "Hello" "world"
+#eval add "Hello" "world" -- runs this expression as a tutorial check
 
-#eval "Hello" + "world"
+#eval "Hello" + "world" -- runs this expression as a tutorial check
 
-instance {α β : Type}[Add α][Add β] :
-  Add (α × β) where
-  add := fun (a₁, b₁) (a₂, b₂) ↦
-      (a₁ + a₂, b₁ + b₂)
+instance {α β : Type}[Add α][Add β] : -- provides an instance for typeclass search
+  Add (α × β) where -- continues the Lean declaration above
+  add := fun (a₁, b₁) (a₂, b₂) ↦ -- gives the value or proof for this declaration
+      (a₁ + a₂, b₁ + b₂) -- continues the surrounding Lean expression
 
-#eval (1, 2, "Hello") +(3, 4, "world")
+#eval (1, 2, "Hello") +(3, 4, "world") -- runs this expression as a tutorial check
 
 /-!
 ## Exercise: Pointwise addition
@@ -59,4 +59,4 @@ Given a function `f: α → β` and a typeclass `Add β`, we can define pointwis
 --   funext x
 --   rfl
 
-end langur
+end langur -- closes the current namespace or section

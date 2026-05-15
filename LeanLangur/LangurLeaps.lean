@@ -1,4 +1,4 @@
-import LeanLangur.LangurLang
+import LeanLangur.LangurLang -- imports definitions and theorems used below
 
 /-!
 # LangurLeaps: LangurLang Examples
@@ -7,85 +7,85 @@ This module provides examples of programs written in `LangurLang` using the `#le
 and the `climb%` macro. It includes implementations of summation and primality testing.
 -/
 
-namespace langur
+namespace langur -- starts a namespace to group the tutorial definitions
 
-open LangurLang
+open LangurLang -- opens names so constructors or helpers can be written unqualified
 
 /-!
 A simple `LangurLang` program illustrating assignments and conditionals.
 -/
-#leap
-  n := 3; m := 4 + 5;
-  if (n ≤ 4) {n := (5 + 3 + (2 * 7));} else {n := 2; m := 7}
-  return
+#leap -- runs this LangurLang example through the custom command
+  n := 3; m := 4 + 5; -- gives the value or proof for this declaration
+  if (n ≤ 4) {n := (5 + 3 + (2 * 7));} else {n := 2; m := 7} -- branches on this decidable condition
+  return -- continues the Lean declaration above
 
 /-!
 A program to calculate the sum of the first `n` natural numbers.
 -/
-#leap
-  n := 10; sum := 0;
-  i := 1;
-  while (i ≤ n) {sum := sum + i; i := i + 1} return
+#leap -- runs this LangurLang example through the custom command
+  n := 10; sum := 0; -- gives the value or proof for this declaration
+  i := 1; -- gives the value or proof for this declaration
+  while (i ≤ n) {sum := sum + i; i := i + 1} return -- gives the value or proof for this declaration
 
 /--
 A simple value for testing primality.
 -/
-def eg.n := 59
+def eg.n := 59 -- defines `eg.n`
 
 /-!
 Primality test for `n = 59` in `LangurLang`.
 -/
-open eg in
-#leap
-  i := 2;
-  is_prime := 1;
-  while (i < n && is_prime = 1) {
-    if (i ∣ n) {
-      is_prime := 0
-    } else {};
-    i := i + 1
-  };
-  if (is_prime = 1) {
-    print s!"{n} is prime"
-  } else {
-    print s!"{n} is not prime; divisor: {i - 1}"
-  }
-  return
+open eg in -- opens names so constructors or helpers can be written unqualified
+#leap -- runs this LangurLang example through the custom command
+  i := 2; -- gives the value or proof for this declaration
+  is_prime := 1; -- gives the value or proof for this declaration
+  while (i < n && is_prime = 1) { -- continues the Lean declaration above
+    if (i ∣ n) { -- branches on this decidable condition
+      is_prime := 0 -- gives the value or proof for this declaration
+    } else {}; -- continues the surrounding Lean expression
+    i := i + 1 -- gives the value or proof for this declaration
+  }; -- continues the surrounding Lean expression
+  if (is_prime = 1) { -- branches on this decidable condition
+    print s!"{n} is prime" -- continues the Lean declaration above
+  } else { -- continues the surrounding Lean expression
+    print s!"{n} is not prime; divisor: {i - 1}" -- continues the Lean declaration above
+  } -- continues the surrounding Lean expression
+  return -- continues the Lean declaration above
 
 
 /--
 A `climb%` macro usage to check the primality of `n = 57`.
 -/
-def primality  :=
-  climb%
-    n := 57;
-    i := 2;
-    is_prime := 1;
-    while (i < n && is_prime = 1) {
-    if (i ∣ n) {
-      is_prime := 0
-    } else {};
-    i := i + 1
-    };
-    return s!"Primality of {n}: {is_prime == 1}"
+def primality  := -- defines `primality`
+  climb% -- continues the Lean declaration above
+    n := 57; -- gives the value or proof for this declaration
+    i := 2; -- gives the value or proof for this declaration
+    is_prime := 1; -- gives the value or proof for this declaration
+    while (i < n && is_prime = 1) { -- continues the Lean declaration above
+    if (i ∣ n) { -- branches on this decidable condition
+      is_prime := 0 -- gives the value or proof for this declaration
+    } else {}; -- continues the surrounding Lean expression
+    i := i + 1 -- gives the value or proof for this declaration
+    }; -- continues the surrounding Lean expression
+    return s!"Primality of {n}: {is_prime == 1}" -- returns this value from the monadic block
 
-#eval primality
+#eval primality -- runs this expression as a tutorial check
 
 /-!
 Another `climb%` example checking the primality of `n = 59`.
 -/
-#eval climb%
-    i := 2;
-    is_prime := 1;
-    while (i < n && is_prime = 1) {
-    if (i ∣ n) {
-      is_prime := 0
-    } else {};
-    i := i + 1
-    }
-    from%
-    n := 59;
-    return s!"Primality of {n}: {is_prime == 1}"
+#eval climb% -- runs this expression as a tutorial check
+    i := 2; -- gives the value or proof for this declaration
+    is_prime := 1; -- gives the value or proof for this declaration
+    while (i < n && is_prime = 1) { -- continues the Lean declaration above
+    if (i ∣ n) { -- branches on this decidable condition
+      is_prime := 0 -- gives the value or proof for this declaration
+    } else {}; -- continues the surrounding Lean expression
+    i := i + 1 -- gives the value or proof for this declaration
+    } -- continues the surrounding Lean expression
+    from% -- continues the Lean declaration above
+    n := 59; -- gives the value or proof for this declaration
+    return s!"Primality of {n}: {is_prime == 1}" -- returns this value from the monadic block
 
 /-!
 ## Exercise
@@ -96,4 +96,4 @@ for (init; cond; step) { body }
 ```
 -/
 
-end langur
+end langur -- closes the current namespace or section

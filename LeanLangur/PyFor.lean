@@ -1,9 +1,9 @@
-import Lean
-import Mathlib
+import Lean -- imports definitions and theorems used below
+import Mathlib -- imports definitions and theorems used below
 
-namespace langur
+namespace langur -- starts a namespace to group the tutorial definitions
 
-open Lean Elab Meta Term
+open Lean Elab Meta Term -- opens names so constructors or helpers can be written unqualified
 
 /-!
 # Python-style for Comprehensions in Lean
@@ -15,104 +15,104 @@ and more complex comprehensions like:
 
 In Lean, we can use `do` notation to express similar comprehensions over lists.
 -/
-def eg₀ : List Nat := do
-  let x ← [1, 2, 3, 4]
-  return x * x
+def eg₀ : List Nat := do -- defines `eg`
+  let x ← [1, 2, 3, 4] -- binds an intermediate value for the following expression
+  return x * x -- returns this value from the monadic block
 
-#eval eg₀
+#eval eg₀ -- runs this expression as a tutorial check
 /-!
 This is equivalent to:
 -/
-#eval List.map (fun x => x * x) [1, 2, 3, 4]
+#eval List.map (fun x => x * x) [1, 2, 3, 4] -- runs this expression as a tutorial check
 
 /-!
 The more complex comprehension can be expressed as:
 -/
-def eg₁ : List Nat := do
-  let l ← [[1, 2], [3, 4]]
-  let x ← l
-  let y ← l
-  return x * y
+def eg₁ : List Nat := do -- defines `eg`
+  let l ← [[1, 2], [3, 4]] -- binds an intermediate value for the following expression
+  let x ← l -- binds an intermediate value for the following expression
+  let y ← l -- binds an intermediate value for the following expression
+  return x * y -- returns this value from the monadic block
 
-#eval eg₁
+#eval eg₁ -- runs this expression as a tutorial check
 
 /-!
 If we use `List.map` naively, we get:
 -/
-#eval List.map (fun l =>
-  List.map (fun x =>
-    List.map (fun y => x * y) l
-  ) l
-) [[1, 2], [3, 4]]
+#eval List.map (fun l => -- runs this expression as a tutorial check
+  List.map (fun x => -- maps this case or syntax pattern to its result
+    List.map (fun y => x * y) l -- maps this case or syntax pattern to its result
+  ) l -- continues the surrounding Lean expression
+) [[1, 2], [3, 4]] -- continues the surrounding Lean expression
 
 /-!
 This is equivalent to:
 -/
-def eg : List Nat :=
-  List.flatMap (fun l =>
-    List.flatMap (fun x =>
-      List.map (fun y => x * y) l
-    ) l
-  ) [[1, 2], [3, 4]]
-#eval eg
+def eg : List Nat := -- defines `eg`
+  List.flatMap (fun l => -- maps this case or syntax pattern to its result
+    List.flatMap (fun x => -- maps this case or syntax pattern to its result
+      List.map (fun y => x * y) l -- maps this case or syntax pattern to its result
+    ) l -- continues the surrounding Lean expression
+  ) [[1, 2], [3, 4]] -- continues the surrounding Lean expression
+#eval eg -- runs this expression as a tutorial check
 
-#eval [2, 3, 4].map (fun x => [x * 2, x* x])
+#eval [2, 3, 4].map (fun x => [x * 2, x* x]) -- runs this expression as a tutorial check
 
-#eval [2, 3, 4].flatMap (fun x => [x * 2, x* x])
+#eval [2, 3, 4].flatMap (fun x => [x * 2, x* x]) -- runs this expression as a tutorial check
 
 /-!
 We can define a custom syntax for Python-style for comprehensions.
 -/
 
-section PyForComprehension
+section PyForComprehension -- continues the Lean declaration above
 
-macro "[" t:term "pyfor" x:ident "in" l:term  "]" : term => do
-  let fn ← `(fun $x => $t)
-  `(List.map $fn $l)
+macro "[" t:term "pyfor" x:ident "in" l:term  "]" : term => do -- declares a custom macro form
+  let fn ← `(fun $x => $t) -- binds an intermediate value for the following expression
+  `(List.map $fn $l) -- continues the Lean declaration above
 
-#eval [x * x pyfor x in [1,2,3,4,5]]
+#eval [x * x pyfor x in [1,2,3,4,5]] -- runs this expression as a tutorial check
 
-#check Expr.isAppOf
+#check Expr.isAppOf -- asks Lean to display the inferred type
 
-elab "[" t:term "py_for" x:ident "in" l:term  "]" : term => do
-  let fnStx ← `(fun $x => $t)
-  let lExpr ← elabTerm l none
-  let fn ← elabTerm fnStx none
-  let ltype ← inferType lExpr
-  Term.synthesizeSyntheticMVarsNoPostponing
-  if ltype.isAppOf ``List then
-    mkAppM ``List.map #[fn, lExpr]
-  else
-    if ltype.isAppOf ``Array then
-      mkAppM ``Array.map #[fn, lExpr]
-    else
-      throwError "Expected a List or Array in py_for comprehension, got {ltype}"
+elab "[" t:term "py_for" x:ident "in" l:term  "]" : term => do -- declares an elaborator for custom syntax
+  let fnStx ← `(fun $x => $t) -- binds an intermediate value for the following expression
+  let lExpr ← elabTerm l none -- binds an intermediate value for the following expression
+  let fn ← elabTerm fnStx none -- binds an intermediate value for the following expression
+  let ltype ← inferType lExpr -- binds an intermediate value for the following expression
+  Term.synthesizeSyntheticMVarsNoPostponing -- continues the Lean declaration above
+  if ltype.isAppOf ``List then -- branches on this decidable condition
+    mkAppM ``List.map #[fn, lExpr] -- continues the Lean declaration above
+  else -- handles the alternative branch
+    if ltype.isAppOf ``Array then -- branches on this decidable condition
+      mkAppM ``Array.map #[fn, lExpr] -- continues the Lean declaration above
+    else -- handles the alternative branch
+      throwError "Expected a List or Array in py_for comprehension, got {ltype}" -- continues the Lean declaration above
 
 
-#eval [x + 1 py_for x in [10,20,30]]
+#eval [x + 1 py_for x in [10,20,30]] -- runs this expression as a tutorial check
 
-#eval [x * 2 py_for x in #[1,2,3,4]]
+#eval [x * 2 py_for x in #[1,2,3,4]] -- runs this expression as a tutorial check
 
-declare_syntax_cat for_range
-syntax "pyFor" ident "in" term : for_range
+declare_syntax_cat for_range -- continues the Lean declaration above
+syntax "pyFor" ident "in" term : for_range -- declares new parser syntax
 
-syntax "[" term for_range* "]" : term
+syntax "[" term for_range* "]" : term -- declares new parser syntax
 
-macro_rules
-| `([ $y:term pyFor $x:ident in $l ]) => do
-    `(List.map (fun $x => $y) $l)
-| `([ $y:term  pyFor $x:ident in $l $ls:for_range*]) => do
-    let tail ← `([ $y:term $ls:for_range* ])
-    `(List.flatMap (fun $x => $tail) $l)
+macro_rules -- adds a macro expansion rule
+| `([ $y:term pyFor $x:ident in $l ]) => do -- handles this pattern-matching case
+    `(List.map (fun $x => $y) $l) -- maps this case or syntax pattern to its result
+| `([ $y:term  pyFor $x:ident in $l $ls:for_range*]) => do -- handles this pattern-matching case
+    let tail ← `([ $y:term $ls:for_range* ]) -- binds an intermediate value for the following expression
+    `(List.flatMap (fun $x => $tail) $l) -- maps this case or syntax pattern to its result
 
-#eval [x * x pyFor x in [1, 2, 3, 4, 5]]
-#eval [x * x pyFor l in [[1, 5, 2], [3, 4, 5]] pyFor x in l]
+#eval [x * x pyFor x in [1, 2, 3, 4, 5]] -- runs this expression as a tutorial check
+#eval [x * x pyFor l in [[1, 5, 2], [3, 4, 5]] pyFor x in l] -- runs this expression as a tutorial check
 
 /-!
 ## Exercise
 
 Using `List.filter` modify the `pyfor` syntax to support `if` conditions in for comprehensions.
 -/
-end PyForComprehension
+end PyForComprehension -- closes the current namespace or section
 
-end langur
+end langur -- closes the current namespace or section
