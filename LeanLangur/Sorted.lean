@@ -28,13 +28,13 @@ If a list is sorted, its head is less than or equal to all other elements in the
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem head_le_of_sorted  (a: α) (l : List α) : -- states and proves theorem `head_le_of_sorted`
-  Sorted (a :: l) → ∀ x ∈ l, a ≤ x := by -- gives the value or proof for this declaration
-  intro h -- introduces hypotheses or variables into the proof context
+  Sorted (a :: l) → ∀ x ∈ l, a ≤ x := by -- starts tactic mode; the following tactics prove the proposition just stated
+  intro h -- moves leading forall variables or implication hypotheses into the local context
   match h with -- splits computation into cases by pattern matching
   | Sorted.singleton .. => simp -- matches a sorted singleton list proof and simplifies this proof case
   | Sorted.step .(a) y l hxy tail_sorted => -- matches a sorted list built from a head and sorted tail and proves this case using the following proof steps
     have ih := head_le_of_sorted y l tail_sorted -- records an intermediate fact for the proof
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 A list is sorted if its tail is sorted and the new head is less than or equal to all elements in the tail.
@@ -42,12 +42,12 @@ A list is sorted if its tail is sorted and the new head is less than or equal to
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem cons_sorted (l : List α) :  Sorted l → (a : α) → -- states and proves theorem `cons_sorted`
   (∀ y ∈ l, a ≤ y) → Sorted (a :: l)  := by
-  intro h₁ a h₀ -- introduces hypotheses or variables into the proof context
+  intro h₁ a h₀ -- moves leading forall variables or implication hypotheses into the local context
   match l with -- splits computation into cases by pattern matching
   | [] => -- matches the empty list and proves this case with the tactic steps below
-    apply Sorted.singleton -- reduces the goal using this theorem or constructor
+    apply Sorted.singleton -- applies `Sorted.singleton` backwards, replacing the current goal by its premises
   | x :: l' => -- matches a nonempty list and proves this case with the tactic steps below
-    grind [Sorted.step] -- asks the `grind` automation to finish the proof
+    grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
 
 /-!
 ## Sorted lists and monotone lists
@@ -72,17 +72,17 @@ theorem monotone_of_sorted (l : List α) -- states and proves theorem `monotone_
   induction h with
   | nil => grind -- matches the empty list and asks `grind` to solve this case
   | singleton x => -- matches a sorted singleton list proof and proves this case with the tactic steps below
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   | step x y l hxy tail_sorted ih => -- matches a sorted list built from a head and sorted tail and returns `intro i j h₁ h₂`
-    intro i j h₁ h₂ -- introduces hypotheses or variables into the proof context
-    cases i with -- splits the proof by cases on this value or proof
+    intro i j h₁ h₂ -- moves leading forall variables or implication hypotheses into the local context
+    cases i with -- splits or inverts `i with`, creating one goal for each possible constructor
     | zero => -- matches zero and returns `cases j with`
-      cases j with -- splits the proof by cases on this value or proof
+      cases j with -- splits or inverts `j with`, creating one goal for each possible constructor
       | zero => contradiction -- matches zero and closes the impossible case by contradiction
       | succ j' => -- matches a successor natural number and returns `trans y <;> grind`
         trans y <;> grind
     | succ i' => -- matches a successor natural number and returns `cases j with`
-      cases j with -- splits the proof by cases on this value or proof
+      cases j with -- splits or inverts `j with`, creating one goal for each possible constructor
       | zero => contradiction -- matches zero and closes the impossible case by contradiction
       | succ j' => grind -- matches a successor natural number and asks `grind` to solve this case
 
@@ -92,14 +92,14 @@ If a list is monotone, its tail is also monotone.
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem tail_monotone_of_monotone {y: α} -- states and proves theorem `tail_monotone_of_monotone`
   {ys : List α} (h : monotone (y :: ys)) :
-  monotone ys := by -- gives the value or proof for this declaration
-  intro i j h₁ h₂ -- introduces hypotheses or variables into the proof context
+  monotone ys := by -- starts tactic mode; the following tactics prove the proposition just stated
+  intro i j h₁ h₂ -- moves leading forall variables or implication hypotheses into the local context
   have h₁' : i + 1 < j + 1 := by -- records an intermediate fact for the proof
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   have h₂' : j + 1 < (ys.length + 1) := by -- records an intermediate fact for the proof
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   specialize h (i + 1) (j + 1) h₁' h₂'
-  grind -- asks the `grind` automation to finish the proof
+  grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 Every monotone list is sorted.
@@ -109,10 +109,10 @@ theorem sorted_of_monotone (l : List α) -- states and proves theorem `sorted_of
   induction l with
   | nil => apply Sorted.nil -- matches the empty list and applies Sorted.nil
   | cons x xs ih => -- matches a nonempty list and returns `cases xs with`
-    cases xs with -- splits the proof by cases on this value or proof
+    cases xs with -- splits or inverts `xs with`, creating one goal for each possible constructor
     | nil => apply Sorted.singleton -- matches the empty list and applies Sorted.singleton
     | cons y ys => -- matches a nonempty list and proves this case with the tactic steps below
-      apply Sorted.step -- reduces the goal using this theorem or constructor
+      apply Sorted.step -- applies `Sorted.step` backwards, replacing the current goal by its premises
       · apply h 0 1 (by simp) (by simp) -- focuses the next proof branch
       · grind -- focuses the next proof branch
 

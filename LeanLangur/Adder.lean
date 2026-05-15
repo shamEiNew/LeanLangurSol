@@ -35,7 +35,7 @@ Hint: Type class instance resolution failures can be inspected with the `set_opt
 #eval add "Hello" "world" -- runs this expression as a tutorial check
 
 instance : Add String where -- provides an instance for typeclass search
-  add s t := s ++ " " ++ t -- gives the value or proof for this declaration
+  add s t := s ++ " " ++ t
 
 #eval add "Hello" "world" -- runs this expression as a tutorial check
 
@@ -43,7 +43,7 @@ instance : Add String where -- provides an instance for typeclass search
 
 instance {α β : Type}[Add α][Add β] : -- provides an instance for typeclass search
   Add (α × β) where
-  add := fun (a₁, b₁) (a₂, b₂) ↦ -- gives the value or proof for this declaration
+  add := fun (a₁, b₁) (a₂, b₂) ↦
       (a₁ + a₂, b₁ + b₂)
 
 #eval (1, 2, "Hello") +(3, 4, "world") -- runs this expression as a tutorial check

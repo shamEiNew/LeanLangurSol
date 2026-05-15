@@ -66,7 +66,7 @@ def getVar (name: Name) : LangurLangM Nat := do -- defines `getVar`
   return m.get! name -- returns this value from the monadic block
 
 def setVar (name : Name) (value : Nat) : -- defines `setVar`
-  LangurLangM Unit := do -- gives the value or proof for this declaration
+  LangurLangM Unit := do
   modify (fun m => m.insert name value) -- maps this case or syntax pattern to its result
 
 def getNatInCtxM (stx: Syntax.Term) : LangurLangM Nat := do -- defines `getNatInCtxM`

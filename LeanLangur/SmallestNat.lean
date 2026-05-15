@@ -40,15 +40,15 @@ def smallest (l: List Nat) (h: l ≠ []) : Nat := -- defines `smallest`
 The element returned by `smallest` is indeed a member of the list.
 -/
 theorem smallest_mem (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
-    smallest l h ∈ l := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind
+    smallest l h ∈ l := by -- starts tactic mode; the goal is to prove the computed smallest element occurs in `l`
+  fun_induction smallest <;> grind -- `fun_induction` creates one goal for each recursive clause of `smallest`; `grind` solves each membership goal
 
 /--
 The element returned by `smallest` is less than or equal to all elements in the list.
 -/
 theorem smallest_le_all (l: List Nat) (h: l ≠ []) (x: Nat) : -- states and proves theorem `smallest_le_all`
-    x ∈ l → smallest l h ≤ x := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind
+    x ∈ l → smallest l h ≤ x := by -- starts tactic mode; the goal is to show every list member is at least the computed smallest element
+  fun_induction smallest <;> grind -- `fun_induction` follows the recursion of `smallest`; `grind` uses the induction hypotheses and `min` facts
 
 #eval smallest [3, 1, 4, 1, 5, 9, 2, 6, 5] (by simp) -- evaluates to 1
 
@@ -74,8 +74,8 @@ Prove that if `p` is a predicate on natural numbers and `l` is a list of natural
 It will be useful to use the above results. Think about the mathematical argument for this fact, and then try to translate it into Lean. You may find it helpful to introduce some intermediate variables and hypotheses to structure the proof.
 -/
 theorem smallest_le_smallest_of_filter (l: List Nat) (p: Nat → Bool) (h: l.filter p ≠ []) : -- states and proves theorem `smallest_le_smallest_of_filter`
-  smallest l (by grind) ≤ smallest (l.filter p) h := by -- gives the value or proof for this declaration
-  sorry -- marks this tutorial exercise proof as unfinished
+  smallest l (by grind) ≤ smallest (l.filter p) h := by -- starts tactic mode; the goal compares the smallest element of `l` with that of its nonempty filtered sublist
+  sorry -- leaves the exercise unfinished; a proof should use membership of the filtered smallest and `smallest_le_all`
 
 end nat -- closes the current namespace or section
 /-!

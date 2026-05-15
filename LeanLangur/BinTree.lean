@@ -54,14 +54,14 @@ Instance for using the `∈` notation with `BinTree`.
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 instance {α : Type} : Membership α (BinTree α) where -- provides an instance for typeclass search
-  mem := Bintree.mem -- gives the value or proof for this declaration
+  mem := Bintree.mem
 
 /--
 An element `y` is in a leaf carrying `x` if and only if `x = y`.
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 theorem mem_leaf {α : Type} (x y : α) : -- states and proves theorem `mem_leaf`
-    y ∈ leaf x ↔ x = y := by -- gives the value or proof for this declaration
+    y ∈ leaf x ↔ x = y := by -- starts tactic mode; the following tactics prove the proposition just stated
     simp [Bintree.mem, Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
@@ -69,7 +69,7 @@ An element `y` is in a node if and only if it is in either the left or the right
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 theorem mem_node {α : Type} (l r : BinTree α) (y : α) : -- states and proves theorem `mem_node`
-    y ∈ node l r ↔ y ∈ l ∨ y ∈ r := by -- gives the value or proof for this declaration
+    y ∈ node l r ↔ y ∈ l ∨ y ∈ r := by -- starts tactic mode; the following tactics prove the proposition just stated
     simp [Bintree.mem, Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
@@ -77,8 +77,8 @@ Theorem stating that an element is in the tree if and only if it is in the list
 produced by `toList`.
 -/
 theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) : -- states and proves theorem `mem_iff_mem_toList`
-    x ∈ t ↔ x ∈ BinTree.toList t := by -- gives the value or proof for this declaration
-    apply Iff.intro -- reduces the goal using this theorem or constructor
+    x ∈ t ↔ x ∈ BinTree.toList t := by -- starts tactic mode; the following tactics prove the proposition just stated
+    apply Iff.intro -- applies `Iff.intro` backwards, replacing the current goal by its premises
     · induction t with -- focuses the next proof branch
     | leaf a => grind -- matches a leaf tree and asks `grind` to solve this case
     | node l r ihl ihr => grind -- matches an internal tree node and asks `grind` to solve this case

@@ -22,7 +22,7 @@ def simpleRunFrontend -- defines `simpleRunFrontend`
     (env: Environment)
     (opts : Options := {}) (top : String := defaultFrontendHeader) -- supplies options and default header text
     (fileName : String := "<input>")
-    : IO (Environment × MessageLog) := unsafe do -- gives the value or proof for this declaration
+    : IO (Environment × MessageLog) := unsafe do
   let inputCtx := Parser.mkInputContext (top ++ input) fileName -- binds an intermediate value for the following expression
   let commandState := Command.mkState env (opts := opts) -- binds an intermediate value for the following expression
   let parserState: ModuleParserState := {} -- binds an intermediate value for the following expression
@@ -73,7 +73,7 @@ def getTryThisTactic? (input: String) : MetaM (Option (TSyntax ``tacticSeq)) := 
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
   | 0   => 1 -- matches zero and returns `1`
   | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
-  grind? -- asks the `grind` automation to finish the proof
+  grind? -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 #eval runFrontendForMessagesM -- runs this expression as a tutorial check
   ("example (x : Nat) : 0 < match x with\n" ++ -- starts the generated example text
@@ -88,7 +88,7 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
   | 0   => 1 -- matches zero and returns `1`
   | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
-  grind? -- asks the `grind` automation to finish the proof
+  grind? -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 #eval getTryThisTactic? -- runs this expression as a tutorial check
   ("example (x : Nat) : 0 < match x with\n" ++ -- starts the generated example text
@@ -103,7 +103,7 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
   | 0   => 1 -- matches zero and returns `1`
   | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
-  grind? -- asks the `grind` automation to finish the proof
+  grind? -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 #eval getTryThisTactic? -- runs this expression as a tutorial check
   ("example (x : Nat) : 0 < match x with\n" ++ -- starts the generated example text

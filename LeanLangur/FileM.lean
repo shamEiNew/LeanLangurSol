@@ -35,8 +35,8 @@ def FileM.flatMap {α β : Type} (f : α → FileM β) : FileM α → FileM β -
   | .cons cmd k => .cons cmd (fun b => (k b).flatMap f) -- matches a pending `FileM` command and returns `.cons cmd (fun b => (k b).flatMap f)`
 
 instance : Monad FileM where -- provides an instance for typeclass search
-  pure := FileM.pure -- gives the value or proof for this declaration
-  bind x f := FileM.flatMap f x -- gives the value or proof for this declaration
+  pure := FileM.pure
+  bind x f := FileM.flatMap f x
 
 /--
 Reads the contents of a file.
@@ -84,11 +84,11 @@ inductive SafeVal : {α : Type} → α → Prop where -- declares the inductive 
 /--
 Appending two safe values with a newline in between is also a safe value.
 -/
-theorem blocks (s t : String) (h1 : SafeVal s) (h2 : SafeVal t) : SafeVal (s ++ "\n" ++ t) := by -- states and proves theorem `blocks`
-    apply SafeVal.strAppend (s ++ "\n") -- reduces the goal using this theorem or constructor
-    apply SafeVal.strAppend s -- reduces the goal using this theorem or constructor
+theorem blocks (s t : String) (h1 : SafeVal s) (h2 : SafeVal t) : SafeVal (s ++ "\n" ++ t) := by -- starts tactic mode for theorem `blocks`; the following tactics prove the stated goal
+    apply SafeVal.strAppend (s ++ "\n") -- applies `SafeVal.strAppend (s ++ "\n")` backwards, replacing the current goal by its premises
+    apply SafeVal.strAppend s -- applies `SafeVal.strAppend s` backwards, replacing the current goal by its premises
     assumption -- solves the goal from an existing hypothesis
-    apply SafeVal.newline -- reduces the goal using this theorem or constructor
+    apply SafeVal.newline -- applies `SafeVal.newline` backwards, replacing the current goal by its premises
     assumption -- solves the goal from an existing hypothesis
 
 /--
@@ -103,15 +103,15 @@ inductive SafePath : FilePath → Prop where -- declares the inductive type or p
 A path in the "public" directory is safe.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem pubSafe (p : FilePath) : SafePath ("public" / p) := by -- states and proves theorem `pubSafe`
-    apply SafePath.pub -- reduces the goal using this theorem or constructor
+theorem pubSafe (p : FilePath) : SafePath ("public" / p) := by -- starts tactic mode for theorem `pubSafe`; the following tactics prove the stated goal
+    apply SafePath.pub -- applies `SafePath.pub` backwards, replacing the current goal by its premises
 
 /--
 A path in the "data" directory is safe.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem dataSafe (p : FilePath) : SafePath ("data" / p) := by -- states and proves theorem `dataSafe`
-    apply SafePath.data -- reduces the goal using this theorem or constructor
+theorem dataSafe (p : FilePath) : SafePath ("data" / p) := by -- starts tactic mode for theorem `dataSafe`; the following tactics prove the stated goal
+    apply SafePath.data -- applies `SafePath.data` backwards, replacing the current goal by its premises
 
 /--
 Predicate for safe `FileM` programs.
@@ -131,24 +131,24 @@ inductive SafeProg  : {α : Type} →  FileM α → Prop where -- declares the i
 A program that just returns a safe value is safe.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem pureSafe (a : α) (h : SafeVal a) : SafeProg (FileM.pure a) := by -- states and proves theorem `pureSafe`
-    apply SafeProg.pureSafe -- reduces the goal using this theorem or constructor
+theorem pureSafe (a : α) (h : SafeVal a) : SafeProg (FileM.pure a) := by -- starts tactic mode for theorem `pureSafe`; the following tactics prove the stated goal
+    apply SafeProg.pureSafe -- applies `SafeProg.pureSafe` backwards, replacing the current goal by its premises
     assumption -- solves the goal from an existing hypothesis
 
 /--
 Reading from a safe path is a safe operation.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem readSafe (p : FilePath) (h : SafePath p) : SafeProg  (FileM.read p) := by -- states and proves theorem `readSafe`
-    apply SafeProg.readSafe -- reduces the goal using this theorem or constructor
+theorem readSafe (p : FilePath) (h : SafePath p) : SafeProg  (FileM.read p) := by -- starts tactic mode for theorem `readSafe`; the following tactics prove the stated goal
+    apply SafeProg.readSafe -- applies `SafeProg.readSafe` backwards, replacing the current goal by its premises
     assumption -- solves the goal from an existing hypothesis
 
 /--
 Writing a safe value to a safe path is a safe operation.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem writeSafe (p : FilePath) (h : SafePath p) (s : String) (h2 : SafeVal s) : SafeProg (FileM.write p s) := by -- states and proves theorem `writeSafe`
-    apply SafeProg.writeSafe <;> assumption -- reduces the goal using this theorem or constructor
+theorem writeSafe (p : FilePath) (h : SafePath p) (s : String) (h2 : SafeVal s) : SafeProg (FileM.write p s) := by -- starts tactic mode for theorem `writeSafe`; the following tactics prove the stated goal
+    apply SafeProg.writeSafe <;> assumption -- applies `SafeProg.writeSafe <;> assumption` backwards, replacing the current goal by its premises
 
 /--
 The composition of two safe programs is safe.
@@ -159,7 +159,7 @@ theorem flatMapSafe -- states and proves theorem `flatMapSafe`
     (h : SafeProg x)
     (f : α → FileM β)
     (h2 : ∀a, SafeVal a → SafeProg  (f a)) : SafeProg  (.flatMap f x) := by
-    apply SafeProg.flatMapSafe <;> assumption -- reduces the goal using this theorem or constructor
+    apply SafeProg.flatMapSafe <;> assumption -- applies `SafeProg.flatMapSafe <;> assumption` backwards, replacing the current goal by its premises
 
 /--
 Copies content from a public path to a data path.
@@ -171,8 +171,8 @@ def pubToData (p : FilePath) : FileM Unit := do -- defines `pubToData`
 /--
 Proof that `pubToData` is a safe program.
 -/
-theorem safe_pubToData (p : FilePath) : SafeProg (pubToData p) := by -- states and proves theorem `safe_pubToData`
-    apply SafeProg.flatMapSafe <;> grind -- reduces the goal using this theorem or constructor
+theorem safe_pubToData (p : FilePath) : SafeProg (pubToData p) := by -- starts tactic mode for theorem `safe_pubToData`; the following tactics prove the stated goal
+    apply SafeProg.flatMapSafe <;> grind -- applies `SafeProg.flatMapSafe <;> grind` backwards, replacing the current goal by its premises
 
 /--
 Merges two public files and writes the result to a data file.
@@ -186,17 +186,17 @@ def mergePubs (p1 p2 out : FilePath) : FileM Unit := do -- defines `mergePubs`
 /--
 Proof that `mergePubs` is a safe program.
 -/
-theorem safe_mergePubs (p1 p2 out : FilePath) : SafeProg (mergePubs p1 p2 out) := by -- states and proves theorem `safe_mergePubs`
-    apply SafeProg.flatMapSafe -- reduces the goal using this theorem or constructor
+theorem safe_mergePubs (p1 p2 out : FilePath) : SafeProg (mergePubs p1 p2 out) := by -- starts tactic mode for theorem `safe_mergePubs`; the following tactics prove the stated goal
+    apply SafeProg.flatMapSafe -- applies `SafeProg.flatMapSafe` backwards, replacing the current goal by its premises
     . apply SafeProg.readSafe
-      grind -- asks the `grind` automation to finish the proof
+      grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
     . intro c1 hC1
-      apply SafeProg.flatMapSafe -- reduces the goal using this theorem or constructor
+      apply SafeProg.flatMapSafe -- applies `SafeProg.flatMapSafe` backwards, replacing the current goal by its premises
       . grind
       . intro c2 hC2
         let merged := c1 ++ "\n" ++ c2 -- binds an intermediate value for the following expression
         have hMerged : SafeVal merged := blocks c1 c2 hC1 hC2 -- records an intermediate fact for the proof
-        grind -- asks the `grind` automation to finish the proof
+        grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 end file_access -- closes the current namespace or section
 

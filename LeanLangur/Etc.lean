@@ -32,19 +32,19 @@ def ofEmpty{α : Type} : MyEmpty → α -- defines `ofEmpty`
 /--
 Principle of explosion for the custom false proposition.
 -/
-theorem myFalse_elim (f : MyFalse) : ∀ {P : Prop}, P := by -- states and proves theorem `myFalse_elim`
-  intro P -- introduces hypotheses or variables into the proof context
-  cases f -- splits the proof by cases on this value or proof
+theorem myFalse_elim (f : MyFalse) : ∀ {P : Prop}, P := by -- starts tactic mode for theorem `myFalse_elim`; the following tactics prove the stated goal
+  intro P -- moves leading forall variables or implication hypotheses into the local context
+  cases f -- splits or inverts `f`, creating one goal for each possible constructor
 
 /--
 A very simple proof that `1 ≤ 5`.
 -/
-theorem easy : 1 ≤ 5 := by -- states and proves theorem `easy`
-  apply Nat.le_succ_of_le -- reduces the goal using this theorem or constructor
-  apply Nat.le_succ_of_le -- reduces the goal using this theorem or constructor
-  apply Nat.le_succ_of_le -- reduces the goal using this theorem or constructor
-  apply Nat.le_succ_of_le -- reduces the goal using this theorem or constructor
-  apply Nat.le_refl -- reduces the goal using this theorem or constructor
+theorem easy : 1 ≤ 5 := by -- starts tactic mode for theorem `easy`; the following tactics prove the stated goal
+  apply Nat.le_succ_of_le -- applies `Nat.le_succ_of_le` backwards, replacing the current goal by its premises
+  apply Nat.le_succ_of_le -- applies `Nat.le_succ_of_le` backwards, replacing the current goal by its premises
+  apply Nat.le_succ_of_le -- applies `Nat.le_succ_of_le` backwards, replacing the current goal by its premises
+  apply Nat.le_succ_of_le -- applies `Nat.le_succ_of_le` backwards, replacing the current goal by its premises
+  apply Nat.le_refl -- applies `Nat.le_refl` backwards, replacing the current goal by its premises
 
 #print easy -- prints Lean's generated declaration for inspection
 

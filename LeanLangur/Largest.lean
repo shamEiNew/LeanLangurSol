@@ -21,14 +21,14 @@ def largestNat : List Nat → Nat -- defines `largestNat`
 
 #eval largestNat [3, 1, 4, 1, 5, 9, 2, 6, 5]  -- evaluates to 9
 
-theorem largestNat_mem : ∀ (l : List Nat), l ≠ [] → largestNat l ∈ l := by -- states and proves theorem `largestNat_mem`
-  intro l -- introduces hypotheses or variables into the proof context
-  fun_induction largestNat <;> grind
+theorem largestNat_mem : ∀ (l : List Nat), l ≠ [] → largestNat l ∈ l := by -- starts tactic mode for theorem `largestNat_mem`; the following tactics prove the stated goal
+  intro l -- moves leading forall variables or implication hypotheses into the local context
+  fun_induction largestNat <;> grind -- follows the recursive equations of `largestNat` and lets `grind` solve each generated case
 
 
 theorem largestNat_ge_all (l: List Nat) (x: Nat) : -- states and proves theorem `largestNat_ge_all`
-  x ∈ l → x ≤ largestNat l := by -- gives the value or proof for this declaration
-  fun_induction largestNat <;> grind
+  x ∈ l → x ≤ largestNat l := by -- starts tactic mode; the following tactics prove the proposition just stated
+  fun_induction largestNat <;> grind -- follows the recursive equations of `largestNat` and lets `grind` solve each generated case
 
 variable {α : Type}[LinearOrder α]
 
@@ -52,22 +52,22 @@ def largest (l: List α) (h: l ≠ []) : α := -- defines `largest`
 #eval largest [1, 3, 2] (by simp)  -- evaluates to 3
 
 theorem largest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `largest_mem`
-  largest l h ∈ l := by -- gives the value or proof for this declaration
+  largest l h ∈ l := by -- starts tactic mode; the following tactics prove the proposition just stated
   match l with -- splits computation into cases by pattern matching
   | [x] => grind -- matches a singleton list and asks `grind` to solve this case
   | x :: y :: xs => -- matches a list with at least two elements and proves this case using the following proof steps
     have ih := largest_mem (y :: xs) (by simp) -- records an intermediate fact for the proof
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 theorem largest_ge_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `largest_ge_all`
-  x ∈ l → x ≤ largest l h := by -- gives the value or proof for this declaration
+  x ∈ l → x ≤ largest l h := by -- starts tactic mode; the following tactics prove the proposition just stated
   match l with -- splits computation into cases by pattern matching
   | [y] => -- matches a singleton list and proves this case with the tactic steps below
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   | y :: z :: xs => -- matches a list with at least two elements and proves this case using the following proof steps
     have ih := -- records an intermediate fact for the proof
       largest_ge_all (z :: xs) (by simp) x
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 def largest? (l: List α) : Option α := -- defines `largest?`
   match l with -- splits computation into cases by pattern matching
@@ -107,7 +107,7 @@ def largestImp (l: List Nat): Nat := Id.run do -- defines `largestImp`
   let mut maxSoFar := 0 -- binds an intermediate value for the following expression
   for x in l do -- iterates through these values in the monadic block
     if x > maxSoFar then -- branches on this decidable condition
-      maxSoFar := x -- gives the value or proof for this declaration
+      maxSoFar := x
   return maxSoFar -- returns this value from the monadic block
 
 end langur -- closes the current namespace or section

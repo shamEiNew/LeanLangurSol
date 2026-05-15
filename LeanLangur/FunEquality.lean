@@ -13,7 +13,7 @@ This file introduces a few more concepts related to equality and decidability in
 
 We begin with *proof irrelevance*, which states that all proofs of the same proposition are equal. This allows us to conclude that any two proofs of the same proposition are equal without needing to inspect their structure.
 -/
-example {α : Prop} (pf₁ pf₂ : α) : pf₁ = pf₂ := by -- checks an unnamed example or proof
+example {α : Prop} (pf₁ pf₂ : α) : pf₁ = pf₂ := by -- starts tactic mode for this example; the following tactics prove the example goal
   rfl -- closes a goal true by definitional equality
 
 /-!
@@ -21,13 +21,13 @@ example {α : Prop} (pf₁ pf₂ : α) : pf₁ = pf₂ := by -- checks an unname
 
 Two functions are equal if and only if they give the same outputs for all inputs. This is known as *function extensionality*. One direction is straightforward: if two functions are equal, then they give the same outputs for all inputs. The other direction requires the `funext` tactic, which allows us to conclude that two functions are equal if they give the same outputs for all inputs.
 -/
-example (f g : Nat → Nat): f = g → f 0 = g 0 := by -- checks an unnamed example or proof
-  grind -- asks the `grind` automation to finish the proof
+example (f g : Nat → Nat): f = g → f 0 = g 0 := by -- starts tactic mode for this example; the following tactics prove the example goal
+  grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
-example (f g : Nat → Nat): (∀ x, f x = g x) → f = g := by -- checks an unnamed example or proof
-  intro h -- introduces hypotheses or variables into the proof context
+example (f g : Nat → Nat): (∀ x, f x = g x) → f = g := by -- starts tactic mode for this example; the following tactics prove the example goal
+  intro h -- moves leading forall variables or implication hypotheses into the local context
   funext x -- uses function extensionality to prove functions equal pointwise
-  apply h -- reduces the goal using this theorem or constructor
+  apply h -- applies `h` backwards, replacing the current goal by its premises
 
 /-!
 ## Decidable propositions and decidable equality
@@ -99,19 +99,19 @@ We can provide an instance of `Decidbale`, which is a *decision procedure*. For 
 Instance to provide decidable equality for functions from `Bool` to `Nat`.
 Two such functions are equal if they agree on both `true` and `false`.
 -/
-instance : DecidableEq (Bool → Nat) := by -- provides an instance for typeclass search
-  intro f g -- introduces hypotheses or variables into the proof context
+instance : DecidableEq (Bool → Nat) := by -- starts tactic mode to build the requested instance
+  intro f g -- moves leading forall variables or implication hypotheses into the local context
   if c₁ : f true = g true then -- branches on this decidable condition
     if c₂ : f false = g false then -- branches on this decidable condition
-      apply isTrue -- reduces the goal using this theorem or constructor
+      apply isTrue -- applies `isTrue` backwards, replacing the current goal by its premises
       funext b -- uses function extensionality to prove functions equal pointwise
-      cases b <;> simp [c₁, c₂] -- splits the proof by cases on this value or proof
+      cases b <;> simp [c₁, c₂] -- splits or inverts `b <;> simp [c₁, c₂]`, creating one goal for each possible constructor
     else -- handles the alternative branch
-      apply isFalse -- reduces the goal using this theorem or constructor
-      grind -- asks the `grind` automation to finish the proof
+      apply isFalse -- applies `isFalse` backwards, replacing the current goal by its premises
+      grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   else -- handles the alternative branch
-    apply isFalse -- reduces the goal using this theorem or constructor
-    grind -- asks the `grind` automation to finish the proof
+    apply isFalse -- applies `isFalse` backwards, replacing the current goal by its premises
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 A more complex structure to illustrate derived decidable equality.

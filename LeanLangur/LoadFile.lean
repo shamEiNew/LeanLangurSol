@@ -128,7 +128,7 @@ syntax (name:= loadFile) "#load_file" (ppSpace ident)? (ppSpace filepath)? : com
     let contentLit := Syntax.mkStrLit content -- binds an intermediate value for the following expression
     let nameIdent := mkIdent name -- binds an intermediate value for the following expression
     let textCmd ← `(command| def $nameIdent := $contentLit:str) -- binds an intermediate value for the following expression
-    TryThis.addSuggestion (header := "Load source:\n") stx textCmd -- gives the value or proof for this declaration
+    TryThis.addSuggestion (header := "Load source:\n") stx textCmd
   | `(command| #load_file $file:filepath) => -- matches `#load_file` with only a path, then suggests a definition named after the file
     let filePath : System.FilePath := filePath file -- binds an intermediate value for the following expression
     let content ← try -- binds an intermediate value for the following expression
@@ -150,7 +150,7 @@ syntax (name:= loadFile) "#load_file" (ppSpace ident)? (ppSpace filepath)? : com
     let contentLit := Syntax.mkStrLit content -- binds an intermediate value for the following expression
     let nameIdent := mkIdent name.toName -- binds an intermediate value for the following expression
     let textCmd ← `(command| def $nameIdent := $contentLit:str) -- binds an intermediate value for the following expression
-    TryThis.addSuggestion (header := "Load source:\n") stx textCmd -- gives the value or proof for this declaration
+    TryThis.addSuggestion (header := "Load source:\n") stx textCmd
   | `(command| #load_file $id:ident) => -- matches `#load_file` with only a target name and suggests completions from the current directory
     let filePath : System.FilePath := "." -- binds an intermediate value for the following expression
     let files ← filePath.readDir -- binds an intermediate value for the following expression

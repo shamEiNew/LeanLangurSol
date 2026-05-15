@@ -39,14 +39,14 @@ Instance for using the `∈` notation with `BinarySearchTree`.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 instance {α : Type} : Membership α (BinarySearchTree α) where -- provides an instance for typeclass search
-  mem := BinarySearchTree.mem -- gives the value or proof for this declaration
+  mem := BinarySearchTree.mem
 
 /--
 A leaf contains an element `y` if and only if `y` is equal to the element in the leaf.
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 theorem mem_leaf {α : Type} (x y : α) : -- states and proves theorem `mem_leaf`
-    y ∈ leaf x ↔ x = y := by -- gives the value or proof for this declaration
+    y ∈ leaf x ↔ x = y := by -- starts tactic mode; the following tactics prove the proposition just stated
     simp [Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
@@ -54,7 +54,7 @@ A node contains an element `y` if and only if `y` is in the left or right subtre
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 theorem mem_node {α : Type} (x: α) (l r : BinarySearchTree α) (y : α) : -- states and proves theorem `mem_node`
-    y ∈ node x l r ↔ y ∈ l ∨ y ∈ r := by -- gives the value or proof for this declaration
+    y ∈ node x l r ↔ y ∈ l ∨ y ∈ r := by -- starts tactic mode; the following tactics prove the proposition just stated
     simp [BinarySearchTree.mem, Membership.mem] -- simplifies the current goal or hypotheses
 
 /--
@@ -74,7 +74,7 @@ A leaf is always ordered.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem IsOrdered_leaf (x: α) : -- states and proves theorem `IsOrdered_leaf`
-  IsOrdered (leaf x) := by -- gives the value or proof for this declaration
+  IsOrdered (leaf x) := by -- starts tactic mode; the following tactics prove the proposition just stated
   simp [IsOrdered] -- simplifies the current goal or hypotheses
 
 /--
@@ -82,31 +82,31 @@ If a node is ordered, all elements in its left subtree are less than or equal to
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem IsOrdered_left_below (v: α) (l r: BinarySearchTree α) (h: IsOrdered (node v l r)) : -- states and proves theorem `IsOrdered_left_below`
-  ∀ x ∈ l, x ≤ v := by -- gives the value or proof for this declaration
-  grind -- asks the `grind` automation to finish the proof
+  ∀ x ∈ l, x ≤ v := by -- starts tactic mode; the following tactics prove the proposition just stated
+  grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 If a node is ordered, all elements in its right subtree are greater than or equal to the node's value.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem IsOrdered_right_above (v: α) (l r: BinarySearchTree α) (h: IsOrdered (node v l r)) : -- states and proves theorem `IsOrdered_right_above`
-  ∀ x ∈ r, v ≤ x := by grind -- gives the value or proof for this declaration
+  ∀ x ∈ r, v ≤ x := by grind -- starts tactic mode and asks `grind` to solve the stated goal automatically
 
 /--
 If a node is ordered, its left subtree must also be ordered.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem IsOrdered_left_subtree (v: α) (l r: BinarySearchTree α) (h: IsOrdered (node v l r)) : -- states and proves theorem `IsOrdered_left_subtree`
-  IsOrdered l := by -- gives the value or proof for this declaration
-  grind -- asks the `grind` automation to finish the proof
+  IsOrdered l := by -- starts tactic mode; the following tactics prove the proposition just stated
+  grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 If a node is ordered, its right subtree must also be ordered.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem IsOrdered_right_subtree (v: α) (l r: BinarySearchTree α) (h: IsOrdered (node v l r)) : -- states and proves theorem `IsOrdered_right_subtree`
-  IsOrdered r := by -- gives the value or proof for this declaration
-  grind -- asks the `grind` automation to finish the proof
+  IsOrdered r := by -- starts tactic mode; the following tactics prove the proposition just stated
+  grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /--
 Adds a label to the binary search tree while maintaining the tree structure.
@@ -133,7 +133,7 @@ An element is in the tree after adding a label if and only if it was already the
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem mem_addLabel (t: BinarySearchTree α) (label: α) (x : α) : -- states and proves theorem `mem_addLabel`
-    x ∈ BinarySearchTree.addLabel t label ↔ x = label ∨ x ∈ t := by -- gives the value or proof for this declaration
+    x ∈ BinarySearchTree.addLabel t label ↔ x = label ∨ x ∈ t := by -- starts tactic mode; the following tactics prove the proposition just stated
   induction t with
   | leaf v => -- matches a leaf tree and returns `by_cases label ≤ v <;> grind`
     by_cases label ≤ v <;> grind -- starts tactic-mode proof construction
@@ -145,7 +145,7 @@ Adding a label to an ordered tree results in an ordered tree.
 -/
 theorem ordered_addLabel (t: BinarySearchTree α) (label: α) -- states and proves theorem `ordered_addLabel`
   (h: IsOrdered t) :
-    IsOrdered (BinarySearchTree.addLabel t label) := by -- gives the value or proof for this declaration
+    IsOrdered (BinarySearchTree.addLabel t label) := by -- starts tactic mode; the following tactics prove the proposition just stated
   induction t with
   | leaf x => -- matches a leaf tree and returns `by_cases label ≤ x <;> grind`
     by_cases label ≤ x <;> grind -- starts tactic-mode proof construction
@@ -164,11 +164,11 @@ The pivot of an ordered tree is always a member of the tree.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem pivot_member (l: BinarySearchTree α) (h₀ : IsOrdered l) : -- states and proves theorem `pivot_member`
-  pivot l ∈ l := by -- gives the value or proof for this declaration
+  pivot l ∈ l := by -- starts tactic mode; the following tactics prove the proposition just stated
   induction l with
   | leaf l => grind [pivot] -- matches a leaf tree and asks `grind` to solve this case
   | node label left right ihl ihr => -- matches an internal tree node and proves this case with the tactic steps below
-    grind [pivot] -- asks the `grind` automation to finish the proof
+    grind [pivot] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
 
 /--
 Efficiently checks if a label is in an ordered binary search tree.
@@ -185,20 +185,20 @@ def fastCheckMem (label : α)(l: BinarySearchTree α) : Bool := match l with -- 
 `fastCheckMem` correctly determines membership in an ordered tree.
 -/
 theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered l): -- states and proves theorem `fastCheckMem_correct`
-  fastCheckMem label l = true ↔ label ∈ l := by -- gives the value or proof for this declaration
+  fastCheckMem label l = true ↔ label ∈ l := by -- starts tactic mode; the following tactics prove the proposition just stated
   induction l with
   | leaf label' => -- matches a leaf tree and proves this case with the tactic steps below
-    grind -- asks the `grind` automation to finish the proof
+    grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
   | node label' left right ihl ihr => -- matches an internal tree node and returns the appropriate branch of the following conditional
     if p:label' = label -- branches on this decidable condition
       then
-        grind -- asks the `grind` automation to finish the proof
+        grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
     else -- handles the alternative branch
       if p':label < label' -- branches on this decidable condition
       then
-        grind -- asks the `grind` automation to finish the proof
+        grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
       else -- handles the alternative branch
-        grind -- asks the `grind` automation to finish the proof
+        grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /-!
 ## Exercise: Deletion

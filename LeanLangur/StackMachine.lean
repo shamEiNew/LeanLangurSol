@@ -89,59 +89,59 @@ theorem valid_program_nil : ValidProgram n [] := ValidProgram.nil -- states and 
 /-- Pushing a value to a stack of size `n` results in a valid program if the rest is valid for `n+1`. -/
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
 theorem valid_program_push (n: Nat) (h : ValidProgram (n + 1) p') : -- states and proves theorem `valid_program_push`
-    ValidProgram n (push k :: p') :=    ValidProgram.push h -- gives the value or proof for this declaration
+    ValidProgram n (push k :: p') :=    ValidProgram.push h -- applies `ValidProgram.push`, reducing the goal to the supplied tail-validity proof `h`
 
 /-- Adding values on a stack of size `k+2` is valid if the rest is valid for `k+1`. -/
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
 theorem valid_program_add (k: Nat) (h : ValidProgram (k + 1) p') : -- states and proves theorem `valid_program_add`
-  ValidProgram (k + 2) (add :: p') := -- gives the value or proof for this declaration
-  ValidProgram.add h
+  ValidProgram (k + 2) (add :: p') := -- states the goal that an `add` program is valid from a stack with two extra entries
+  ValidProgram.add h -- applies `ValidProgram.add`, reducing the goal to the supplied tail-validity proof `h`
 
 /-- Popping from a stack of size `n+1` is valid if the rest is valid for `n`. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
 theorem valid_program_pop (h : ValidProgram n p') : -- states and proves theorem `valid_program_pop`
-  ValidProgram (n + 1) (pop :: p') := -- gives the value or proof for this declaration
-  ValidProgram.pop h
+  ValidProgram (n + 1) (pop :: p') := -- states the goal that a `pop` program is valid from a nonempty stack
+  ValidProgram.pop h -- applies `ValidProgram.pop`, reducing the goal to the supplied tail-validity proof `h`
 
-example (a b: Nat) : ValidProgram n [push a, push b, add] := by -- checks an unnamed example or proof
-  grind -- asks the `grind` automation to finish the proof
+example (a b: Nat) : ValidProgram n [push a, push b, add] := by -- starts tactic mode; the goal is validity of a two-push-and-add program from any stack size
+  grind -- repeatedly applies the validity constructors until the remaining goal is the empty program
 
-example (a b c : Nat) : ValidProgram 0 [push a, push b, add, push c, add] := by -- checks an unnamed example or proof
-  grind (ematch := 7) -- asks the `grind` automation to finish the proof
+example (a b c : Nat) : ValidProgram 0 [push a, push b, add, push c, add] := by -- starts tactic mode; the goal is validity of a concrete stack program from an empty stack
+  grind (ematch := 7) -- gives `grind` a larger search budget so it can chain the validity constructors
 
 /-- If a program starting with `push` is valid, then the rest of the program is valid for a larger stack. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem valid_program_of_push {k: Nat} (h : ValidProgram k (push a :: p')) : ValidProgram (k + 1) p' := by -- states and proves theorem `valid_program_of_push`
-  cases h -- splits the proof by cases on this value or proof
-  assumption -- solves the goal from an existing hypothesis
+theorem valid_program_of_push {k: Nat} (h : ValidProgram k (push a :: p')) : ValidProgram (k + 1) p' := by -- starts tactic mode; the goal extracts tail validity from validity of a push program
+  cases h -- inverts the `ValidProgram` proof; only the `push` constructor can match this program shape
+  assumption -- uses the tail-validity hypothesis exposed by constructor inversion
 
 /-- An `add` instruction is never valid on an empty stack. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem invalid_program_add_zero: ¬ ValidProgram 0 (add :: p')  := by -- states and proves theorem `invalid_program_add_zero`
-  intro h -- introduces hypotheses or variables into the proof context
-  cases h -- splits the proof by cases on this value or proof
+theorem invalid_program_add_zero: ¬ ValidProgram 0 (add :: p')  := by -- starts tactic mode; the goal is to derive contradiction from validity of `add` at stack size zero
+  intro h -- turns the negated goal into a hypothesis `h : ValidProgram 0 (add :: p')`
+  cases h -- no `ValidProgram.add` constructor can produce stack size `0`, so all cases are impossible
 
 /-- An `add` instruction is never valid on a stack with only one element. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem invalid_program_add_one: ¬ ValidProgram 1 (add :: p')  := by -- states and proves theorem `invalid_program_add_one`
-  grind -- asks the `grind` automation to finish the proof
+theorem invalid_program_add_one: ¬ ValidProgram 1 (add :: p')  := by -- starts tactic mode; the goal is to rule out `add` with only one stack entry
+  grind -- inverts possible validity constructors and solves the resulting impossible arithmetic constraint
   -- intro h
   -- cases h
 
 /-- If a program starting with `add` is valid, then the rest is valid for a smaller stack. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem valid_program_of_add {k: Nat} (h : ValidProgram (k + 2) (add :: p')) : ValidProgram (k + 1) p' := by -- states and proves theorem `valid_program_of_add`
-  grind -- asks the `grind` automation to finish the proof
+theorem valid_program_of_add {k: Nat} (h : ValidProgram (k + 2) (add :: p')) : ValidProgram (k + 1) p' := by -- starts tactic mode; the goal extracts tail validity after an `add`
+  grind -- inverts the `add` validity constructor and returns the proof for the remaining program
 
 /-- A `pop` instruction is never valid on an empty stack. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem invalid_program_pop_zero: ¬ ValidProgram 0 (pop :: p')  := by -- states and proves theorem `invalid_program_pop_zero`
-  grind -- asks the `grind` automation to finish the proof
+theorem invalid_program_pop_zero: ¬ ValidProgram 0 (pop :: p')  := by -- starts tactic mode; the goal is to rule out `pop` on an empty stack
+  grind -- inverts possible validity constructors and solves the impossible stack-size constraint
 
 /-- If a program starting with `pop` is valid, then the rest is valid for a smaller stack. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
-theorem valid_program_of_pop {k: Nat} (h : ValidProgram (k +1) (pop :: p')) : ValidProgram k p' := by -- states and proves theorem `valid_program_of_pop`
-  grind -- asks the `grind` automation to finish the proof
+theorem valid_program_of_pop {k: Nat} (h : ValidProgram (k +1) (pop :: p')) : ValidProgram k p' := by -- starts tactic mode; the goal extracts tail validity after a `pop`
+  grind -- inverts the `pop` validity constructor and returns the proof for the remaining program
 
 /--
 Evaluates a program that is guaranteed to be valid for the initial stack size.
@@ -222,46 +222,46 @@ macro "evaluate%" p:term  : term => -- declares a custom macro form
 A program is valid for a given stack size if and only if its safe evaluation
 on a stack of that size succeeds (returns `some`).
 -/
-theorem valid_iff_eval?_some (p: Program) (s: Stack) : ValidProgram s.length p ↔ (eval? p s) ≠ none := by -- states and proves theorem `valid_iff_eval?_some`
-  constructor -- builds the required constructor or pair of goals
-  · intro h -- focuses the next proof branch
+theorem valid_iff_eval?_some (p: Program) (s: Stack) : ValidProgram s.length p ↔ (eval? p s) ≠ none := by -- starts tactic mode; the goal is an iff between static validity and safe evaluation success
+  constructor -- splits the iff into forward and backward implication goals
+  · intro h -- in the forward direction, assumes validity and changes the goal to `eval? p s ≠ none`
     match p with -- splits computation into cases by pattern matching
     | [] => grind [eval?] -- matches the empty list and asks `grind` to solve this case
     | push n :: p' => -- matches a program beginning with `push n` and proves success for the rest with the larger stack
-        have h' : ValidProgram (s.length + 1) p' := valid_program_of_push h -- records an intermediate fact for the proof
-        have ih := (valid_iff_eval?_some p' (n ::s)) -- records an intermediate fact for the proof
-        grind [eval?] -- asks the `grind` automation to finish the proof
+        have h' : ValidProgram (s.length + 1) p' := valid_program_of_push h -- extracts validity of the remaining program after the push
+        have ih := (valid_iff_eval?_some p' (n ::s)) -- gets the equivalence for the rest of the program on the pushed stack
+        grind [eval?] -- unfolds safe evaluation for `push` and uses `ih` to prove the result is not `none`
     | add :: p' => -- matches a program beginning with `add` and proves success after checking the stack has two entries
         match s with -- splits computation into cases by pattern matching
         | x :: y :: zs => -- matches a stack with at least two entries and proves success for the summed stack
-           have h' := valid_program_of_add h -- records an intermediate fact for the proof
-           have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- records an intermediate fact for the proof
-           grind [eval?] -- asks the `grind` automation to finish the proof
+           have h' := valid_program_of_add h -- extracts validity of the remaining program after adding the top two stack entries
+           have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- gets the equivalence for the rest of the program on the summed stack
+           grind [eval?] -- unfolds the successful `add` case and uses `ih` to prove evaluation does not fail
     | pop :: p' => -- matches a program beginning with `pop` and proves success after checking the stack is nonempty
         match s with -- splits computation into cases by pattern matching
         | x :: ys => -- matches a nonempty stack and proves success for the tail stack
-            have h' : ValidProgram ys.length p' := valid_program_of_pop h -- records an intermediate fact for the proof
-            have ih := (valid_iff_eval?_some p' ys) -- records an intermediate fact for the proof
-            grind [eval?] -- asks the `grind` automation to finish the proof
-  · intro h -- focuses the next proof branch
+            have h' : ValidProgram ys.length p' := valid_program_of_pop h -- extracts validity of the remaining program after popping the stack
+            have ih := (valid_iff_eval?_some p' ys) -- gets the equivalence for the rest of the program on the tail stack
+            grind [eval?] -- unfolds the successful `pop` case and uses `ih` to prove evaluation does not fail
+  · intro h -- in the backward direction, assumes safe evaluation succeeds and changes the goal to `ValidProgram s.length p`
     match p with -- splits computation into cases by pattern matching
     | [] => grind [eval?] -- matches the empty list and asks `grind` to solve this case
     | push n :: p' => -- matches a program beginning with `push n` and derives validity of the rest from safe evaluation
-        have ih := (valid_iff_eval?_some p' (n ::s)) -- records an intermediate fact for the proof
-        grind [eval?] -- asks the `grind` automation to finish the proof
+        have ih := (valid_iff_eval?_some p' (n ::s)) -- gets the equivalence for the remaining program after pushing `n`
+        grind [eval?] -- unfolds the `push` evaluator case and uses `ih` to build `ValidProgram.push`
     | add :: p' => -- matches a program beginning with `add` and derives validity after checking the stack has two entries
         match s with -- splits computation into cases by pattern matching
         | x :: y :: zs => -- matches a stack with at least two entries and derives validity for the summed stack
-           have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- records an intermediate fact for the proof
-           grind [eval?] -- asks the `grind` automation to finish the proof
+           have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- gets the equivalence for the remaining program after summing the stack top
+           grind [eval?] -- unfolds the successful `add` evaluator case and builds the matching validity proof
     | pop :: p' => -- matches a program beginning with `pop` and derives validity after checking the stack is nonempty
         match s with -- splits computation into cases by pattern matching
         | x :: ys => -- matches a nonempty stack and derives validity for the tail stack
-            have ih := (valid_iff_eval?_some p' ys) -- records an intermediate fact for the proof
-            simp -- simplifies the current goal or hypotheses
-            apply valid_program_pop -- reduces the goal using this theorem or constructor
-            simp [eval?] at h -- simplifies the current goal or hypotheses
-            grind -- asks the `grind` automation to finish the proof
+            have ih := (valid_iff_eval?_some p' ys) -- gets the equivalence for the remaining program after popping the stack
+            simp -- simplifies the validity goal to the constructor form for a `pop`
+            apply valid_program_pop -- reduces the goal to validity of the remaining program on the tail stack
+            simp [eval?] at h -- unfolds safe evaluation in the hypothesis, leaving success of the tail program
+            grind -- uses `ih` and the simplified hypothesis to finish the tail-validity goal
 
 end stack_machine -- closes the current namespace or section
 

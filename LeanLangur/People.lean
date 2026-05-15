@@ -36,7 +36,7 @@ Includes a `voterId` and a proof of voting eligibility based on age.
 structure Voter extends Person where -- declares the structure `Voter` with named fields
   voterId : Nat
   /-- Proof that the voter is at least 18 years old. -/
-  is_voting_eligible : 18 ≤ age := by grind -- gives the value or proof for this declaration
+  is_voting_eligible : 18 ≤ age := by grind -- starts tactic mode and asks `grind` to solve the stated goal automatically
   deriving Repr, DecidableEq -- asks Lean to generate standard instances automatically
 
 /-- An example instance of the `Voter` structure. -/

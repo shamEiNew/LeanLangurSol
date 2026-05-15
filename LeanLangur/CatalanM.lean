@@ -45,7 +45,7 @@ partial def catalanMemo (n : Nat) : CatalanM Nat := do -- defines the partial fu
       for i in [0:n + 1] do -- iterates through these values in the monadic block
         let ci ← catalanMemo i -- binds an intermediate value for the following expression
         let cni ← catalanMemo (n - i) -- binds an intermediate value for the following expression
-        sum := sum + (ci * cni) -- gives the value or proof for this declaration
+        sum := sum + (ci * cni)
       modify (fun m => m.insert (n + 1) sum) -- maps this case or syntax pattern to its result
       return sum -- returns this value from the monadic block
 

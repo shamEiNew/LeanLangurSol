@@ -26,15 +26,15 @@ def smallest  (l: List α) (h: l ≠ []) : α := -- defines `smallest`
 The element returned by `smallest` is indeed a member of the list.
 -/
 theorem smallest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
-    smallest l h ∈ l := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind
+    smallest l h ∈ l := by -- starts tactic mode; the following tactics prove the proposition just stated
+  fun_induction smallest <;> grind -- follows the recursive equations of `smallest` and lets `grind` solve each generated case
 
 /--
 The element returned by `smallest` is less than or equal to all elements in the list.
 -/
 theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `smallest_le_all`
-    x ∈ l → smallest l h ≤ x := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind
+    x ∈ l → smallest l h ≤ x := by -- starts tactic mode; the following tactics prove the proposition just stated
+  fun_induction smallest <;> grind -- follows the recursive equations of `smallest` and lets `grind` solve each generated case
 
 end general -- closes the current namespace or section
 

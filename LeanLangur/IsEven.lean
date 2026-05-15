@@ -25,38 +25,38 @@ open IsEven -- opens names so constructors or helpers can be written unqualified
 Zero is even.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem zero_even : IsEven 0 := by -- states and proves theorem `zero_even`
-  apply zeroEven -- reduces the goal using this theorem or constructor
+theorem zero_even : IsEven 0 := by -- starts tactic mode for theorem `zero_even`; the following tactics prove the stated goal
+  apply zeroEven -- applies `zeroEven` backwards, replacing the current goal by its premises
 
 /--
 If `n` is even, then `n + 2` is even.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem addTwo_even (n: Nat) (h: IsEven n) : -- states and proves theorem `addTwo_even`
-  IsEven (n + 2) := by -- gives the value or proof for this declaration
-    apply addTwoEven -- reduces the goal using this theorem or constructor
+  IsEven (n + 2) := by -- starts tactic mode; the following tactics prove the proposition just stated
+    apply addTwoEven -- applies `addTwoEven` backwards, replacing the current goal by its premises
     assumption -- solves the goal from an existing hypothesis
 
 /--
 Twice any natural number is even.
 -/
-theorem IsEven_two_mul (n : Nat) : IsEven (2 * n) := by -- states and proves theorem `IsEven_two_mul`
-  induction n <;> grind
+theorem IsEven_two_mul (n : Nat) : IsEven (2 * n) := by -- starts tactic mode for theorem `IsEven_two_mul`; the following tactics prove the stated goal
+  induction n <;> grind -- performs induction on `n` and sends each base/step goal to `grind`
 
 /--
 The successor of an even number is not even (i.e., it is odd).
 -/
 theorem succ_odd_of_isEven {n : Nat} -- states and proves theorem `succ_odd_of_isEven`
   (h : IsEven n) :
-    ¬ IsEven (n + 1) := by -- gives the value or proof for this declaration
-  induction h <;> grind
+    ¬ IsEven (n + 1) := by -- starts tactic mode; the following tactics prove the proposition just stated
+  induction h <;> grind -- performs induction on `h` and sends each base/step goal to `grind`
 
 /--
 For any natural number `n`, either `n` is even or `n + 1` is even.
 -/
 theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1) -- states and proves theorem `nOrSuccNeven`
-  := by -- gives the value or proof for this declaration
-  induction n <;> grind
+  := by -- starts tactic mode; the following tactics prove the proposition just stated
+  induction n <;> grind -- performs induction on `n` and sends each base/step goal to `grind`
 
 /-!
 ## Exercise: Odd numbers

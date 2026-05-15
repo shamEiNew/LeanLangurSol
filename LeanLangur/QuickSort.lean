@@ -57,7 +57,7 @@ termination_by l => l.length -- tells Lean which expression decreases for termin
 Quicksort of an empty list is an empty list.
 -/
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
-theorem quickSort_nil : quickSort ([] : List α) = [] := by -- states and proves theorem `quickSort_nil`
+theorem quickSort_nil : quickSort ([] : List α) = [] := by -- starts tactic mode for theorem `quickSort_nil`; the following tactics prove the stated goal
   simp [quickSort] -- simplifies the current goal or hypotheses
 
 /--
@@ -66,7 +66,7 @@ Recursive step of the Quicksort implementation.
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
 theorem quickSort_cons (pivot : α) (l : List α) : -- states and proves theorem `quickSort_cons`
     quickSort (pivot :: l) = (quickSort (smaller pivot l)) ++
-    pivot :: (quickSort (larger pivot l)) := by -- gives the value or proof for this declaration
+    pivot :: (quickSort (larger pivot l)) := by -- starts tactic mode; the following tactics prove the proposition just stated
   simp [quickSort] -- simplifies the current goal or hypotheses
 
 /--
@@ -76,15 +76,15 @@ An element is in the original list if and only if it is in the `smaller` or `lar
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem mem_iff_below_or_above_pivot (pivot : α) -- states and proves theorem `mem_iff_below_or_above_pivot`
   (l : List α)(x : α) :
-    x ∈ l ↔ x ∈ smaller pivot l ∨ x ∈ larger pivot l := by grind -- gives the value or proof for this declaration
+    x ∈ l ↔ x ∈ smaller pivot l ∨ x ∈ larger pivot l := by grind -- starts tactic mode and asks `grind` to solve the stated goal automatically
 
 /--
 The `quickSort` function preserves the elements of the list.
 -/
 @[grind =_] -- annotation controlling elaboration, simplification, or automation
 theorem mem_iff_mem_quickSort (l: List α)(x : α) : -- states and proves theorem `mem_iff_mem_quickSort`
-    x ∈ l ↔ x ∈ quickSort l := by -- gives the value or proof for this declaration
-  fun_induction quickSort <;> grind
+    x ∈ l ↔ x ∈ quickSort l := by -- starts tactic mode; the following tactics prove the proposition just stated
+  fun_induction quickSort <;> grind -- follows the recursive equations of `quickSort` and lets `grind` solve each generated case
 
 section Count
 /-!
@@ -110,7 +110,7 @@ The `quickSort` function preserves the count of each element in the list.
 -/
 theorem count_eq_count_quickSort (l : List α) -- states and proves theorem `count_eq_count_quickSort`
   (x : α) :
-    l.count x = (quickSort l).count x := by -- gives the value or proof for this declaration
+    l.count x = (quickSort l).count x := by -- starts tactic mode; the following tactics prove the proposition just stated
   sorry -- marks this tutorial exercise proof as unfinished
 end Count -- closes the current namespace or section
 
@@ -124,27 +124,27 @@ theorem sorted_sandwitch (l₁ : List α) (h₁ : Sorted l₁) -- states and pro
     (bound : α)
     (h_bound₁ : ∀ x ∈ l₁, x ≤ bound)
     (h_bound₂ : ∀ x ∈ l₂, bound ≤ x) :
-    Sorted (l₁ ++ bound :: l₂) := by -- gives the value or proof for this declaration
+    Sorted (l₁ ++ bound :: l₂) := by -- starts tactic mode; the following tactics prove the proposition just stated
     induction h₁ with
     | nil => grind -- matches the empty list and asks `grind` to solve this case
     | singleton x => -- matches a sorted singleton list proof and proves this case with the tactic steps below
-      grind [Sorted.step] -- asks the `grind` automation to finish the proof
+      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
     | step x y l hxy tail_sorted ih => -- matches a sorted list built from a head and sorted tail and proves this case with the tactic steps below
-      grind [Sorted.step] -- asks the `grind` automation to finish the proof
+      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
 
 /--
 The `quickSort` function correctly sorts any input list.
 -/
-theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- states and proves theorem `quickSort_sorted`
-  cases l with -- splits the proof by cases on this value or proof
+theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- starts tactic mode for theorem `quickSort_sorted`; the following tactics prove the stated goal
+  cases l with -- splits or inverts `l with`, creating one goal for each possible constructor
   | nil => -- matches the empty list and proves this case with the tactic steps below
     simp [quickSort_nil] -- simplifies the current goal or hypotheses
-    apply Sorted.nil -- reduces the goal using this theorem or constructor
+    apply Sorted.nil -- applies `Sorted.nil` backwards, replacing the current goal by its premises
   | cons pivot l => -- matches a nonempty list and proves this case with the tactic steps below
     rw [quickSort_cons]
     have h_small := -- records an intermediate fact for the proof
       quickSort_sorted (smaller pivot l)
     have h_large := -- records an intermediate fact for the proof
       quickSort_sorted (larger pivot l)
-    apply sorted_sandwitch <;> grind -- reduces the goal using this theorem or constructor
+    apply sorted_sandwitch <;> grind -- applies `sorted_sandwitch <;> grind` backwards, replacing the current goal by its premises
 termination_by l.length -- tells Lean which expression decreases for termination
