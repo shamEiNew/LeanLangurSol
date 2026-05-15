@@ -1,6 +1,18 @@
 import Mathlib -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* `BinTree.lean` - inductive types, recursive functions on trees, and membership proofs.
+
+## Main concepts introduced
+
+* binary search trees.
+* order invariants.
+* search operations.
+-/
+
+/-!
 # Binary Search Trees
 
 This module provides a basic implementation of Binary Search Trees (BSTs) in Lean 4.
@@ -209,3 +221,8 @@ Define a function `deleteLabel` that removes a label from an ordered binary sear
 end binary_search_tree -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

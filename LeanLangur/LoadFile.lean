@@ -1,6 +1,18 @@
 import Lean -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* `PyFor.lean` - syntax extensions and Python-style list comprehensions.
+
+## Main concepts introduced
+
+* file I/O.
+* syntax quotations.
+* commands for loading data.
+-/
+
+/-!
 # Loading Files into Lean
 
 This module provides tools for loading and parsing external files (like Markdown and JSON)
@@ -210,3 +222,8 @@ syntax (name:= rt_json) "#rt_json" ppSpace json : command -- declares new parser
 -- #rt_json {"c": {"d": -3.4}, "b": [true, false, null], "a": 1}
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `FileM.lean` - custom monads; safe file programs; security predicates.
+-/

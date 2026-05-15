@@ -1,4 +1,16 @@
 /-!
+## Prerequisite files
+
+* `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+
+## Main concepts introduced
+
+* typeclasses.
+* custom `Add` instances.
+* typeclass inference.
+-/
+
+/-!
 # `Add` typeclass
 
 We illustrate:
@@ -6,11 +18,6 @@ We illustrate:
 * How to use addition in the presence of the typeclass `Add`.
 * How to create new instances of `Add` for custom types.
 * Typeclass inference.
-
-When you reach this, we expect that you have already worked through:
-
-* `SmallestNat.lean`
-* `ListOps.lean`
 
 -/
 
@@ -60,3 +67,10 @@ Given a function `f: α → β` and a typeclass `Add β`, we can define pointwis
 --   rfl
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `Largest.lean` - programs with proofs; nonempty-list algorithms over linear orders.
+* `FunEquality.lean` - equality of functions; decision procedures; proof irrelevance.
+* `FibM.lean` - memoization; the `State` monad.
+-/

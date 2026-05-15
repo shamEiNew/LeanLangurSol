@@ -1,5 +1,16 @@
 import Mathlib -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `IsEven.lean` - inductive propositions and basic use of `grind`.
+
+## Main concepts introduced
+
+* generic smallest-element functions.
+* linear-order typeclass parameters.
+-/
+
+/-!
 # Smallest element in a list
 
 * We begin with our simplest examples of programs and proofs.
@@ -51,3 +62,8 @@ variable {α : Type} [PartialOrder α][DecidableLE α]
 end partial_order -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

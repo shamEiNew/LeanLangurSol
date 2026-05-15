@@ -1,6 +1,17 @@
 import LeanLangur.LangurLang -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* `LangurLang.lean` - domain-specific language syntax, shallow embeddings, and imperative programs.
+
+## Main concepts introduced
+
+* examples using `LangurLang`.
+* custom commands.
+-/
+
+/-!
 # LangurLeaps: LangurLang Examples
 
 This module provides examples of programs written in `LangurLang` using the `#leap` command
@@ -97,3 +108,8 @@ for (init; cond; step) { body }
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

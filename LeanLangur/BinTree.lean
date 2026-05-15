@@ -1,14 +1,22 @@
 import Mathlib -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+
+## Main concepts introduced
+
+* inductive types.
+* recursive functions on trees.
+* membership proofs.
+-/
+
+/-!
 ## Binary Trees
 
 We consider an example of a data structure: binary trees. We define a binary tree datatype, a function to convert a binary tree to a list, and prove that membership in the tree corresponds to membership in the list.
 
 This is our first example of defining an *inductive type*.
-
-When you reach this, we expect that you have already worked through:
-* `SmallestNat.lean`
-* `ListOps.lean`
 -/
 
 namespace langur -- starts a namespace to group the tutorial definitions
@@ -92,3 +100,10 @@ theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) : -- states and
 Define a function `listToBinTree : List α → BinTree α` that converts a list to a binary tree (this is not unique). Then, prove that for any list `l` and element `x`, `x ∈ listToBinTree l` if and only if `x ∈ l`.
 -/
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `BinarySearchTree.lean` - binary search trees; order invariants; search operations.
+* `FunEquality.lean` - equality of functions; decision procedures; proof irrelevance.
+* `IsEven.lean` - inductive propositions; basic use of `grind`.
+-/

@@ -1,11 +1,18 @@
 /-!
+## Prerequisite files
+
+* None in the README dependency diagram.
+
+## Main concepts introduced
+
+* structures.
+* named fields.
+-/
+
+/-!
 ## Structures
 
 A simple datatype in Lean is a `Structure`. This is a special case of an *inductive type* with some additional conveniences for working with named fields. We consider some examples.
-
-When you reach this, we expect that you have already worked through:
-
-* `SmallestNat.lean`
 -/
 
 namespace langur -- starts a namespace to group the tutorial definitions
@@ -51,3 +58,8 @@ Define a structure `EvenNumber` that represents an even natural number. It shoul
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `IsEven.lean` - inductive propositions; basic use of `grind`.
+-/

@@ -1,5 +1,16 @@
 import Mathlib -- imports definitions and theorems used below
 import LeanLangur.QuickSort -- imports definitions and theorems used below
+/-!
+## Prerequisite files
+
+* `Sorted.lean` - sorted-list predicates and equivalent characterizations of sortedness.
+
+## Main concepts introduced
+
+* selection sort.
+* recursive sorting with correctness proofs.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 variable {α : Type}[LinearOrder α]
 /-!
@@ -77,3 +88,8 @@ theorem selectionSort_sorted (l : List α) : -- states and proves theorem `selec
     grind [selectionSort] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
 termination_by l.length -- tells Lean which expression decreases for termination
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

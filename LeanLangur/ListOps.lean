@@ -1,5 +1,16 @@
 import Mathlib -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `SmallestNat.lean` - functions and proofs and macros and notation.
+
+## Main concepts introduced
+
+* implicit and explicit parameters.
+* monadic `do` notation for lists.
+-/
+
+/-!
 # List operations
 
 We illustrate:
@@ -7,10 +18,6 @@ We illustrate:
 * Explicit and Implicit parameters.
 * `do` notation for lists.
 * Why we need typeclasses.
-
-When you reach this, we expect that you have already worked through:
-
-* `SmallestNat.lean`
 -/
 
 namespace langur -- starts a namespace to group the tutorial definitions
@@ -76,7 +83,7 @@ More generally, we are given `ll: List (List α)` and we want `innerPairs` to re
 -/
 
 /-!
-List of sums using `do` notation. Requires the type `α` to have an instance of the `Add` typeclass to tell Lean how to add elements of type `α`. Continue to the file `Adder.lean` to see how typeclasses work. This example is just a preview of using typeclasses.
+List of sums using `do` notation. Requires the type `α` to have an instance of the `Add` typeclass to tell Lean how to add elements of type `α`. This example is just a preview of using typeclasses.
 -/
 
 /--
@@ -88,3 +95,9 @@ def sums {α : Type}[Add α] (l₁: List α) (l₂: List α ) : List α := do --
   return x + y -- returns this value from the monadic block
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `BinTree.lean` - inductive types; recursive functions on trees; membership proofs.
+* `Adder.lean` - typeclasses; custom `Add` instances; typeclass inference.
+-/

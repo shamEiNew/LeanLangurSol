@@ -1,6 +1,17 @@
 import Mathlib -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* None in the README dependency diagram.
+
+## Main concepts introduced
+
+* custom empty and false types.
+* recursion on empty types.
+-/
+
+/-!
 # Miscellaneous Examples
 
 A collection of various examples in Lean 4, including:
@@ -62,3 +73,8 @@ abbrev EvenNat := { n : Nat // n % 2 = 0} -- introduces `EvenNat` as a reducible
 
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

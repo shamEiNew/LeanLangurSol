@@ -1,4 +1,16 @@
 import Mathlib -- imports definitions and theorems used below
+/-!
+## Prerequisite files
+
+* `CatalanM.lean` - memoized Catalan numbers and stateful dynamic programming.
+
+## Main concepts introduced
+
+* recursive combinatorial definitions.
+* factorials.
+* state-monad exercises.
+-/
+
 open Nat -- opens names so constructors or helpers can be written unqualified
 /-!
 ## Recursive definitions of Combinations
@@ -19,3 +31,8 @@ Recall that the recursive definition of combinations is given by:
 #check Nat.factorial -- asks Lean to display the inferred type
 
 #eval 3! -- runs this expression as a tutorial check
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

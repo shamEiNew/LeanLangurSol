@@ -1,6 +1,18 @@
 import Mathlib -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* `People.lean` - structures and named fields.
+* `BinTree.lean` - inductive types, recursive functions on trees, and membership proofs.
+
+## Main concepts introduced
+
+* inductive propositions.
+* basic use of `grind`.
+-/
+
+/-!
 # Even Natural Numbers
 
 This module defines the property of being an even natural number using an inductive predicate
@@ -64,3 +76,11 @@ theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1) -- states and prove
 Define an inductive predicate `IsOdd : Nat → Prop` for odd natural numbers, and prove that any natural number is either even or odd, but not both (As two separate propositions).
 -/
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `Sorted.lean` - sorted-list predicates; equivalent characterizations of sortedness.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
+* `Smallest.lean` - generic smallest-element functions; linear-order typeclass parameters.
+* `Eratosthenes.lean` - prime numbers; the Sieve of Eratosthenes exercise.
+-/

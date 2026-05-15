@@ -1,6 +1,17 @@
 import Mathlib -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* `IsEven.lean` - inductive propositions and basic use of `grind`.
+
+## Main concepts introduced
+
+* sorted-list predicates.
+* equivalent characterizations of sortedness.
+-/
+
+/-!
 # Sorted Lists
 
 This module defines the property of a list being sorted and provides various
@@ -128,3 +139,9 @@ Show that `l₁ = l₂`. You may find it useful to first show that the head of b
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `QuickSort.lean` - quicksort; termination arguments; sortedness proofs.
+* `SelectionSort.lean` - selection sort; recursive sorting with correctness proofs.
+-/

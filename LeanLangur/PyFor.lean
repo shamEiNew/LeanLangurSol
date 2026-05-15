@@ -1,6 +1,17 @@
 import Lean -- imports definitions and theorems used below
 import Mathlib -- imports definitions and theorems used below
 
+/-!
+## Prerequisite files
+
+* `FibM.lean` - memoization and the `State` monad.
+
+## Main concepts introduced
+
+* syntax extensions.
+* Python-style list comprehensions.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 open Lean Elab Meta Term -- opens names so constructors or helpers can be written unqualified
@@ -116,3 +127,9 @@ Using `List.filter` modify the `pyfor` syntax to support `if` conditions in for 
 end PyForComprehension -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `LoadFile.lean` - file I/O; syntax quotations; commands for loading data.
+* `LangurLang.lean` - domain-specific language syntax; shallow embeddings; imperative programs.
+-/

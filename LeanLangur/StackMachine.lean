@@ -1,6 +1,18 @@
 import LeanLangur.Basic -- imports definitions and theorems used below
 
 /-!
+## Prerequisite files
+
+* None in the README dependency diagram.
+
+## Main concepts introduced
+
+* stack-machine instructions.
+* safe evaluators.
+* validity predicates.
+-/
+
+/-!
 # Stack Machine
 
 This module defines a simple stack-based machine with instructions for pushing values,
@@ -266,3 +278,8 @@ theorem valid_iff_eval?_some (p: Program) (s: Stack) : ValidProgram s.length p â
 end stack_machine -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

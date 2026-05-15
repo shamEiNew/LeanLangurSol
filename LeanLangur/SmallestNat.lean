@@ -1,5 +1,16 @@
 import Mathlib -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `Basic.lean` - Lean worksheet commands with `#eval` and `#check` and simple definitions.
+
+## Main concepts introduced
+
+* functions and proofs.
+* macros and notation.
+-/
+
+/-!
 # Smallest element in a list
 
 * We begin with our simplest examples of programs and proofs.
@@ -78,8 +89,11 @@ theorem smallest_le_smallest_of_filter (l: List Nat) (p: Nat → Bool) (h: l.fil
   sorry
 
 end nat -- closes the current namespace or section
-/-!
-Continue to the file `ListOps.lean`.
--/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `ListOps.lean` - implicit and explicit parameters; monadic `do` notation for lists.
+* `FibM.lean` - memoization; the `State` monad.
+-/

@@ -1,6 +1,18 @@
 import Lean -- imports definitions and theorems used below
 import Std -- imports definitions and theorems used below
 
+/-!
+## Prerequisite files
+
+* `PyFor.lean` - syntax extensions and Python-style list comprehensions.
+
+## Main concepts introduced
+
+* domain-specific language syntax.
+* shallow embeddings.
+* imperative programs.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 open Lean Meta Elab Term -- opens names so constructors or helpers can be written unqualified
@@ -167,3 +179,8 @@ macro "climb%" ss:langur_program "from%" init:langur_program -- declares a custo
 end LangurLang -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `LangurLeaps.lean` - examples using `LangurLang`; custom commands.
+-/

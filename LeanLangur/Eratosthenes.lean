@@ -1,4 +1,15 @@
 /-!
+## Prerequisite files
+
+* `IsEven.lean` - inductive propositions and basic use of `grind`.
+
+## Main concepts introduced
+
+* prime numbers.
+* the Sieve of Eratosthenes exercise.
+-/
+
+/-!
 ## Sieve of Eratosthenes
 
 This is an extended exercise where you will implement the Sieve of Eratosthenes algorithm to find all prime numbers up to a given limit `n`. The Sieve of Eratosthenes is an efficient algorithm for finding all primes up to a specified integer. It works by iteratively marking the multiples of each prime starting from 2. The numbers which remain unmarked at the end of the algorithm are prime.
@@ -61,4 +72,9 @@ theorem InfinitudeOfPrimes : ∀ n, ∃ p > n, IsPrime p := by -- starts tactic 
 
 /-!
 Now implement the Sieve of Eratosthenes algorithm to find all prime numbers up to a given limit `n`.
+-/
+/-!
+## Next files
+
+* None in the README dependency diagram.
 -/

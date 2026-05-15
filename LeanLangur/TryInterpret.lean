@@ -1,6 +1,19 @@
 import Lean -- imports definitions and theorems used below
 import Mathlib -- imports definitions and theorems used below
 
+/-!
+## Prerequisite files
+
+* `FibM.lean` - memoization and the `State` monad.
+* `NonAtom.lean` - constructing typeclasses and typeclass fields and instances.
+
+## Main concepts introduced
+
+* frontend interpretation.
+* environment manipulation.
+* generated Lean snippets.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 open Lean Meta Elab Parser Tactic -- opens names so constructors or helpers can be written unqualified
@@ -125,3 +138,8 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
 end LeanAide -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

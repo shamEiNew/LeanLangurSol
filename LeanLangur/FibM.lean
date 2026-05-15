@@ -1,5 +1,17 @@
 import Std -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `SmallestNat.lean` - functions and proofs and macros and notation.
+* `Adder.lean` - typeclasses, custom `Add` instances, and typeclass inference.
+
+## Main concepts introduced
+
+* memoization.
+* the `State` monad.
+-/
+
+/-!
 # Fibonacci Numbers with Memoization
 
 The Fibonacci numbers are a classic sequence defined by the recurrence relation:
@@ -58,3 +70,10 @@ The exercise for this file and `CatalanM.lean` is the last exercise in `Combinat
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `CatalanM.lean` - memoized Catalan numbers; stateful dynamic programming.
+* `PyFor.lean` - syntax extensions; Python-style list comprehensions.
+* `TryInterpret.lean` - frontend interpretation; environment manipulation; generated Lean snippets.
+-/

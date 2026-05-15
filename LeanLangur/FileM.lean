@@ -1,5 +1,17 @@
 import Lean -- imports definitions and theorems used below
 
+/-!
+## Prerequisite files
+
+* `LoadFile.lean` - file I/O, syntax quotations, and commands for loading data.
+
+## Main concepts introduced
+
+* custom monads.
+* safe file programs.
+* security predicates.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 open IO FS System -- opens names so constructors or helpers can be written unqualified
@@ -201,3 +213,8 @@ theorem safe_mergePubs (p1 p2 out : FilePath) : SafeProg (mergePubs p1 p2 out) :
 end file_access -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

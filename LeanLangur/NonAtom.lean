@@ -1,4 +1,15 @@
 /-!
+## Prerequisite files
+
+* `IsEven.lean` - inductive propositions and basic use of `grind`.
+
+## Main concepts introduced
+
+* constructing typeclasses.
+* typeclass fields and instances.
+-/
+
+/-!
 # NonAtom Typeclass
 
 This module defines the `NonAtom` typeclass, which identifies types that have at least
@@ -85,3 +96,8 @@ instance [Inhabited α] [NonAtom β] : NonAtom (α × β) where -- provides an i
 #eval secondAtom <| Nat × Nat -- runs this expression as a tutorial check
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `TryInterpret.lean` - frontend interpretation; environment manipulation; generated Lean snippets.
+-/

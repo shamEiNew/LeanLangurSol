@@ -1,5 +1,16 @@
 import Mathlib.Order.Lattice -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `Adder.lean` - typeclasses, custom `Add` instances, and typeclass inference.
+
+## Main concepts introduced
+
+* programs with proofs.
+* nonempty-list algorithms over linear orders.
+-/
+
+/-!
 ## Largest Element in a List: Programs with Proofs
 
 We illustrate how to write programs with proofs in Lean by implementing a function to find the largest element in a (non-empty) list, along with proofs that the element is indeed in the list and is larger than or equal to all other elements.
@@ -111,3 +122,8 @@ def largestImp (l: List Nat): Nat := Id.run do -- defines `largestImp`
   return maxSoFar -- returns this value from the monadic block
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

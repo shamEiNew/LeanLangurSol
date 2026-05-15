@@ -1,6 +1,17 @@
 import Std -- imports definitions and theorems used below
 import Mathlib -- imports definitions and theorems used below
 
+/-!
+## Prerequisite files
+
+* `FibM.lean` - memoization and the `State` monad.
+
+## Main concepts introduced
+
+* memoized Catalan numbers.
+* stateful dynamic programming.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 open Std -- opens names so constructors or helpers can be written unqualified
@@ -57,3 +68,8 @@ The exercise for this file and `FibM.lean` is the last exercise in `Combinations
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* `Combinations.lean` - recursive combinatorial definitions; factorials; state-monad exercises.
+-/

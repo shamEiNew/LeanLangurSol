@@ -3,6 +3,18 @@ import Mathlib.Tactic -- imports definitions and theorems used below
 import LeanLangur.Basic -- imports definitions and theorems used below
 import LeanLangur.Sorted -- imports definitions and theorems used below
 /-!
+## Prerequisite files
+
+* `Sorted.lean` - sorted-list predicates and equivalent characterizations of sortedness.
+
+## Main concepts introduced
+
+* quicksort.
+* termination arguments.
+* sortedness proofs.
+-/
+
+/-!
 ## Quicksort Algorithm (Pivot from Head)
 
 Quicksort is a divide-and-conquer sorting algorithm known for its efficiency. It works by recursively partitioning the list around a chosen element (pivot) and then sorting the sub-lists.
@@ -148,3 +160,8 @@ theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- starts ta
       quickSort_sorted (larger pivot l)
     apply sorted_sandwitch <;> grind -- applies `sorted_sandwitch <;> grind` backwards, replacing the current goal by its premises
 termination_by l.length -- tells Lean which expression decreases for termination
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/

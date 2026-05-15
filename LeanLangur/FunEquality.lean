@@ -1,3 +1,16 @@
+/-!
+## Prerequisite files
+
+* `Adder.lean` - typeclasses, custom `Add` instances, and typeclass inference.
+* `BinTree.lean` - inductive types, recursive functions on trees, and membership proofs.
+
+## Main concepts introduced
+
+* equality of functions.
+* decision procedures.
+* proof irrelevance.
+-/
+
 namespace langur -- starts a namespace to group the tutorial definitions
 
 /-!
@@ -138,3 +151,8 @@ deriving DecidableEq -- asks Lean to generate standard instances automatically
 -/
 
 end langur -- closes the current namespace or section
+/-!
+## Next files
+
+* None in the README dependency diagram.
+-/
