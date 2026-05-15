@@ -10,7 +10,7 @@ and basic operations like adding labels and searching.
 
 namespace langur -- starts a namespace to group the tutorial definitions
 
-variable {α : Type}[LinearOrder α] -- continues the Lean declaration above
+variable {α : Type}[LinearOrder α]
 
 namespace binary_search_tree -- starts a namespace to group the tutorial definitions
 
@@ -31,8 +31,8 @@ Membership relation for Binary Search Trees.
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 def BinarySearchTree.mem {α : Type} : BinarySearchTree α → α → Prop -- defines `BinarySearchTree.mem`
-  | leaf x, y => x = y -- handles this pattern-matching case
-  | node _ l r, y => BinarySearchTree.mem l y ∨ BinarySearchTree.mem r y -- handles this pattern-matching case
+  | leaf x, y => x = y -- matches a leaf tree and returns `x = y`
+  | node _ l r, y => BinarySearchTree.mem l y ∨ BinarySearchTree.mem r y -- matches an internal tree node and returns `BinarySearchTree.mem l y ∨ BinarySearchTree.mem r y`
 
 /--
 Instance for using the `∈` notation with `BinarySearchTree`.
@@ -65,9 +65,9 @@ Also requires the value `v` to be present in one of the subtrees (for nodes).
 -/
 @[grind ., simp] -- annotation controlling elaboration, simplification, or automation
 def IsOrdered : BinarySearchTree α → Prop -- defines `IsOrdered`
-  | leaf _ => True -- handles this pattern-matching case
-  | node v l r => -- handles this pattern-matching case
-    (∀ x ∈ l, x ≤ v) ∧ (∀ x ∈ r, v ≤ x) ∧ IsOrdered l ∧ IsOrdered r ∧ (v ∈ l ∨ v ∈ r) -- continues the surrounding Lean expression
+  | leaf _ => True -- matches a leaf tree and returns the trivially true proposition
+  | node v l r => -- matches an internal tree node and returns the ordering proposition for both subtrees
+    (∀ x ∈ l, x ≤ v) ∧ (∀ x ∈ r, v ≤ x) ∧ IsOrdered l ∧ IsOrdered r ∧ (v ∈ l ∨ v ∈ r)
 
 /--
 A leaf is always ordered.
@@ -114,19 +114,19 @@ Adds a label to the binary search tree while maintaining the tree structure.
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def BinarySearchTree.addLabel (t: BinarySearchTree α) (label: α) : BinarySearchTree α := -- defines `BinarySearchTree.addLabel`
   match t with -- splits computation into cases by pattern matching
-  | leaf x => -- handles this pattern-matching case
+  | leaf x => -- matches a leaf tree and returns the appropriate branch of the following conditional
     if label = x then -- branches on this decidable condition
-      leaf x -- continues the Lean declaration above
+      leaf x
     else -- handles the alternative branch
     if label < x then -- branches on this decidable condition
-      node label (leaf label) (leaf x) -- continues the Lean declaration above
+      node label (leaf label) (leaf x)
     else -- handles the alternative branch
-      node label (leaf x) (leaf label) -- continues the Lean declaration above
-  | node v l r => -- handles this pattern-matching case
+      node label (leaf x) (leaf label)
+  | node v l r => -- matches an internal tree node and returns the appropriate branch of the following conditional
     if label ≤ v then -- branches on this decidable condition
-      node v (BinarySearchTree.addLabel l label) r -- continues the Lean declaration above
+      node v (BinarySearchTree.addLabel l label) r
     else -- handles the alternative branch
-      node v l (BinarySearchTree.addLabel r label) -- continues the Lean declaration above
+      node v l (BinarySearchTree.addLabel r label)
 
 /--
 An element is in the tree after adding a label if and only if it was already there or it is the new label.
@@ -134,30 +134,30 @@ An element is in the tree after adding a label if and only if it was already the
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem mem_addLabel (t: BinarySearchTree α) (label: α) (x : α) : -- states and proves theorem `mem_addLabel`
     x ∈ BinarySearchTree.addLabel t label ↔ x = label ∨ x ∈ t := by -- gives the value or proof for this declaration
-  induction t with -- continues the Lean declaration above
-  | leaf v => -- handles this pattern-matching case
+  induction t with
+  | leaf v => -- matches a leaf tree and returns `by_cases label ≤ v <;> grind`
     by_cases label ≤ v <;> grind -- starts tactic-mode proof construction
-  | node v l r ihl ihr => -- handles this pattern-matching case
+  | node v l r ihl ihr => -- matches an internal tree node and returns `by_cases label ≤ v <;> grind`
     by_cases label ≤ v <;> grind -- starts tactic-mode proof construction
 
 /--
 Adding a label to an ordered tree results in an ordered tree.
 -/
 theorem ordered_addLabel (t: BinarySearchTree α) (label: α) -- states and proves theorem `ordered_addLabel`
-  (h: IsOrdered t) : -- continues the surrounding Lean expression
+  (h: IsOrdered t) :
     IsOrdered (BinarySearchTree.addLabel t label) := by -- gives the value or proof for this declaration
-  induction t with -- continues the Lean declaration above
-  | leaf x => -- handles this pattern-matching case
+  induction t with
+  | leaf x => -- matches a leaf tree and returns `by_cases label ≤ x <;> grind`
     by_cases label ≤ x <;> grind -- starts tactic-mode proof construction
-  | node v l r ihl ihr => -- handles this pattern-matching case
+  | node v l r ihl ihr => -- matches an internal tree node and returns `by_cases label ≤ v <;> grind`
     by_cases label ≤ v <;> grind -- starts tactic-mode proof construction
 
 /--
 Returns the value at the root of a node, or the value in a leaf.
 -/
 def pivot : BinarySearchTree α → α -- defines `pivot`
-| node l .. => l -- handles this pattern-matching case
-| leaf l => l -- handles this pattern-matching case
+| node l .. => l -- matches an internal tree node and returns `l`
+| leaf l => l -- matches a leaf tree and returns `l`
 
 /--
 The pivot of an ordered tree is always a member of the tree.
@@ -165,9 +165,9 @@ The pivot of an ordered tree is always a member of the tree.
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem pivot_member (l: BinarySearchTree α) (h₀ : IsOrdered l) : -- states and proves theorem `pivot_member`
   pivot l ∈ l := by -- gives the value or proof for this declaration
-  induction l with -- continues the Lean declaration above
-  | leaf l => grind [pivot] -- handles this pattern-matching case
-  | node label left right ihl ihr => -- handles this pattern-matching case
+  induction l with
+  | leaf l => grind [pivot] -- matches a leaf tree and asks `grind` to solve this case
+  | node label left right ihl ihr => -- matches an internal tree node and proves this case with the tactic steps below
     grind [pivot] -- asks the `grind` automation to finish the proof
 
 /--
@@ -175,8 +175,8 @@ Efficiently checks if a label is in an ordered binary search tree.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def fastCheckMem (label : α)(l: BinarySearchTree α) : Bool := match l with -- defines `fastCheckMem`
-  | leaf l => l == label -- handles this pattern-matching case
-  | node l left right => -- handles this pattern-matching case
+  | leaf l => l == label -- matches a leaf tree and returns `l == label`
+  | node l left right => -- matches an internal tree node and returns the appropriate branch of the following conditional
     if l == label then true -- branches on this decidable condition
     else if label < l then fastCheckMem label left -- handles the alternative branch
     else fastCheckMem label right -- handles the alternative branch
@@ -186,16 +186,16 @@ def fastCheckMem (label : α)(l: BinarySearchTree α) : Bool := match l with -- 
 -/
 theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered l): -- states and proves theorem `fastCheckMem_correct`
   fastCheckMem label l = true ↔ label ∈ l := by -- gives the value or proof for this declaration
-  induction l with -- continues the Lean declaration above
-  | leaf label' => -- handles this pattern-matching case
+  induction l with
+  | leaf label' => -- matches a leaf tree and proves this case with the tactic steps below
     grind -- asks the `grind` automation to finish the proof
-  | node label' left right ihl ihr => -- handles this pattern-matching case
+  | node label' left right ihl ihr => -- matches an internal tree node and returns the appropriate branch of the following conditional
     if p:label' = label -- branches on this decidable condition
-      then -- continues the Lean declaration above
+      then
         grind -- asks the `grind` automation to finish the proof
     else -- handles the alternative branch
       if p':label < label' -- branches on this decidable condition
-      then -- continues the Lean declaration above
+      then
         grind -- asks the `grind` automation to finish the proof
       else -- handles the alternative branch
         grind -- asks the `grind` automation to finish the proof

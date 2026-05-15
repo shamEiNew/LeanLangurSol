@@ -35,14 +35,14 @@ Assumes the stack has enough elements for `pop` and `add` operations.
 -/
 def eval! (p: Program) (s: Stack) : Stack := -- defines `eval!`
   match p with -- splits computation into cases by pattern matching
-  | [] => s -- handles this pattern-matching case
-  | push n :: p' => eval! p' (n :: s) -- handles this pattern-matching case
-  | pop :: p' => -- handles this pattern-matching case
-      eval! p' s.tail! -- continues the Lean declaration above
-  | add :: p' => -- handles this pattern-matching case
+  | [] => s -- matches the empty list and returns `s`
+  | push n :: p' => eval! p' (n :: s) -- matches a program beginning with `push n` and evaluates the rest with `n` pushed on the stack
+  | pop :: p' => -- matches a program beginning with `pop` and evaluates the rest after dropping the stack top
+      eval! p' s.tail!
+  | add :: p' => -- matches a program beginning with `add` and evaluates the rest after replacing the top two stack entries by their sum
       let x := s.head! -- binds an intermediate value for the following expression
       let y := s.tail!.head! -- binds an intermediate value for the following expression
-      eval! p' ((x + y) :: s.tail!.tail!) -- continues the Lean declaration above
+      eval! p' ((x + y) :: s.tail!.tail!)
 
 /--
 Safe evaluation of a program using `Option`.
@@ -50,16 +50,16 @@ Returns `none` if an instruction is executed on an insufficient stack.
 -/
 def eval? (p: Program) (s: Stack) : Option Stack := -- defines `eval?`
   match p with -- splits computation into cases by pattern matching
-  | [] => some s -- handles this pattern-matching case
-  | push n :: p' => eval? p' (n :: s) -- handles this pattern-matching case
-  | add :: p' => -- handles this pattern-matching case
+  | [] => some s -- matches the empty list and returns `some s`
+  | push n :: p' => eval? p' (n :: s) -- matches a program beginning with `push n` and safely evaluates the rest with `n` pushed on the stack
+  | add :: p' => -- matches a program beginning with `add` and checks whether the stack has two entries to add
       match s with -- splits computation into cases by pattern matching
-      | x :: y :: zs => eval? p' ((x + y) :: zs) -- handles this pattern-matching case
-      | _ => none -- handles this pattern-matching case
-  | pop :: p' => -- handles this pattern-matching case
+      | x :: y :: zs => eval? p' ((x + y) :: zs) -- matches a list with at least two elements and returns `eval? p' ((x + y) :: zs)`
+      | _ => none -- matches any remaining form and returns `none`
+  | pop :: p' => -- matches a program beginning with `pop` and checks whether the stack has an entry to remove
       match s with -- splits computation into cases by pattern matching
-      | _ :: ys => eval? p' ys -- handles this pattern-matching case
-      | _ => none -- handles this pattern-matching case
+      | _ :: ys => eval? p' ys -- matches a nonempty list and returns `eval? p' ys`
+      | _ => none -- matches any remaining form and returns `none`
 
 /--
 Inductive predicate for a valid program given an initial stack size.
@@ -71,16 +71,16 @@ inductive ValidProgram : (initStackSize : Nat) → (p : Program) → Prop -- dec
   | nil : ValidProgram n [] -- declares another constructor or syntax alternative
   /-- If the first instruction is a push and the rest of the program is valid  with initial stack size `s + 1` then the program is valid with initial stack size `s` -/
   | push  {p : Program} : -- declares another constructor or syntax alternative
-      ValidProgram (n + 1) p → -- continues the Lean declaration above
-      ValidProgram n (push k :: p) -- continues the Lean declaration above
+      ValidProgram (n + 1) p →
+      ValidProgram n (push k :: p)
   /-- If the first instruction is a pop and the rest of the program is valid with initial stack size `s` then the program is valid with initial stack size `s + 1` -/
   | pop  {p : Program} : -- declares another constructor or syntax alternative
-      ValidProgram n p → -- continues the Lean declaration above
-      ValidProgram (n + 1) (pop :: p) -- continues the Lean declaration above
+      ValidProgram n p →
+      ValidProgram (n + 1) (pop :: p)
   /-- If the first instruction is an add and the rest of the program is valid with initial stack size `s + 2` then the program is valid with initial stack size `s + 1` -/
   | add {p : Program} : -- declares another constructor or syntax alternative
-      ValidProgram (n + 1) p → -- continues the Lean declaration above
-      ValidProgram (n + 2) (add :: p) -- continues the Lean declaration above
+      ValidProgram (n + 1) p →
+      ValidProgram (n + 2) (add :: p)
 
 /-- The empty program is always valid. -/
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
@@ -95,13 +95,13 @@ theorem valid_program_push (n: Nat) (h : ValidProgram (n + 1) p') : -- states an
 @[simp, grind .] -- annotation controlling elaboration, simplification, or automation
 theorem valid_program_add (k: Nat) (h : ValidProgram (k + 1) p') : -- states and proves theorem `valid_program_add`
   ValidProgram (k + 2) (add :: p') := -- gives the value or proof for this declaration
-  ValidProgram.add h -- continues the Lean declaration above
+  ValidProgram.add h
 
 /-- Popping from a stack of size `n+1` is valid if the rest is valid for `n`. -/
 @[simp] -- annotation controlling elaboration, simplification, or automation
 theorem valid_program_pop (h : ValidProgram n p') : -- states and proves theorem `valid_program_pop`
   ValidProgram (n + 1) (pop :: p') := -- gives the value or proof for this declaration
-  ValidProgram.pop h -- continues the Lean declaration above
+  ValidProgram.pop h
 
 example (a b: Nat) : ValidProgram n [push a, push b, add] := by -- checks an unnamed example or proof
   grind -- asks the `grind` automation to finish the proof
@@ -149,20 +149,20 @@ This function is total and does not need to return `Option`.
 -/
 def evaluate (p: Program) (initStack: Stack) (h: ValidProgram initStack.length p) : Stack := -- defines `evaluate`
   match p with -- splits computation into cases by pattern matching
-  | [] => initStack -- handles this pattern-matching case
-  | push n :: p' => -- handles this pattern-matching case
-      evaluate p' (n :: initStack) (valid_program_of_push h) -- continues the Lean declaration above
-  | add :: p' => -- handles this pattern-matching case
+  | [] => initStack -- matches the empty list and returns `initStack`
+  | push n :: p' => -- matches a program beginning with `push n` and evaluates the rest with `n` pushed on the stack
+      evaluate p' (n :: initStack) (valid_program_of_push h)
+  | add :: p' => -- matches a program beginning with `add` and checks the initial stack shape before adding the top two entries
       match initStack with -- splits computation into cases by pattern matching
-      | x :: y :: zs => -- handles this pattern-matching case
-        evaluate p' ((x + y) :: zs) (valid_program_of_add h) -- continues the Lean declaration above
-      | [x] => by -- handles this pattern-matching case
+      | x :: y :: zs => -- matches a stack with at least two entries and evaluates the rest with `x + y` pushed above `zs`
+        evaluate p' ((x + y) :: zs) (valid_program_of_add h)
+      | [x] => by -- matches a one-entry stack; validity makes this `add` case impossible
         simp at h -- simplifies the current goal or hypotheses
-  | pop :: p' => -- handles this pattern-matching case
+  | pop :: p' => -- matches a program beginning with `pop` and checks the initial stack shape before removing its top
       match initStack with -- splits computation into cases by pattern matching
-      | [] => by -- handles this pattern-matching case
+      | [] => by -- matches an empty stack; validity makes this `pop` case impossible
         simp at h -- simplifies the current goal or hypotheses
-      | x :: ys => evaluate p' ys (valid_program_of_pop h) -- handles this pattern-matching case
+      | x :: ys => evaluate p' ys (valid_program_of_pop h) -- matches a nonempty stack and evaluates the rest after removing `x`
 
 #eval evaluate [push 2, push 3, add] [] (by grind) -- runs this expression as a tutorial check
 
@@ -214,7 +214,7 @@ h : ¬ValidProgram [].length [push 2, add]
 #eval evaluate [push 2, add] [] (by grind) -- runs this expression as a tutorial check
 
 macro "evaluate%" p:term  : term => -- declares a custom macro form
-  `(evaluate $p [] (by grind)) -- continues the Lean declaration above
+  `(evaluate $p [] (by grind))
 
 #eval evaluate% [push 2, push 3, add] -- runs this expression as a tutorial check
 
@@ -226,37 +226,37 @@ theorem valid_iff_eval?_some (p: Program) (s: Stack) : ValidProgram s.length p �
   constructor -- builds the required constructor or pair of goals
   · intro h -- focuses the next proof branch
     match p with -- splits computation into cases by pattern matching
-    | [] => grind [eval?] -- handles this pattern-matching case
-    | push n :: p' => -- handles this pattern-matching case
+    | [] => grind [eval?] -- matches the empty list and asks `grind` to solve this case
+    | push n :: p' => -- matches a program beginning with `push n` and proves success for the rest with the larger stack
         have h' : ValidProgram (s.length + 1) p' := valid_program_of_push h -- records an intermediate fact for the proof
         have ih := (valid_iff_eval?_some p' (n ::s)) -- records an intermediate fact for the proof
         grind [eval?] -- asks the `grind` automation to finish the proof
-    | add :: p' => -- handles this pattern-matching case
+    | add :: p' => -- matches a program beginning with `add` and proves success after checking the stack has two entries
         match s with -- splits computation into cases by pattern matching
-        | x :: y :: zs => -- handles this pattern-matching case
+        | x :: y :: zs => -- matches a stack with at least two entries and proves success for the summed stack
            have h' := valid_program_of_add h -- records an intermediate fact for the proof
            have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- records an intermediate fact for the proof
            grind [eval?] -- asks the `grind` automation to finish the proof
-    | pop :: p' => -- handles this pattern-matching case
+    | pop :: p' => -- matches a program beginning with `pop` and proves success after checking the stack is nonempty
         match s with -- splits computation into cases by pattern matching
-        | x :: ys => -- handles this pattern-matching case
+        | x :: ys => -- matches a nonempty stack and proves success for the tail stack
             have h' : ValidProgram ys.length p' := valid_program_of_pop h -- records an intermediate fact for the proof
             have ih := (valid_iff_eval?_some p' ys) -- records an intermediate fact for the proof
             grind [eval?] -- asks the `grind` automation to finish the proof
   · intro h -- focuses the next proof branch
     match p with -- splits computation into cases by pattern matching
-    | [] => grind [eval?] -- handles this pattern-matching case
-    | push n :: p' => -- handles this pattern-matching case
+    | [] => grind [eval?] -- matches the empty list and asks `grind` to solve this case
+    | push n :: p' => -- matches a program beginning with `push n` and derives validity of the rest from safe evaluation
         have ih := (valid_iff_eval?_some p' (n ::s)) -- records an intermediate fact for the proof
         grind [eval?] -- asks the `grind` automation to finish the proof
-    | add :: p' => -- handles this pattern-matching case
+    | add :: p' => -- matches a program beginning with `add` and derives validity after checking the stack has two entries
         match s with -- splits computation into cases by pattern matching
-        | x :: y :: zs => -- handles this pattern-matching case
+        | x :: y :: zs => -- matches a stack with at least two entries and derives validity for the summed stack
            have ih := (valid_iff_eval?_some p' ((x + y) :: zs)) -- records an intermediate fact for the proof
            grind [eval?] -- asks the `grind` automation to finish the proof
-    | pop :: p' => -- handles this pattern-matching case
+    | pop :: p' => -- matches a program beginning with `pop` and derives validity after checking the stack is nonempty
         match s with -- splits computation into cases by pattern matching
-        | x :: ys => -- handles this pattern-matching case
+        | x :: ys => -- matches a nonempty stack and derives validity for the tail stack
             have ih := (valid_iff_eval?_some p' ys) -- records an intermediate fact for the proof
             simp -- simplifies the current goal or hypotheses
             apply valid_program_pop -- reduces the goal using this theorem or constructor

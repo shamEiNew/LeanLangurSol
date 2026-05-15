@@ -42,8 +42,8 @@ If we use `List.map` naively, we get:
 #eval List.map (fun l => -- runs this expression as a tutorial check
   List.map (fun x => -- maps this case or syntax pattern to its result
     List.map (fun y => x * y) l -- maps this case or syntax pattern to its result
-  ) l -- continues the surrounding Lean expression
-) [[1, 2], [3, 4]] -- continues the surrounding Lean expression
+  ) l
+) [[1, 2], [3, 4]]
 
 /-!
 This is equivalent to:
@@ -52,8 +52,8 @@ def eg : List Nat := -- defines `eg`
   List.flatMap (fun l => -- maps this case or syntax pattern to its result
     List.flatMap (fun x => -- maps this case or syntax pattern to its result
       List.map (fun y => x * y) l -- maps this case or syntax pattern to its result
-    ) l -- continues the surrounding Lean expression
-  ) [[1, 2], [3, 4]] -- continues the surrounding Lean expression
+    ) l
+  ) [[1, 2], [3, 4]]
 #eval eg -- runs this expression as a tutorial check
 
 #eval [2, 3, 4].map (fun x => [x * 2, x* x]) -- runs this expression as a tutorial check
@@ -64,11 +64,11 @@ def eg : List Nat := -- defines `eg`
 We can define a custom syntax for Python-style for comprehensions.
 -/
 
-section PyForComprehension -- continues the Lean declaration above
+section PyForComprehension
 
 macro "[" t:term "pyfor" x:ident "in" l:term  "]" : term => do -- declares a custom macro form
   let fn ← `(fun $x => $t) -- binds an intermediate value for the following expression
-  `(List.map $fn $l) -- continues the Lean declaration above
+  `(List.map $fn $l)
 
 #eval [x * x pyfor x in [1,2,3,4,5]] -- runs this expression as a tutorial check
 
@@ -79,29 +79,29 @@ elab "[" t:term "py_for" x:ident "in" l:term  "]" : term => do -- declares an el
   let lExpr ← elabTerm l none -- binds an intermediate value for the following expression
   let fn ← elabTerm fnStx none -- binds an intermediate value for the following expression
   let ltype ← inferType lExpr -- binds an intermediate value for the following expression
-  Term.synthesizeSyntheticMVarsNoPostponing -- continues the Lean declaration above
+  Term.synthesizeSyntheticMVarsNoPostponing
   if ltype.isAppOf ``List then -- branches on this decidable condition
-    mkAppM ``List.map #[fn, lExpr] -- continues the Lean declaration above
+    mkAppM ``List.map #[fn, lExpr]
   else -- handles the alternative branch
     if ltype.isAppOf ``Array then -- branches on this decidable condition
-      mkAppM ``Array.map #[fn, lExpr] -- continues the Lean declaration above
+      mkAppM ``Array.map #[fn, lExpr]
     else -- handles the alternative branch
-      throwError "Expected a List or Array in py_for comprehension, got {ltype}" -- continues the Lean declaration above
+      throwError "Expected a List or Array in py_for comprehension, got {ltype}"
 
 
 #eval [x + 1 py_for x in [10,20,30]] -- runs this expression as a tutorial check
 
 #eval [x * 2 py_for x in #[1,2,3,4]] -- runs this expression as a tutorial check
 
-declare_syntax_cat for_range -- continues the Lean declaration above
+declare_syntax_cat for_range
 syntax "pyFor" ident "in" term : for_range -- declares new parser syntax
 
 syntax "[" term for_range* "]" : term -- declares new parser syntax
 
 macro_rules -- adds a macro expansion rule
-| `([ $y:term pyFor $x:ident in $l ]) => do -- handles this pattern-matching case
+| `([ $y:term pyFor $x:ident in $l ]) => do -- matches a one-generator `pyFor` comprehension and returns a `List.map` over that generator
     `(List.map (fun $x => $y) $l) -- maps this case or syntax pattern to its result
-| `([ $y:term  pyFor $x:ident in $l $ls:for_range*]) => do -- handles this pattern-matching case
+| `([ $y:term  pyFor $x:ident in $l $ls:for_range*]) => do -- matches a comprehension with another generator and returns a `flatMap` over the first generator
     let tail ← `([ $y:term $ls:for_range* ]) -- binds an intermediate value for the following expression
     `(List.flatMap (fun $x => $tail) $l) -- maps this case or syntax pattern to its result
 

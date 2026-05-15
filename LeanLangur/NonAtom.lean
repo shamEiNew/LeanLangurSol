@@ -13,11 +13,11 @@ A typeclass for types that have at least two distinct elements.
 -/
 class NonAtom (α : Type) where -- declares the typeclass `NonAtom`
     /-- The first distinct element. -/
-    firstAtom : α -- continues the Lean declaration above
+    firstAtom : α
     /-- The second distinct element. -/
-    secondAtom : α -- continues the Lean declaration above
+    secondAtom : α
     /-- Proof that the two elements are distinct. -/
-    firstNeqSecond : firstAtom ≠ secondAtom -- continues the Lean declaration above
+    firstNeqSecond : firstAtom ≠ secondAtom
 
 /--
 Helper function to get the first atom of a `NonAtom` type.

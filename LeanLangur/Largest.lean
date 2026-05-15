@@ -13,9 +13,9 @@ namespace langur -- starts a namespace to group the tutorial definitions
 
 def largestNat : List Nat → Nat -- defines `largestNat`
 | []       => 0  -- placeholder for empty list
-| [x]      => x -- handles this pattern-matching case
-| x :: y :: xs => -- handles this pattern-matching case
-    max x (largestNat (y :: xs)) -- continues the Lean declaration above
+| [x]      => x -- matches a singleton list and returns `x`
+| x :: y :: xs => -- matches a list with at least two elements and returns `max x (largestNat (y :: xs))`
+    max x (largestNat (y :: xs))
 
 #check largestNat.induct -- asks Lean to display the inferred type
 
@@ -23,70 +23,70 @@ def largestNat : List Nat → Nat -- defines `largestNat`
 
 theorem largestNat_mem : ∀ (l : List Nat), l ≠ [] → largestNat l ∈ l := by -- states and proves theorem `largestNat_mem`
   intro l -- introduces hypotheses or variables into the proof context
-  fun_induction largestNat <;> grind -- continues the Lean declaration above
+  fun_induction largestNat <;> grind
 
 
 theorem largestNat_ge_all (l: List Nat) (x: Nat) : -- states and proves theorem `largestNat_ge_all`
   x ∈ l → x ≤ largestNat l := by -- gives the value or proof for this declaration
-  fun_induction largestNat <;> grind -- continues the Lean declaration above
+  fun_induction largestNat <;> grind
 
-variable {α : Type}[LinearOrder α] -- continues the Lean declaration above
+variable {α : Type}[LinearOrder α]
 
 def largest₀ [Inhabited α] (l: List α) : α := -- defines `largest`
   match l with -- splits computation into cases by pattern matching
-  | [] => default -- handles this pattern-matching case
-  | [x] => x -- handles this pattern-matching case
-  | x :: y :: xs => -- handles this pattern-matching case
-    max x (largest₀ (y :: xs)) -- continues the Lean declaration above
+  | [] => default -- matches the empty list and returns the default value
+  | [x] => x -- matches a singleton list and returns `x`
+  | x :: y :: xs => -- matches a list with at least two elements and returns `max x (largest₀ (y :: xs))`
+    max x (largest₀ (y :: xs))
 
 example [Inhabited α] : α × α := -- checks an unnamed example or proof
-  default -- continues the Lean declaration above
+  default
 
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def largest (l: List α) (h: l ≠ []) : α := -- defines `largest`
   match l with -- splits computation into cases by pattern matching
-  | [x] => x -- handles this pattern-matching case
-  | x :: y :: xs => -- handles this pattern-matching case
-    max x (largest (y :: xs) (by simp)) -- continues the Lean declaration above
+  | [x] => x -- matches a singleton list and returns `x`
+  | x :: y :: xs => -- matches a list with at least two elements and returns `max x (largest (y :: xs) (by simp))`
+    max x (largest (y :: xs) (by simp))
 
 #eval largest [1, 3, 2] (by simp)  -- evaluates to 3
 
 theorem largest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `largest_mem`
   largest l h ∈ l := by -- gives the value or proof for this declaration
   match l with -- splits computation into cases by pattern matching
-  | [x] => grind -- handles this pattern-matching case
-  | x :: y :: xs => -- handles this pattern-matching case
+  | [x] => grind -- matches a singleton list and asks `grind` to solve this case
+  | x :: y :: xs => -- matches a list with at least two elements and proves this case using the following proof steps
     have ih := largest_mem (y :: xs) (by simp) -- records an intermediate fact for the proof
     grind -- asks the `grind` automation to finish the proof
 
 theorem largest_ge_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `largest_ge_all`
   x ∈ l → x ≤ largest l h := by -- gives the value or proof for this declaration
   match l with -- splits computation into cases by pattern matching
-  | [y] => -- handles this pattern-matching case
+  | [y] => -- matches a singleton list and proves this case with the tactic steps below
     grind -- asks the `grind` automation to finish the proof
-  | y :: z :: xs => -- handles this pattern-matching case
+  | y :: z :: xs => -- matches a list with at least two elements and proves this case using the following proof steps
     have ih := -- records an intermediate fact for the proof
-      largest_ge_all (z :: xs) (by simp) x -- continues the Lean declaration above
+      largest_ge_all (z :: xs) (by simp) x
     grind -- asks the `grind` automation to finish the proof
 
 def largest? (l: List α) : Option α := -- defines `largest?`
   match l with -- splits computation into cases by pattern matching
-  | [] => none -- handles this pattern-matching case
-  | x :: ys   => -- handles this pattern-matching case
+  | [] => none -- matches the empty list and returns `none`
+  | x :: ys   => -- matches a nonempty list and inspects `largest? ys` in a nested match to decide the result
     match largest? ys  with -- splits computation into cases by pattern matching
-    | none => some x -- handles this pattern-matching case
-    | some m => some (max x m) -- handles this pattern-matching case
+    | none => some x -- matches a missing optional value and returns `some x`
+    | some m => some (max x m) -- matches a present optional value and returns `some (max x m)`
 
 #eval largest? [1, 3, 2]  -- evaluates to some 3
 #eval largest? ([] : List Nat)  -- evaluates to none
 
 def doubleLargest?₀ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
   match largest? l with -- splits computation into cases by pattern matching
-  | none => none -- handles this pattern-matching case
-  | some m => some (2 * m) -- handles this pattern-matching case
+  | none => none -- matches a missing optional value and returns `none`
+  | some m => some (2 * m) -- matches a present optional value and returns `some (2 * m)`
 
 def doubleLargest?₁ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
-  (largest? l).map (fun m => 2 * m) -- continues the surrounding Lean expression
+  (largest? l).map (fun m => 2 * m)
 
 def doubleLargest?₂ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
   do -- starts a `do` block for monadic sequencing

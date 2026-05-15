@@ -42,9 +42,9 @@ instance : Add String where -- provides an instance for typeclass search
 #eval "Hello" + "world" -- runs this expression as a tutorial check
 
 instance {α β : Type}[Add α][Add β] : -- provides an instance for typeclass search
-  Add (α × β) where -- continues the Lean declaration above
+  Add (α × β) where
   add := fun (a₁, b₁) (a₂, b₂) ↦ -- gives the value or proof for this declaration
-      (a₁ + a₂, b₁ + b₂) -- continues the surrounding Lean expression
+      (a₁ + a₂, b₁ + b₂)
 
 #eval (1, 2, "Hello") +(3, 4, "world") -- runs this expression as a tutorial check
 

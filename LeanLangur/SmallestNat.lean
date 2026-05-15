@@ -19,9 +19,9 @@ Returns `default` (0) for an empty list.
 -/
 def smallestI (l: List Nat) : Nat := -- defines `smallestI`
   match l with -- splits computation into cases by pattern matching
-  | [x] => x -- handles this pattern-matching case
-  | x :: y :: zs => -- handles this pattern-matching case
-    min x (smallestI (y :: zs)) -- continues the Lean declaration above
+  | [x] => x -- matches a singleton list and returns `x`
+  | x :: y :: zs => -- matches a list with head `x` and nonempty tail `y :: zs`, then returns the smaller of `x` and the recursive result
+    min x (smallestI (y :: zs))
   | [] => default  -- placeholder for empty list
 
 #eval smallestI [3, 1, 4, 1, 5, 9, 2, 6, 5]  -- evaluates to 1
@@ -32,23 +32,23 @@ The non-emptiness is guaranteed by the hypothesis `h`.
 -/
 def smallest (l: List Nat) (h: l ≠ []) : Nat := -- defines `smallest`
   match l with -- splits computation into cases by pattern matching
-  | x :: [] => x -- handles this pattern-matching case
-  | x :: y :: zs => -- handles this pattern-matching case
-    min x (smallest (y :: zs) (by simp)) -- continues the Lean declaration above
+  | x :: [] => x -- matches a singleton list and returns `x`
+  | x :: y :: zs => -- matches a list with head `x` and nonempty tail `y :: zs`, then returns the smaller of `x` and the recursive result
+    min x (smallest (y :: zs) (by simp))
 
 /--
 The element returned by `smallest` is indeed a member of the list.
 -/
 theorem smallest_mem (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
     smallest l h ∈ l := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind -- continues the Lean declaration above
+  fun_induction smallest <;> grind
 
 /--
 The element returned by `smallest` is less than or equal to all elements in the list.
 -/
 theorem smallest_le_all (l: List Nat) (h: l ≠ []) (x: Nat) : -- states and proves theorem `smallest_le_all`
     x ∈ l → smallest l h ≤ x := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind -- continues the Lean declaration above
+  fun_induction smallest <;> grind
 
 #eval smallest [3, 1, 4, 1, 5, 9, 2, 6, 5] (by simp) -- evaluates to 1
 
@@ -56,7 +56,7 @@ theorem smallest_le_all (l: List Nat) (h: l ≠ []) (x: Nat) : -- states and pro
 A macro to call `smallest` and automatically discharge the non-emptiness proof for literals.
 -/
 macro "smallest%" l:term : term => do -- declares a custom macro form
-  `(smallest $l (by simp)) -- continues the Lean declaration above
+  `(smallest $l (by simp))
 
 #eval smallest% [3, 1, 4, 1, 5, 9, 2, 6, 5] -- evaluates to 1
 

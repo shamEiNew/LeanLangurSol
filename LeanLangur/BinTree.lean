@@ -13,7 +13,7 @@ When you reach this, we expect that you have already worked through:
 
 namespace langur -- starts a namespace to group the tutorial definitions
 
-variable {α : Type} -- continues the Lean declaration above
+variable {α : Type}
 
 /--
 A simple binary tree where each leaf carries a value of type `α`,
@@ -31,13 +31,13 @@ Converts a binary tree to a list by performing an in-order traversal.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def BinTree.toList {α : Type} : BinTree α → List α -- defines `BinTree.toList`
-  | leaf x => [x] -- handles this pattern-matching case
-  | node l r => -- handles this pattern-matching case
-    BinTree.toList l ++ BinTree.toList r -- continues the Lean declaration above
+  | leaf x => [x] -- matches a leaf tree and returns `[x]`
+  | node l r => -- matches an internal tree node and returns the concatenation of the left and right subtree lists
+    BinTree.toList l ++ BinTree.toList r
 
 /-- An example binary tree containing natural numbers. -/
 def exampleTree : BinTree Nat := -- defines `exampleTree`
-  node (node (leaf 1) (leaf 2)) (leaf 3) -- continues the Lean declaration above
+  node (node (leaf 1) (leaf 2)) (leaf 3)
 
 #eval exampleTree.toList  -- Output: [1, 2, 3]
 
@@ -46,8 +46,8 @@ Inductive predicate for membership in a binary tree.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def Bintree.mem {α : Type} : BinTree α → α → Prop -- defines `Bintree.mem`
-  | leaf x, y => x = y -- handles this pattern-matching case
-  | node l r, y => Bintree.mem l y ∨ Bintree.mem r y -- handles this pattern-matching case
+  | leaf x, y => x = y -- matches a leaf tree and returns `x = y`
+  | node l r, y => Bintree.mem l y ∨ Bintree.mem r y -- matches an internal tree node and returns `Bintree.mem l y ∨ Bintree.mem r y`
 
 /--
 Instance for using the `∈` notation with `BinTree`.
@@ -80,11 +80,11 @@ theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) : -- states and
     x ∈ t ↔ x ∈ BinTree.toList t := by -- gives the value or proof for this declaration
     apply Iff.intro -- reduces the goal using this theorem or constructor
     · induction t with -- focuses the next proof branch
-    | leaf a => grind -- handles this pattern-matching case
-    | node l r ihl ihr => grind -- handles this pattern-matching case
+    | leaf a => grind -- matches a leaf tree and asks `grind` to solve this case
+    | node l r ihl ihr => grind -- matches an internal tree node and asks `grind` to solve this case
     · induction t with -- focuses the next proof branch
-    | leaf a => grind -- handles this pattern-matching case
-    | node l r ihl ihr => grind -- handles this pattern-matching case
+    | leaf a => grind -- matches a leaf tree and asks `grind` to solve this case
+    | node l r ihl ihr => grind -- matches an internal tree node and asks `grind` to solve this case
 
 /-!
 ## Exercise: List to BinTree

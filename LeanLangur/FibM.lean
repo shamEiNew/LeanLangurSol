@@ -16,9 +16,9 @@ namespace langur -- starts a namespace to group the tutorial definitions
 namespace FibM -- starts a namespace to group the tutorial definitions
 
 def slowFib : Nat → Nat -- defines `slowFib`
-  | 0 => 1 -- handles this pattern-matching case
-  | 1 => 1 -- handles this pattern-matching case
-  | n + 2 => slowFib (n + 1) + slowFib n -- handles this pattern-matching case
+  | 0 => 1 -- matches zero and returns `1`
+  | 1 => 1 -- matches one and returns `1`
+  | n + 2 => slowFib (n + 1) + slowFib n -- matches a successor natural number and returns `slowFib (n + 1) + slowFib n`
 
 #eval slowFib 33 -- runs this expression as a tutorial check
 
@@ -29,16 +29,16 @@ abbrev FibM := StateM (HashMap Nat  Nat) -- introduces `FibM` as a reducible abb
 def fibM (n : Nat) : FibM Nat := do -- defines `fibM`
   let cache ← get -- binds an intermediate value for the following expression
   match cache.get? n with -- splits computation into cases by pattern matching
-  | some value => return value -- handles this pattern-matching case
-  | none => -- handles this pattern-matching case
+  | some value => return value -- matches a present optional value and returns value
+  | none => -- matches a missing optional value and inspects `n` in a nested match to decide the result
     match n with -- splits computation into cases by pattern matching
-    | 0 => -- handles this pattern-matching case
+    | 0 => -- matches zero and returns `modify (fun m => m.insert 0 1)`
       modify (fun m => m.insert 0 1) -- maps this case or syntax pattern to its result
       return 1 -- returns this value from the monadic block
-    | 1 => -- handles this pattern-matching case
+    | 1 => -- matches one and returns `modify (fun m => m.insert 1 1)`
       modify (fun m => m.insert 1 1) -- maps this case or syntax pattern to its result
       return 1 -- returns this value from the monadic block
-    | n + 2 => -- handles this pattern-matching case
+    | n + 2 => -- matches a successor natural number and computes intermediate values and returns `return result`
       let fn1 ← fibM (n + 1) -- binds an intermediate value for the following expression
       let fn2 ← fibM n -- binds an intermediate value for the following expression
       let result := fn1 + fn2 -- binds an intermediate value for the following expression

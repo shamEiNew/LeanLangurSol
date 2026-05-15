@@ -63,7 +63,7 @@ However, this makes the function noncomputable because it relies on a decision p
 
 open Classical in -- opens names so constructors or helpers can be written unqualified
 noncomputable def minExist {α : Type}[LE α] -- defines `minExist` using noncomputable reasoning
-  (a b : α) : α := -- continues the surrounding Lean expression
+  (a b : α) : α :=
   if a ≤ b then a else b -- branches on this decidable condition
 
 /--
@@ -118,8 +118,8 @@ A more complex structure to illustrate derived decidable equality.
 Contains a function field which relies on our `DecidableEq (Bool → Nat)` instance.
 -/
 structure Complicated where -- declares the structure `Complicated` with named fields
-  n : Nat -- continues the Lean declaration above
-  f : Bool → Nat -- continues the Lean declaration above
+  n : Nat
+  f : Bool → Nat
 deriving DecidableEq -- asks Lean to generate standard instances automatically
 
 

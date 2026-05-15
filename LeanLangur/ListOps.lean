@@ -20,7 +20,7 @@ Doubles a list by concatenating it with itself.
 This version takes the type `α` as an explicit parameter.
 -/
 def doubleList (α : Type) (l: List α) : List α := -- defines `doubleList`
-  l ++ l -- continues the Lean declaration above
+  l ++ l
 
 #eval doubleList Nat [1, 3 ,5] -- runs this expression as a tutorial check
 
@@ -41,7 +41,7 @@ Doubles a list by concatenating it with itself.
 This version uses an implicit type parameter `{α : Type}`.
 -/
 def dblList {α : Type} (l: List α) : List α := -- defines `dblList`
-  l ++ l -- continues the Lean declaration above
+  l ++ l
 
 #eval dblList [1, 3 ,5] -- runs this expression as a tutorial check
 

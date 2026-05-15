@@ -31,8 +31,8 @@ inductive FileM : Type → Type _ where -- declares the inductive type or propos
 FlatMap operation for the `FileM` monad.
 -/
 def FileM.flatMap {α β : Type} (f : α → FileM β) : FileM α → FileM β -- defines `FileM.flatMap`
-  | .pure a => f a -- handles this pattern-matching case
-  | .cons cmd k => .cons cmd (fun b => (k b).flatMap f) -- handles this pattern-matching case
+  | .pure a => f a -- matches a completed `FileM` value and returns `f a`
+  | .cons cmd k => .cons cmd (fun b => (k b).flatMap f) -- matches a pending `FileM` command and returns `.cons cmd (fun b => (k b).flatMap f)`
 
 instance : Monad FileM where -- provides an instance for typeclass search
   pure := FileM.pure -- gives the value or proof for this declaration
@@ -42,27 +42,27 @@ instance : Monad FileM where -- provides an instance for typeclass search
 Reads the contents of a file.
 -/
 def FileM.read (path : FilePath) : FileM String := -- defines `FileM.read`
-    .cons (FileCmd.read path) FileM.pure -- continues the Lean declaration above
+    .cons (FileCmd.read path) FileM.pure
 
 /--
 Writes contents to a file.
 -/
 def FileM.write (path : FilePath) (contents : String) : FileM Unit := -- defines `FileM.write`
-    .cons (FileCmd.write path contents) FileM.pure -- continues the Lean declaration above
+    .cons (FileCmd.write path contents) FileM.pure
 
 /--
 Runs a `FileM` program in the `IO` monad.
 -/
 def FileM.run : FileM α → IO α -- defines `FileM.run`
-    | FileM.pure a => return a -- handles this pattern-matching case
-    | FileM.cons cmd k => -- handles this pattern-matching case
+    | FileM.pure a => return a -- matches a completed `FileM` value and returns a
+    | FileM.cons cmd k => -- matches a pending `FileM` command and inspects `cmd` in a nested match to decide the result
         match cmd with -- splits computation into cases by pattern matching
-        | FileCmd.read path => do -- handles this pattern-matching case
+        | FileCmd.read path => do -- matches a file-read command and computes intermediate values and returns `FileM.run (k contents)`
             let contents ← IO.FS.readFile path -- binds an intermediate value for the following expression
-            FileM.run (k contents) -- continues the Lean declaration above
-        | FileCmd.write path contents => do -- handles this pattern-matching case
-            IO.FS.writeFile path contents -- continues the Lean declaration above
-            FileM.run (k ()) -- continues the Lean declaration above
+            FileM.run (k contents)
+        | FileCmd.write path contents => do -- matches a file-write command and writes the requested file before resuming the computation
+            IO.FS.writeFile path contents
+            FileM.run (k ())
 
 /--
 Map operation for the `FileM` monad.
@@ -122,10 +122,10 @@ inductive SafeProg  : {α : Type} →  FileM α → Prop where -- declares the i
 | readSafe (p : FilePath) (h : SafePath p) : SafeProg  (FileM.read p) -- declares another constructor or syntax alternative
 | writeSafe (p : FilePath) (h : SafePath p) (s : String) (h2 : SafeVal s) : SafeProg (FileM.write p s) -- declares another constructor or syntax alternative
 | flatMapSafe -- declares another constructor or syntax alternative
-    (x : FileM α) -- continues the surrounding Lean expression
-    (h : SafeProg x) -- continues the surrounding Lean expression
-    (f : α → FileM β) -- continues the surrounding Lean expression
-    (h2 : ∀a, SafeVal a → SafeProg  (f a)) : SafeProg  (.flatMap f x) -- continues the surrounding Lean expression
+    (x : FileM α)
+    (h : SafeProg x)
+    (f : α → FileM β)
+    (h2 : ∀a, SafeVal a → SafeProg  (f a)) : SafeProg  (.flatMap f x)
 
 /--
 A program that just returns a safe value is safe.
@@ -155,10 +155,10 @@ The composition of two safe programs is safe.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem flatMapSafe -- states and proves theorem `flatMapSafe`
-    (x : FileM α) -- continues the surrounding Lean expression
-    (h : SafeProg x) -- continues the surrounding Lean expression
-    (f : α → FileM β) -- continues the surrounding Lean expression
-    (h2 : ∀a, SafeVal a → SafeProg  (f a)) : SafeProg  (.flatMap f x) := by -- continues the surrounding Lean expression
+    (x : FileM α)
+    (h : SafeProg x)
+    (f : α → FileM β)
+    (h2 : ∀a, SafeVal a → SafeProg  (f a)) : SafeProg  (.flatMap f x) := by
     apply SafeProg.flatMapSafe <;> assumption -- reduces the goal using this theorem or constructor
 
 /--
@@ -166,7 +166,7 @@ Copies content from a public path to a data path.
 -/
 def pubToData (p : FilePath) : FileM Unit := do -- defines `pubToData`
     let contents ← FileM.read ("public" / p) -- binds an intermediate value for the following expression
-    FileM.write ("data" / p) contents -- continues the Lean declaration above
+    FileM.write ("data" / p) contents
 
 /--
 Proof that `pubToData` is a safe program.
@@ -181,19 +181,19 @@ def mergePubs (p1 p2 out : FilePath) : FileM Unit := do -- defines `mergePubs`
     let c1 ← FileM.read ("public" / p1) -- binds an intermediate value for the following expression
     let c2 ← FileM.read ("public" / p2) -- binds an intermediate value for the following expression
     let merged := c1 ++ "\n" ++ c2 -- binds an intermediate value for the following expression
-    FileM.write ("data" / out) merged -- continues the Lean declaration above
+    FileM.write ("data" / out) merged
 
 /--
 Proof that `mergePubs` is a safe program.
 -/
 theorem safe_mergePubs (p1 p2 out : FilePath) : SafeProg (mergePubs p1 p2 out) := by -- states and proves theorem `safe_mergePubs`
     apply SafeProg.flatMapSafe -- reduces the goal using this theorem or constructor
-    . apply SafeProg.readSafe -- continues the Lean declaration above
+    . apply SafeProg.readSafe
       grind -- asks the `grind` automation to finish the proof
-    . intro c1 hC1 -- continues the Lean declaration above
+    . intro c1 hC1
       apply SafeProg.flatMapSafe -- reduces the goal using this theorem or constructor
-      . grind -- continues the Lean declaration above
-      . intro c2 hC2 -- continues the Lean declaration above
+      . grind
+      . intro c2 hC2
         let merged := c1 ++ "\n" ++ c2 -- binds an intermediate value for the following expression
         have hMerged : SafeVal merged := blocks c1 c2 hC1 hC2 -- records an intermediate fact for the proof
         grind -- asks the `grind` automation to finish the proof

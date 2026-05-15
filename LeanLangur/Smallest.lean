@@ -11,30 +11,30 @@ namespace langur -- starts a namespace to group the tutorial definitions
 
 namespace general -- starts a namespace to group the tutorial definitions
 
-variable {α : Type} [LinearOrder α] -- continues the Lean declaration above
+variable {α : Type} [LinearOrder α]
 
 /--
 Implementation of the smallest element in a non-empty list for any type with a linear order.
 -/
 def smallest  (l: List α) (h: l ≠ []) : α := -- defines `smallest`
   match l with -- splits computation into cases by pattern matching
-  | x :: [] => x -- handles this pattern-matching case
-  | x :: y :: zs => -- handles this pattern-matching case
-    min x (smallest (y :: zs) (by simp)) -- continues the Lean declaration above
+  | x :: [] => x -- matches a singleton list and returns `x`
+  | x :: y :: zs => -- matches a list with at least two elements and returns `min x (smallest (y :: zs) (by simp))`
+    min x (smallest (y :: zs) (by simp))
 
 /--
 The element returned by `smallest` is indeed a member of the list.
 -/
 theorem smallest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
     smallest l h ∈ l := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind -- continues the Lean declaration above
+  fun_induction smallest <;> grind
 
 /--
 The element returned by `smallest` is less than or equal to all elements in the list.
 -/
 theorem smallest_le_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `smallest_le_all`
     x ∈ l → smallest l h ≤ x := by -- gives the value or proof for this declaration
-  fun_induction smallest <;> grind -- continues the Lean declaration above
+  fun_induction smallest <;> grind
 
 end general -- closes the current namespace or section
 
@@ -46,7 +46,7 @@ Define a function analogous to `smallest` for lists of elements of a type with a
 One of the above theorems is true for partial orders, but the other is not. Which one is it? Prove the one that is true, and give a counterexample for the one that is not using the partial order on `Nat × Nat`.
 -/
 namespace partial_order -- starts a namespace to group the tutorial definitions
-variable {α : Type} [PartialOrder α][DecidableLE α] -- continues the Lean declaration above
+variable {α : Type} [PartialOrder α][DecidableLE α]
 
 end partial_order -- closes the current namespace or section
 

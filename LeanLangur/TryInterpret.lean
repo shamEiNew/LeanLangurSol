@@ -18,20 +18,20 @@ def defaultFrontendHeader : String := -- defines `defaultFrontendHeader`
   "open scoped Nat\n" -- opens natural-number scoped notation in generated examples
 
 def simpleRunFrontend -- defines `simpleRunFrontend`
-    (input : String) -- continues the surrounding Lean expression
-    (env: Environment) -- continues the surrounding Lean expression
+    (input : String)
+    (env: Environment)
     (opts : Options := {}) (top : String := defaultFrontendHeader) -- supplies options and default header text
-    (fileName : String := "<input>") -- continues the surrounding Lean expression
+    (fileName : String := "<input>")
     : IO (Environment × MessageLog) := unsafe do -- gives the value or proof for this declaration
   let inputCtx := Parser.mkInputContext (top ++ input) fileName -- binds an intermediate value for the following expression
   let commandState := Command.mkState env (opts := opts) -- binds an intermediate value for the following expression
   let parserState: ModuleParserState := {} -- binds an intermediate value for the following expression
   let s ← IO.processCommands inputCtx parserState commandState -- binds an intermediate value for the following expression
-  pure (s.commandState.env, s.commandState.messages) -- continues the Lean declaration above
+  pure (s.commandState.env, s.commandState.messages)
 
 def runFrontendForMessagesM (input: String) : MetaM (List String) := do -- defines `runFrontendForMessagesM`
   let (_, msgs) ← simpleRunFrontend input (← getEnv) -- binds an intermediate value for the following expression
-  msgs.toList.mapM (·.toString) -- continues the Lean declaration above
+  msgs.toList.mapM (·.toString)
 
 def getTryThisTacticText? (input: String) : MetaM (Option String) := do -- defines `getTryThisTacticText?`
   let msgs ← runFrontendForMessagesM input -- binds an intermediate value for the following expression
@@ -41,27 +41,27 @@ def getTryThisTacticText? (input: String) : MetaM (Option String) := do -- defin
     else -- handles the alternative branch
       return none -- returns this value from the monadic block
 
-declare_syntax_cat tacticSeqCategory -- continues the Lean declaration above
+declare_syntax_cat tacticSeqCategory
 syntax tacticSeq : tacticSeqCategory -- declares new parser syntax
 
 def tacticsFromText? (tacticText: String) : MetaM (Option (TSyntax ``tacticSeq)) := do -- defines `tacticsFromText?`
   let stx? := runParserCategory (← getEnv) `tacticSeqCategory tacticText -- binds an intermediate value for the following expression
   match stx? with -- splits computation into cases by pattern matching
-  | Except.ok stx => -- handles this pattern-matching case
-    logInfo m!"Parsed tactics: {stx}" -- continues the Lean declaration above
+  | Except.ok stx => -- matches a successful result and logs the matched information before returning
+    logInfo m!"Parsed tactics: {stx}"
     match stx with -- splits computation into cases by pattern matching
-    | `(tacticSeqCategory| $ts:tacticSeq) => -- handles this pattern-matching case
+    | `(tacticSeqCategory| $ts:tacticSeq) => -- matches parsed tactic-sequence syntax and returns it
       return some ts -- returns this value from the monadic block
-    | _ => -- handles this pattern-matching case
-      logError m!"Unexpected syntax format for tactics: {stx}" -- continues the Lean declaration above
+    | _ => -- matches any remaining form and logs the matched information before returning
+      logError m!"Unexpected syntax format for tactics: {stx}"
       return none -- returns this value from the monadic block
-  | Except.error e => -- handles this pattern-matching case
-    logError m!"Failed to parse tactics; {e}:\n{tacticText}" -- continues the Lean declaration above
+  | Except.error e => -- matches a failed result and logs the matched information before returning
+    logError m!"Failed to parse tactics; {e}:\n{tacticText}"
     return none -- returns this value from the monadic block
 
 def getTryThisTactic? (input: String) : MetaM (Option (TSyntax ``tacticSeq)) := do -- defines `getTryThisTactic?`
   let tacticText? ← getTryThisTacticText? input -- binds an intermediate value for the following expression
-  tacticText?.bindM tacticsFromText? -- continues the Lean declaration above
+  tacticText?.bindM tacticsFromText?
 
 #eval runFrontendForMessagesM "example (n : Nat) : n ≤ n + 1 := by grind? " -- runs this expression as a tutorial check
 
@@ -71,8 +71,8 @@ def getTryThisTactic? (input: String) : MetaM (Option (TSyntax ``tacticSeq)) := 
 #eval runFrontendForMessagesM "example (n : Nat) : n ≤ n + n := by grind? " -- runs this expression as a tutorial check
 
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
-  | 0   => 1 -- handles this pattern-matching case
-  | n+1 => x + n := by -- handles this pattern-matching case
+  | 0   => 1 -- matches zero and returns `1`
+  | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
   grind? -- asks the `grind` automation to finish the proof
 
 #eval runFrontendForMessagesM -- runs this expression as a tutorial check
@@ -86,8 +86,8 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
 #eval getTryThisTacticText? "example (n : Nat) : n ≤ n + n := by grind? " -- runs this expression as a tutorial check
 
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
-  | 0   => 1 -- handles this pattern-matching case
-  | n+1 => x + n := by -- handles this pattern-matching case
+  | 0   => 1 -- matches zero and returns `1`
+  | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
   grind? -- asks the `grind` automation to finish the proof
 
 #eval getTryThisTactic? -- runs this expression as a tutorial check
@@ -101,8 +101,8 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
 #eval getTryThisTactic? "example (n : Nat) : n ≤ n + n := by grind? " -- runs this expression as a tutorial check
 
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
-  | 0   => 1 -- handles this pattern-matching case
-  | n+1 => x + n := by -- handles this pattern-matching case
+  | 0   => 1 -- matches zero and returns `1`
+  | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
   grind? -- asks the `grind` automation to finish the proof
 
 #eval getTryThisTactic? -- runs this expression as a tutorial check
@@ -112,9 +112,9 @@ example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
   "  grind? ") -- asks `grind?` to suggest a proof inside the generated text
 
 example (x : Nat) : 0 < match x with -- checks an unnamed example or proof
-  | 0   => 1 -- handles this pattern-matching case
-  | n+1 => x + n := by -- handles this pattern-matching case
-  aesop? -- continues the Lean declaration above
+  | 0   => 1 -- matches zero and returns `1`
+  | n+1 => x + n := by -- matches a successor natural number and returns `x + n` as the expression under the inequality
+  aesop?
 
 #eval getTryThisTactic? -- runs this expression as a tutorial check
   ("example (x : Nat) : 0 < match x with\n" ++ -- starts the generated example text

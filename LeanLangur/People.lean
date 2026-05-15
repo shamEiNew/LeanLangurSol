@@ -15,15 +15,15 @@ A structure representing a person with a name and an age.
 Uses `deriving Repr` for printable output and `DecidableEq` for equality checking.
 -/
 structure Person where -- declares the structure `Person` with named fields
-  name : String -- continues the Lean declaration above
-  age  : Nat -- continues the Lean declaration above
+  name : String
+  age  : Nat
   deriving Repr, DecidableEq -- asks Lean to generate standard instances automatically
 
 #check Person.mk -- asks Lean to display the inferred type
 
 /-- An example instance of the `Person` structure. -/
 def alice : Person := -- defines `alice`
-  { name := "Alice", age := 30 } -- continues the surrounding Lean expression
+  { name := "Alice", age := 30 }
 
 #eval alice.name  -- evaluates to "Alice"
 #eval alice.age   -- evaluates to 30
@@ -34,14 +34,14 @@ A structure representing a voter, extending the `Person` structure.
 Includes a `voterId` and a proof of voting eligibility based on age.
 -/
 structure Voter extends Person where -- declares the structure `Voter` with named fields
-  voterId : Nat -- continues the Lean declaration above
+  voterId : Nat
   /-- Proof that the voter is at least 18 years old. -/
   is_voting_eligible : 18 ≤ age := by grind -- gives the value or proof for this declaration
   deriving Repr, DecidableEq -- asks Lean to generate standard instances automatically
 
 /-- An example instance of the `Voter` structure. -/
 def bob : Voter := -- defines `bob`
-  { name := "Bob", age := 25, voterId := 12345} -- continues the surrounding Lean expression
+  { name := "Bob", age := 25, voterId := 12345}
 
 
 /-!

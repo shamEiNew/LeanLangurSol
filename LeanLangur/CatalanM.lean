@@ -24,23 +24,23 @@ abbrev CatalanM := StateM (HashMap Nat Nat) -- introduces `CatalanM` as a reduci
 
 /-- Naive recursive computation of Catalan numbers -/
 partial def catalanNaive : Nat → Nat -- defines the partial function `catalanNaive`
-  | 0 => 1 -- handles this pattern-matching case
-  | n + 1 => -- handles this pattern-matching case
+  | 0 => 1 -- matches zero and returns `1`
+  | n + 1 => -- matches a successor natural number and computes intermediate values and returns `terms.sum`
     let terms := -- binds an intermediate value for the following expression
       List.range (n + 1) |>.map (fun i => catalanNaive i * catalanNaive (n - i)) -- maps this case or syntax pattern to its result
-    terms.sum -- continues the Lean declaration above
+    terms.sum
 
 /-- Memoized computation of Catalan numbers using State Monad -/
 partial def catalanMemo (n : Nat) : CatalanM Nat := do -- defines the partial function `catalanMemo`
   let cache ← get -- binds an intermediate value for the following expression
   match cache.get? n with -- splits computation into cases by pattern matching
-  | some value => return value -- handles this pattern-matching case
-  | none => -- handles this pattern-matching case
+  | some value => return value -- matches a present optional value and returns value
+  | none => -- matches a missing optional value and inspects `n` in a nested match to decide the result
     match n with -- splits computation into cases by pattern matching
-    | 0 => -- handles this pattern-matching case
+    | 0 => -- matches zero and returns `modify (fun m => m.insert 0 1)`
       modify (fun m => m.insert 0 1) -- maps this case or syntax pattern to its result
       return 1 -- returns this value from the monadic block
-    | n + 1 => -- handles this pattern-matching case
+    | n + 1 => -- matches a successor natural number and computes intermediate values and returns `return sum`
       let mut sum := 0 -- binds an intermediate value for the following expression
       for i in [0:n + 1] do -- iterates through these values in the monadic block
         let ci ← catalanMemo i -- binds an intermediate value for the following expression

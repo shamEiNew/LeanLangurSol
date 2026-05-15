@@ -41,22 +41,22 @@ theorem addTwo_even (n: Nat) (h: IsEven n) : -- states and proves theorem `addTw
 Twice any natural number is even.
 -/
 theorem IsEven_two_mul (n : Nat) : IsEven (2 * n) := by -- states and proves theorem `IsEven_two_mul`
-  induction n <;> grind -- continues the Lean declaration above
+  induction n <;> grind
 
 /--
 The successor of an even number is not even (i.e., it is odd).
 -/
 theorem succ_odd_of_isEven {n : Nat} -- states and proves theorem `succ_odd_of_isEven`
-  (h : IsEven n) : -- continues the surrounding Lean expression
+  (h : IsEven n) :
     ¬ IsEven (n + 1) := by -- gives the value or proof for this declaration
-  induction h <;> grind -- continues the Lean declaration above
+  induction h <;> grind
 
 /--
 For any natural number `n`, either `n` is even or `n + 1` is even.
 -/
 theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1) -- states and proves theorem `nOrSuccNeven`
   := by -- gives the value or proof for this declaration
-  induction n <;> grind -- continues the Lean declaration above
+  induction n <;> grind
 
 /-!
 ## Exercise: Odd numbers

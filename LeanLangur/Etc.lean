@@ -27,7 +27,7 @@ inductive MyFalse : Prop where -- declares the inductive type or proposition `My
 Principle of explosion for the custom empty type.
 -/
 def ofEmpty{α : Type} : MyEmpty → α -- defines `ofEmpty`
-  | e => by cases e -- handles this pattern-matching case
+  | e => by cases e -- matches `e` and proves the case by cases e
 
 /--
 Principle of explosion for the custom false proposition.
@@ -52,7 +52,7 @@ theorem easy : 1 ≤ 5 := by -- states and proves theorem `easy`
 Predicate for checking if a real number is rational.
 -/
 def IsRational (x : ℝ) : Prop := -- defines `IsRational`
-  ∃ (α  : ℚ), x = α -- continues the Lean declaration above
+  ∃ (α  : ℚ), x = α
 
 set_option pp.all true in -- sets an elaborator or diagnostic option for this example
 #print IsRational -- prints Lean's generated declaration for inspection

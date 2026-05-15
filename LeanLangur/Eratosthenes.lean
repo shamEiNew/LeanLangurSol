@@ -30,8 +30,8 @@ theorem exists_prime_factor : -- states and proves theorem `exists_prime_factor`
 
 /-- The factorial, defined recursively, with custom notation -/
 def factorial : Nat → Nat -- defines `factorial`
-  | 0 => 1 -- handles this pattern-matching case
-  | n+1 => (n + 1) * factorial n -- handles this pattern-matching case
+  | 0 => 1 -- matches zero and returns `1`
+  | n+1 => (n + 1) * factorial n -- matches a successor natural number and returns `(n + 1) * factorial n`
 notation:10000 n "!" => factorial n -- introduces notation used by later examples
 
 /-- The factorial is always positive -/
@@ -52,7 +52,7 @@ theorem InfinitudeOfPrimes : ∀ n, ∃ p > n, IsPrime p := by -- states and pro
   intro n -- introduces hypotheses or variables into the proof context
   have : 1 < n ! + 1 := by grind [factorial_pos] -- records an intermediate fact for the proof
   obtain ⟨p, hp, _⟩ := exists_prime_factor (n ! + 1) this -- gives the value or proof for this declaration
-  suffices ¬p ≤ n by grind -- continues the Lean declaration above
+  suffices ¬p ≤ n by grind
   intro (_ : p ≤ n) -- introduces hypotheses or variables into the proof context
   have : 1 < p := hp.1 -- records an intermediate fact for the proof
   have : p ∣ n ! := dvd_factorial n p ‹p ≤ n› (by grind) -- records an intermediate fact for the proof
