@@ -75,7 +75,7 @@ It will be useful to use the above results. Think about the mathematical argumen
 -/
 theorem smallest_le_smallest_of_filter (l: List Nat) (p: Nat → Bool) (h: l.filter p ≠ []) : -- states and proves theorem `smallest_le_smallest_of_filter`
   smallest l (by grind) ≤ smallest (l.filter p) h := by -- starts tactic mode; the goal compares the smallest element of `l` with that of its nonempty filtered sublist
-  sorry -- leaves the exercise unfinished; a proof should use membership of the filtered smallest and `smallest_le_all`
+  sorry
 
 end nat -- closes the current namespace or section
 /-!

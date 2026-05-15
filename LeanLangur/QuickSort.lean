@@ -103,7 +103,7 @@ theorem count_sum_above_below_pivot (pivot : α) -- states and proves theorem `c
   (l : List α)(x : α) :
     (l.count x) = (smaller pivot l).count x +
       (larger pivot l).count x  := by
-  sorry -- marks this tutorial exercise proof as unfinished
+  sorry
 
 /--
 The `quickSort` function preserves the count of each element in the list.
@@ -111,7 +111,7 @@ The `quickSort` function preserves the count of each element in the list.
 theorem count_eq_count_quickSort (l : List α) -- states and proves theorem `count_eq_count_quickSort`
   (x : α) :
     l.count x = (quickSort l).count x := by -- starts tactic mode; the following tactics prove the proposition just stated
-  sorry -- marks this tutorial exercise proof as unfinished
+  sorry
 end Count -- closes the current namespace or section
 
 
