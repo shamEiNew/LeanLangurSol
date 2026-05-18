@@ -54,6 +54,24 @@ theorem smallest_mem (l: List Nat) (h: l ≠ []) : -- states and proves theorem 
     smallest l h ∈ l := by -- starts tactic mode; the goal is to prove the computed smallest element occurs in `l`
   fun_induction smallest <;> grind -- `fun_induction` creates one goal for each recursive clause of `smallest`; `grind` solves each membership goal
 
+theorem smallest_mem' (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
+    smallest l h ∈ l := by match l with
+  | x :: [] =>
+    unfold smallest
+    simp only [List.mem_cons, List.not_mem_nil, or_false]  -- base case: if the list is a singleton, the smallest is that element, which is trivially in the list
+  | x :: y :: zs => -- inductive case: if the list has at least
+    simp [smallest]
+    have ih := smallest_mem' (y :: zs) (by simp) -- induction hypothesis: the smallest of the tail is in the tail
+    grind
+
+example (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
+    smallest l h ∈ l := by
+    fun_induction smallest
+    · -- focus on the first case
+      simp
+    · -- focus on the second case
+      grind
+
 /--
 The element returned by `smallest` is less than or equal to all elements in the list.
 -/

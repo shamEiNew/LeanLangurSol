@@ -30,7 +30,11 @@ namespace langur -- starts a namespace to group the tutorial definitions
 open Add -- opens names so constructors or helpers can be written unqualified
 #eval add 1 3 -- runs this expression as a tutorial check
 
+#check Add
+
 #check add -- asks Lean to display the inferred type
+#print Add
+#print add
 
 /--
 error: failed to synthesize instance of type class
@@ -53,8 +57,32 @@ instance {α β : Type}[Add α][Add β] : -- provides an instance for typeclass 
   add := fun (a₁, b₁) (a₂, b₂) ↦
       (a₁ + a₂, b₁ + b₂)
 
+#check (1, 2, "Hello")
 #eval (1, 2, "Hello") +(3, 4, "world") -- runs this expression as a tutorial check
 
+class AddThree (α : Type) where -- declares a new typeclass `AddThree`
+  addThree : α → α → α → α -- declares a method `addThree` for the typeclass
+
+def addThree {α : Type} [self: AddThree α] (x y z : α) : α := -- defines a helper function `addThree` that uses the typeclass
+  self.addThree x y z
+
+instance : AddThree String where -- provides an instance for typeclass search
+  addThree s t u := s ++ " " ++ t ++ " " ++ u
+
+#eval addThree "Hello" "dear" "world" -- runs this expression as a tutorial check
+
+instance {α : Type} [Add α] : AddThree α where -- provides an instance for typeclass search
+  addThree x y z := x + y + z
+
+#eval addThree 1 2 3
+
+instance : AddThree Bool where -- provides an instance for typeclass search
+  addThree x y z := x || y || z
+
+#check Zero
+
+instance {α : Type} [Add α][Zero α] : Add α  where -- provides an instance for typeclass search
+  add := fun x y ↦ x + y + 0
 /-!
 ## Exercise: Pointwise addition
 
