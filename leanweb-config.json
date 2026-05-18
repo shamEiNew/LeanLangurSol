@@ -1,0 +1,25 @@
+{
+  "name": "LeanLangur",
+  "default": true,
+  "hidden": false,
+  "examples": [
+    { "file": "LeanLangur/Basic.lean", "name": "Basic" },
+    { "file": "LeanLangur/IsEven.lean", "name": "Is Even" },
+    { "file": "LeanLangur/People.lean", "name": "People" },
+    { "file": "LeanLangur/ListOps.lean", "name": "List Operations" },
+    { "file": "LeanLangur/SmallestNat.lean", "name": "Smallest Nat" },
+    { "file": "LeanLangur/Smallest.lean", "name": "Smallest" },
+    { "file": "LeanLangur/BinTree.lean", "name": "Binary Tree" },
+    { "file": "LeanLangur/BinarySearchTree.lean", "name": "Binary Search Tree" },
+    { "file": "LeanLangur/FibM.lean", "name": "Fibonacci Memoization" },
+    { "file": "LeanLangur/CatalanM.lean", "name": "Catalan Memoization" },
+    { "file": "LeanLangur/QuickSort.lean", "name": "Quick Sort" },
+    { "file": "LeanLangur/SelectionSort.lean", "name": "Selection Sort" },
+    { "file": "LeanLangur/StackMachine.lean", "name": "Stack Machine" },
+    { "file": "LeanLangur/PyFor.lean", "name": "Python For" },
+    { "file": "LeanLangur/LangurLang.lean", "name": "LangurLang" },
+    { "file": "LeanLangur/LangurLeaps.lean", "name": "Langur Leaps" },
+    { "file": "LeanLangur/PowerIrrational.lean", "name": "Power Irrational" },
+    { "file": "LeanLangur/Etc.lean", "name": "Etc" }
+  ]
+}
