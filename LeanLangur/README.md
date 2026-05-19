@@ -56,7 +56,9 @@ The following is a mermaid diagram of dependencies among files and where concept
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph TD;
   %% Core file dependencies
-  Basic --> SmallestNat;
+  SimpleTerms --> PropProofs;
+  PropProofs --> SumToN;
+  SumToN --> SmallestNat;
   SmallestNat --> ListOps;
   SmallestNat --> FibM;
   People --> IsEven;
@@ -78,8 +80,6 @@ graph TD;
   FibM --> CatalanM;
   CatalanM --> Combinations
   IsEven --> Eratosthenes
-
-  %% Correction Edge
   BinTree --> IsEven;
 
   %% Metaprogramming Subgraph
