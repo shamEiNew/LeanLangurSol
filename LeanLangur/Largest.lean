@@ -22,6 +22,10 @@ We illustrate how to write programs with proofs in Lean by implementing a functi
 
 namespace langur -- starts a namespace to group the tutorial definitions
 
+/--
+Computes the largest natural number in a list, returning `0` for the empty
+list as a placeholder value.
+-/
 def largestNat : List Nat → Nat -- defines `largestNat`
 | []       => 0  -- placeholder for empty list
 | [x]      => x -- matches a singleton list and returns `x`
@@ -32,17 +36,28 @@ def largestNat : List Nat → Nat -- defines `largestNat`
 
 #eval largestNat [3, 1, 4, 1, 5, 9, 2, 6, 5]  -- evaluates to 9
 
+/--
+For every nonempty list of natural numbers, `largestNat l` is an element of
+`l`.
+-/
 theorem largestNat_mem : ∀ (l : List Nat), l ≠ [] → largestNat l ∈ l := by -- starts tactic mode for theorem `largestNat_mem`; the following tactics prove the stated goal
   intro l -- moves leading forall variables or implication hypotheses into the local context
   fun_induction largestNat <;> grind -- follows the recursive equations of `largestNat` and lets `grind` solve each generated case
 
 
+/--
+Every element of a natural-number list is less than or equal to `largestNat l`.
+-/
 theorem largestNat_ge_all (l: List Nat) (x: Nat) : -- states and proves theorem `largestNat_ge_all`
   x ∈ l → x ≤ largestNat l := by -- starts tactic mode; the following tactics prove the proposition just stated
   fun_induction largestNat <;> grind -- follows the recursive equations of `largestNat` and lets `grind` solve each generated case
 
 variable {α : Type}[LinearOrder α]
 
+/--
+Computes the largest element of a list over a linear order, using `default` as
+the placeholder result for the empty list.
+-/
 def largest₀ [Inhabited α] (l: List α) : α := -- defines `largest`
   match l with -- splits computation into cases by pattern matching
   | [] => default -- matches the empty list and returns the default value
@@ -53,6 +68,11 @@ def largest₀ [Inhabited α] (l: List α) : α := -- defines `largest`
 example [Inhabited α] : α × α := -- checks an unnamed example or proof
   default
 
+/--
+Computes the largest element of a nonempty list over a linear order. The proof
+argument rules out the empty-list case, so the result does not need a
+placeholder default.
+-/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def largest (l: List α) (h: l ≠ []) : α := -- defines `largest`
   match l with -- splits computation into cases by pattern matching
@@ -62,6 +82,10 @@ def largest (l: List α) (h: l ≠ []) : α := -- defines `largest`
 
 #eval largest [1, 3, 2] (by simp)  -- evaluates to 3
 
+/--
+The largest element computed from a nonempty list is itself a member of that
+list.
+-/
 theorem largest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `largest_mem`
   largest l h ∈ l := by -- starts tactic mode; the following tactics prove the proposition just stated
   match l with -- splits computation into cases by pattern matching
@@ -70,6 +94,10 @@ theorem largest_mem (l: List α) (h: l ≠ []) : -- states and proves theorem `l
     have ih := largest_mem (y :: xs) (by simp) -- records an intermediate fact for the proof
     grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
+/--
+Every element of a nonempty list is less than or equal to the value returned by
+`largest`.
+-/
 theorem largest_ge_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves theorem `largest_ge_all`
   x ∈ l → x ≤ largest l h := by -- starts tactic mode; the following tactics prove the proposition just stated
   match l with -- splits computation into cases by pattern matching
@@ -80,6 +108,10 @@ theorem largest_ge_all (l: List α) (h: l ≠ []) (x: α) : -- states and proves
       largest_ge_all (z :: xs) (by simp) x
     grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
+/--
+Computes the largest element of a list as an optional value, returning `none`
+exactly when the list is empty.
+-/
 def largest? (l: List α) : Option α := -- defines `largest?`
   match l with -- splits computation into cases by pattern matching
   | [] => none -- matches the empty list and returns `none`
@@ -91,19 +123,34 @@ def largest? (l: List α) : Option α := -- defines `largest?`
 #eval largest? [1, 3, 2]  -- evaluates to some 3
 #eval largest? ([] : List Nat)  -- evaluates to none
 
+/--
+Computes twice the largest natural number in a list by explicitly matching on
+the optional result of `largest?`.
+-/
 def doubleLargest?₀ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
   match largest? l with -- splits computation into cases by pattern matching
   | none => none -- matches a missing optional value and returns `none`
   | some m => some (2 * m) -- matches a present optional value and returns `some (2 * m)`
 
+/--
+Computes twice the largest natural number in a list using `Option.map`.
+-/
 def doubleLargest?₁ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
   (largest? l).map (fun m => 2 * m)
 
+/--
+Computes twice the largest natural number in a list using `Option`'s monadic
+`do` notation.
+-/
 def doubleLargest?₂ (l: List Nat) : Option Nat  := -- defines `doubleLargest?`
   do -- starts a `do` block for monadic sequencing
     let m ← largest? l -- binds an intermediate value for the following expression
     return 2 * m -- returns this value from the monadic block
 
+/--
+Adds the largest elements of two natural-number lists, returning `none` if
+either list is empty.
+-/
 def sumLargest? (l1 l2: List Nat) : Option Nat := -- defines `sumLargest?`
   do -- starts a `do` block for monadic sequencing
     let m1 ← largest? l1 -- binds an intermediate value for the following expression
@@ -114,6 +161,10 @@ def sumLargest? (l1 l2: List Nat) : Option Nat := -- defines `sumLargest?`
 
 #eval sumLargest? [] [4, 5, 6]  -- evaluates to none
 
+/--
+Computes the largest natural number in a list using imperative-style mutable
+state inside `Id.run`, returning `0` for the empty list.
+-/
 def largestImp (l: List Nat): Nat := Id.run do -- defines `largestImp`
   let mut maxSoFar := 0 -- binds an intermediate value for the following expression
   for x in l do -- iterates through these values in the monadic block

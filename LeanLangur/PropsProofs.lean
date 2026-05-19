@@ -7,6 +7,8 @@ To start with, it is best to ignore the difference between `Prop` and `Type` and
 A logical statement like `1 ≤ 2` is a proposition and has type `Prop`.
 -/
 #check 1 ≤ 2 -- Prop
+
+-- The type `Prop` is itself a term of type `Type`.
 #check Prop -- Type
 #check Type -- Type 1
 
@@ -48,16 +50,19 @@ We can combine propositions to make propositions:
 * If `P` and `Q` are propositions, then `P → Q` is the proposition "if P then Q".
 * If `P` is a proposition, then `¬ P` is the proposition "not P", which is `P → False`.
 
-The key idea in *propositions as types* is that function application is exactly analogous to the logical rule of inference called modus ponens.
+The key idea in *propositions as types* is that function application is exactly analogous to the logical rule of inference called *modus ponens*.
 -/
 def modus_ponens {P Q: Prop} (h₁ : P) (h₂ : P → Q) : Q :=
   h₂ h₁
 
-def application {α β : Type} (a: α) (f: α → β) : β :=
+/- We define a function `functionApplication` that applies a function to an argument. This is the same as modus ponens, but for arbitrary types rather than propositions.
+The arguments are reversed to match the usual order of modus ponens.
+-/
+def functionApplication {α β : Type} (a: α) (f: α → β) : β :=
   f a
 
 #check Nat.succ -- Nat → Nat
-#eval application 1 Nat.succ -- 2
+#eval functionApplication 1 Nat.succ -- 2
 
 #check Nat.succ_le_succ -- ∀ {n m : Nat}, n ≤ m → n.succ ≤ m.succ
 
@@ -73,15 +78,15 @@ We apply modus-ponens with `P` being `0 ≤ 2` and `P → Q` being `Nat.succ_le_
 /-!
 Some proofs at *term level*.
 -/
-def one_le_three : 1 ≤ 3 :=
+theorem one_le_three : 1 ≤ 3 :=
   Nat.le.step (Nat.le.step (Nat.le.refl ))
 
-def two_le_five : 2 ≤ 5 :=
+theorem two_le_five : 2 ≤ 5 :=
   Nat.le.step (Nat.le.step (Nat.le.step (Nat.le.refl)))
 
 #check @Nat.succ_le_succ 0 2 (Nat.zero_le 2) -- 1 ≤ 3
 
-def wrong_three_le_one (h : 2 ≤ 0) : 3 ≤ 1 :=
+theorem wrong_three_le_one (h : 2 ≤ 0) : 3 ≤ 1 :=
   Nat.succ_le_succ h
 
 theorem n_le_n_plus_two (n : Nat) : n ≤ n + 2 :=

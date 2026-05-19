@@ -20,18 +20,24 @@ We consider a few terms and types in Lean. These are definitions that do not inv
 
 The `#check` command displays the type of a term. The `#eval` command evaluates a term to a value if this makes sense.
 -/
+
+-- We can build simple terms using *literals* for numbers and strings and the usual arithmetic and string operations.
 #eval 2 + 3 -- 5
 
+-- Addition of natural numbers is a term of type `Nat`.
 #check 2 + 3 -- Nat
 
 #check "Hello, Lean!" -- String
 
+-- We can specify the type of a term using a *type annotation*. For example, we can specify that `2` is an integer rather than a natural number.
 #check (2: Int) + 3 -- Int
 
+-- The types `Nat` and `Int` are themselves terms of type `Type`.
 #check Nat -- Type
 
 #check Int -- Type
 
+-- The type `Type` is itself a term of type `Type 1`. This is an example of a *universe* in Lean. We will discuss universes later.
 #check Type -- Type 1
 
 /-!
@@ -39,12 +45,15 @@ We can define new terms using `def`. We can also use `#check` and `#eval` on def
 -/
 def two : Nat := 2
 
+-- We can use the defined term `two` in other definitions.
 def five := two + 3
 
+-- We can check the types of the defined terms.
 #check two -- Nat
 
 #check five -- Nat
 
+-- We can evaluate the defined terms.
 #eval five -- 5
 
 /-!
@@ -59,6 +68,7 @@ The cube of a natural number.
 -/
 def cube (n: Nat) : Nat := n * n * n
 
+-- We can check the type of `cube` and evaluate it at an argument.
 #check cube -- Nat → Nat
 
 #eval cube 3 -- 27
@@ -86,7 +96,7 @@ def cube' : Nat → Nat :=
 #eval cube' 3 -- 27
 
 /-!
-The right hand side of the definition of `cube'` is a lambda expression. This is a meaningful term in Lean, and it has type `Nat → Nat`.
+The right hand side of the definition of `cube'` is a lambda expression. This is an expression giving a term in Lean, and it has type `Nat → Nat`.
 We can even evaluate the lambda expression at an argument to get a value.
 -/
 #check fun n ↦ n + 2 -- Nat → Nat
