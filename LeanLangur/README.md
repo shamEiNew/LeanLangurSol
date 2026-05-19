@@ -60,6 +60,7 @@ graph TD;
   SmallestNat --> ListOps;
   SmallestNat --> FibM;
   People --> IsEven;
+  People --> Adder;
   ListOps --> BinTree;
   ListOps --> Adder;
   FibM --> CatalanM;
