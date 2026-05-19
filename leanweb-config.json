@@ -2,24 +2,67 @@
   "name": "LeanLangur",
   "default": true,
   "hidden": false,
-  "examples": [
-    { "file": "LeanLangur/Basic.lean", "name": "Basic" },
-    { "file": "LeanLangur/IsEven.lean", "name": "Is Even" },
-    { "file": "LeanLangur/People.lean", "name": "People" },
-    { "file": "LeanLangur/ListOps.lean", "name": "List Operations" },
-    { "file": "LeanLangur/SmallestNat.lean", "name": "Smallest Nat" },
-    { "file": "LeanLangur/Smallest.lean", "name": "Smallest" },
-    { "file": "LeanLangur/BinTree.lean", "name": "Binary Tree" },
-    { "file": "LeanLangur/BinarySearchTree.lean", "name": "Binary Search Tree" },
-    { "file": "LeanLangur/FibM.lean", "name": "Fibonacci Memoization" },
-    { "file": "LeanLangur/CatalanM.lean", "name": "Catalan Memoization" },
-    { "file": "LeanLangur/QuickSort.lean", "name": "Quick Sort" },
-    { "file": "LeanLangur/SelectionSort.lean", "name": "Selection Sort" },
-    { "file": "LeanLangur/StackMachine.lean", "name": "Stack Machine" },
-    { "file": "LeanLangur/PyFor.lean", "name": "Python For" },
-    { "file": "LeanLangur/LangurLang.lean", "name": "LangurLang" },
-    { "file": "LeanLangur/LangurLeaps.lean", "name": "Langur Leaps" },
-    { "file": "LeanLangur/PowerIrrational.lean", "name": "Power Irrational" },
-    { "file": "LeanLangur/Etc.lean", "name": "Etc" }
+  "units": [
+    { "route": "overview", "name": "Overview" },
+    {
+      "name": "Preliminaries",
+      "units": [
+        { "file": "LeanLangur/Basic.lean", "name": "Basic" },
+        { "file": "LeanLangur/SimpleTerms.lean", "name": "Simple Terms" },
+        { "file": "LeanLangur/PropsProofs.lean", "name": "Props and Proofs" },
+        { "file": "LeanLangur/SumToN.lean", "name": "Sum to N" }
+      ]
+    },
+    {
+      "name": "Programming with Proofs",
+      "units": [
+        { "file": "LeanLangur/SmallestNat.lean", "name": "Smallest Nat" },
+        { "file": "LeanLangur/ListOps.lean", "name": "List Operations" },
+        { "file": "LeanLangur/People.lean", "name": "People" },
+        { "file": "LeanLangur/BinTree.lean", "name": "Binary Tree" },
+        { "file": "LeanLangur/IsEven.lean", "name": "Is Even" },
+        { "file": "LeanLangur/Adder.lean", "name": "Adder" },
+        { "file": "LeanLangur/NonAtom.lean", "name": "Non-Atom" },
+        { "file": "LeanLangur/Smallest.lean", "name": "Smallest" },
+        { "file": "LeanLangur/Largest.lean", "name": "Largest" },
+        { "file": "LeanLangur/FunEquality.lean", "name": "Function Equality" },
+        { "file": "LeanLangur/FibM.lean", "name": "Fibonacci Memoization" },
+        { "file": "LeanLangur/CatalanM.lean", "name": "Catalan Memoization" },
+        { "file": "LeanLangur/Sorted.lean", "name": "Sorted" },
+        { "file": "LeanLangur/QuickSort.lean", "name": "Quick Sort" },
+        { "file": "LeanLangur/SelectionSort.lean", "name": "Selection Sort" },
+        {
+          "file": "LeanLangur/BinarySearchTree.lean",
+          "name": "Binary Search Tree"
+        },
+        {
+          "file": "LeanLangur/PowerIrrational.lean",
+          "name": "Power Irrationals"
+        }
+      ]
+    },
+    {
+      "name": "Metaprogramming",
+      "units": [
+        { "file": "LeanLangur/PyFor.lean", "name": "Python For" },
+        { "file": "LeanLangur/StackMachine.lean", "name": "Stack Machine" },
+        { "file": "LeanLangur/LoadFile.lean", "name": "Load File" },
+        { "file": "LeanLangur/FileM.lean", "name": "File Monad" },
+        { "file": "LeanLangur/LangurLang.lean", "name": "LangurLang" },
+        { "file": "LeanLangur/LangurLeaps.lean", "name": "Langur Leaps" },
+        { "file": "LeanLangur/TryInterpret.lean", "name": "Try Interpret" }
+      ]
+    },
+    {
+      "name": "Exercises",
+      "units": [
+        { "file": "LeanLangur/Combinations.lean", "name": "Combinations" },
+        { "file": "LeanLangur/Eratosthenes.lean", "name": "Eratosthenes" }
+      ]
+    },
+    {
+      "name": "Extra",
+      "units": [{ "file": "LeanLangur/Etc.lean", "name": "Etc" }]
+    }
   ]
 }
