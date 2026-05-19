@@ -156,3 +156,7 @@ end langur -- closes the current namespace or section
 
 * None in the README dependency diagram.
 -/
+
+example : 1 ≤ 3 := by decide
+
+example : (fun n ↦ n + 1) = (fun n ↦ 1 + n) := by grind

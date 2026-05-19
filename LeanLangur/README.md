@@ -1,54 +1,57 @@
 # LeanLangur
 
-This directory contains examples and experiments with the Lean 4 programming language and theorem prover. The files are organized from basic concepts to more advanced topics like metaprogramming and domain-specific languages.
+This directory contains examples and experiments with the Lean 4 programming language and theorem prover. The core tutorial files are organized from preliminaries through programming with proofs and metaprogramming, followed by exercises.
 
 ## Relations between files
 
-The following is a mermaid diagram of dependencies among files and where concepts are introduced. We don't include details of where metaprogramming concepts are introduced.
+The following is a mermaid diagram of dependencies among files and where concepts are introduced.
 
 ![Dependencies](LeanLangur.png)
 
+## Suggested Order
 
-## File Descriptions
+The following is a suggested order of files to work through. Note that this assumes that you have a background in basic tactic proofs in Lean such as based on _Glimpse of Lean_.
 
-### Introduction and Basics
+### Preliminaries
 
-* **[Basic.lean](Basic.lean)**: A gentle introduction to running Lean, using `#eval` and `#check`, and defining simple functions.
-* **[IsEven.lean](IsEven.lean)**: Demonstrates basic inductive predicates and the use of the `grind` tactic.
-* **[People.lean](People.lean)**: Illustrates the use of `Structure` for simple data types with named fields.
-* **[Etc.lean](Etc.lean)**: Covers basic custom types (like `MyEmpty` and `MyFalse`) and recursion on empty types.
-* **[Adder.lean](Adder.lean)**: Explains the `Add` typeclass, creating custom instances, and typeclass inference.
-* **[ListOps.lean](ListOps.lean)**: Introduces list operations, explicit/implicit parameters, and `do` notation for lists.
-* **[NonAtom.lean](NonAtom.lean)**: Shows how to define and use custom typeclasses with multiple fields and axioms.
+* **[SimpleTerms.lean](SimpleTerms.lean)**: Basic Lean terms, commands, and simple definitions.
+* **[PropsAndProofs](PropsProofs.lean)**: Propositions as types, proof terms, implication, conjunction, disjunction, and related proof patterns.
+* **[SumToN.lean](SumToN.lean)**: Recursive programs, basic functions and proofs, and proofs by induction.
 
-### Data Structures and Algorithms
+### Programming with Proofs
 
-* **[BinTree.lean](BinTree.lean)**: Defines a basic binary tree, conversion to lists, and membership proofs.
-* **[BinarySearchTree.lean](BinarySearchTree.lean)**: A more advanced implementation of Binary Search Trees.
-* **[SmallestNat.lean](SmallestNAt.lean)**: Finding the smallest element in a list of natural numbers, introducing notation.
-* **[Smallest.lean](Smallest.lean)**: Finding the smallest element in a list in general using typeclasses.
-* **[Largest.lean](Largest.lean)**: Implementing the "largest element" function with proofs of correctness, generalized for any linear order.
-* **[Sorted.lean](Sorted.lean)**: A typeclass representing a list being sorted, a proof that this is equivalent to another definition.
-* **[SelectionSort.lean](SelectionSort.lean)**: An implementation of the Selection Sort algorithm.
-* **[QuickSort.lean](QuickSort.lean)**: A complete implementation of the Quicksort algorithm with associated proofs.
+* **[SmallestNat.lean](SmallestNat.lean)**: Functions and Proofs for finding the smallest element in a list of natural numbers, with Macros and notation.
+* **[ListOps.lean](ListOps.lean)**: List operations, Implicit and Explicit Parameters, and (Monadic) Do Notation for lists.
+* **[People.lean](People.lean)**: Structures and simple data types with named fields.
+* **[BinTree.lean](BinTree.lean)**: Inductive Types, binary trees, conversion to lists, and membership proofs.
+* **[IsEven.lean](IsEven.lean)**: Inductive Propositions and the `grind` tactic.
+* **[Adder.lean](Adder.lean)**: Typeclasses, custom `Add` instances, and typeclass inference.
+* **[NonAtom.lean](NonAtom.lean)**: Constructing Typeclasses with multiple fields and axioms.
+* **[Smallest.lean](Smallest.lean)**: Finding the smallest element in a list using typeclasses.
+* **[Largest.lean](Largest.lean)**: Finding the largest element in a list with proofs of correctness.
+* **[FunEquality.lean](FunEquality.lean)**: Equality of Functions, proof irrelevance, and Decision Procedures.
+* **[FibM.lean](FibM.lean)**: Efficient Fibonacci computation using memoization with the State Monad.
+* **[CatalanM.lean](CatalanM.lean)**: Memoized Recursion for Catalan-number computation using the State Monad.
+* **[Sorted.lean](Sorted.lean)**: Sorted lists, typeclasses, and equivalent definitions.
+* **[QuickSort.lean](QuickSort.lean)**: Quicksort with Termination and correctness-oriented proofs.
+* **[SelectionSort.lean](SelectionSort.lean)**: Sorting Algorithms through selection sort, with membership and sortedness proofs.
+* **[BinarySearchTree.lean](BinarySearchTree.lean)**: Binary search trees and their invariants.
+* **[PowerIrrationals](PowerIrrational.lean)**: Irrational Powers, rationality, and Classical Existence Proofs.
 
-### Monads and Memoization
+### Metaprogramming
 
-* **[FibM.lean](FibM.lean)**: Efficiently computing Fibonacci numbers using memoization with the `State` monad.
-* **[CatalanM.lean](CatalanM.lean)**: Memoized computation of Catalan numbers.
+* **[PyFor.lean](PyFor.lean)**: Syntax Extensions, Macros, and Python-style list comprehensions.
+* **[StackMachine.lean](StackMachine.lean)**: A stack machine with Inductive Types, Inductive Propositions, and Stack-Machine Validation.
+* **[LoadFile.lean](LoadFile.lean)**: File IO, Syntax Quotations, and commands for loading data.
+* **[FileM.lean](FileM.lean)**: Custom Monads, safety predicates, and proofs about file programs.
+* **[LangurLang.lean](LangurLang.lean)**: Domain-Specific Languages, shallow embeddings, and imperative programs.
+* **[LangurLeaps.lean](LangurLeaps.lean)**: Examples and syntax extensions for the `#leap` command and `climb%` macro.
+* **[TryInterpret.lean](TryInterpret.lean)**: Frontend and Environment Interaction, tactic extraction, and Decision Procedures experiments.
 
-### IO and File Handling (with Metaprogramming)
+### Exercises
 
-* **[LoadFile.lean](LoadFile.lean)**: Examples of performing file I/O operations in Lean.
-* **[FileM.lean](FileM.lean)**: A custom monad (`FileM`) designed for managing file operations.
-
-### Metaprogramming and Languages
-
-* **[StackMachine.lean](StackMachine.lean)**: Defines a simple stack-based machine with instructions and an execution engine.
-* **[PyFor.lean](PyFor.lean)**: Implements Python-style list comprehensions using Lean's metaprogramming capabilities.
-* **[LangurLang.lean](LangurLang.lean)**: A tiny imperative language (IMP-style) with variables, assignments, and control flow.
-* **[LangurLeaps.lean](LangurLeaps.lean)**: Examples and syntax extensions (the `#leap` command) for using `LangurLang`.
-* **[TryInterpret.lean](TryInterpret.lean)**: Advanced customization of the Lean frontend and environment manipulation.
+* **[Combinations.lean](Combinations.lean)**: Exercises around combinations.
+* **[Eratosthenes.lean](Eratosthenes.lean)**: Exercises based on the sieve of Eratosthenes.
 
 ## Dependencies Source
 
@@ -74,17 +77,22 @@ graph TD;
   IsEven --> Sorted;
   IsEven --> NonAtom;
   IsEven --> Smallest;
+  IsEven --> Largest;
   Sorted --> QuickSort;
   Sorted --> SelectionSort;
   FibM --> PyFor;
   FibM --> CatalanM;
-  CatalanM --> Combinations
-  IsEven --> Eratosthenes
+  CatalanM --> Combinations;
+  IsEven --> Eratosthenes;
   BinTree --> IsEven;
+  Basic --> StackMachine;
+  FunEquality --> PowerIrrational;
+  PowerIrrational["PowerIrrationals"];
 
   %% Metaprogramming Subgraph
   subgraph Metaprogramming
-    TryInterpret
+    TryInterpret;
+    StackMachine;
     PyFor --> LoadFile;
     LoadFile --> FileM;
     PyFor --> LangurLang;
@@ -109,8 +117,19 @@ graph TD;
   c11(["Termination"]) -.-> QuickSort
   c12(["Equality of Functions"]) -.-> FunEquality
   c13(["Decision Procedures"]) -.-> FunEquality
+  c14(["Syntax Extensions"]) -.-> PyFor
+  c15(["Syntax Quotations"]) -.-> LoadFile
+  c16(["File IO"]) -.-> LoadFile
+  c17(["Custom Monads"]) -.-> FileM
+  c18(["Domain-Specific Languages"]) -.-> LangurLang
+  c19(["Frontend and Environment Interaction"]) -.-> TryInterpret
+  c20(["Stack-Machine Validation"]) -.-> StackMachine
+  c21(["Classical Existence Proofs"]) -.-> PowerIrrational
+  c22(["Memoized Recursion"]) -.-> CatalanM
+  c23(["Sorting Algorithms"]) -.-> SelectionSort
+  c24(["Irrational Powers"]) -.-> PowerIrrational
 
   %% Styling for concept nodes
   classDef concept fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
-  class c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13 concept;
+  class c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24 concept;
 ```
