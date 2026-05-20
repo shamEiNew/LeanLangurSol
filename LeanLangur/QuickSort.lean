@@ -131,6 +131,7 @@ end Count -- closes the current namespace or section
 Concatenating two sorted lists with a pivot in between results in a sorted list,
 provided the pivot respects the bounds of both lists.
 -/
+@[grind .] -- annotation controlling elaboration, simplification, or automation
 theorem sorted_sandwitch (l₁ : List α) (h₁ : Sorted l₁) -- states and proves theorem `sorted_sandwitch`
     (l₂ : List α) (h₂ : Sorted l₂)
     (bound : α)
@@ -148,18 +149,9 @@ theorem sorted_sandwitch (l₁ : List α) (h₁ : Sorted l₁) -- states and pro
 The `quickSort` function correctly sorts any input list.
 -/
 theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- starts tactic mode for theorem `quickSort_sorted`; the following tactics prove the stated goal
-  cases l with -- splits or inverts `l with`, creating one goal for each possible constructor
-  | nil => -- matches the empty list and proves this case with the tactic steps below
-    simp [quickSort_nil] -- simplifies the current goal or hypotheses
-    apply Sorted.nil -- applies `Sorted.nil` backwards, replacing the current goal by its premises
-  | cons pivot l => -- matches a nonempty list and proves this case with the tactic steps below
-    rw [quickSort_cons]
-    have h_small := -- records an intermediate fact for the proof
-      quickSort_sorted (smaller pivot l)
-    have h_large := -- records an intermediate fact for the proof
-      quickSort_sorted (larger pivot l)
-    apply sorted_sandwitch <;> grind -- applies `sorted_sandwitch <;> grind` backwards, replacing the current goal by its premises
-termination_by l.length -- tells Lean which expression decreases for termination
+  fun_induction quickSort -- follows the recursive equations of `quickSort` and lets `grind` solve each generated case
+  · apply nil_sorted -- applies `Sorted.nil` backwards, replacing the current goal by its premises
+  · apply sorted_sandwitch <;> grind
 /-!
 ## Next files
 

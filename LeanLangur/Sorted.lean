@@ -35,11 +35,22 @@ inductive Sorted : List α → Prop -- declares the inductive type or propositio
       (tail_sorted: Sorted (y :: l)) : Sorted (x :: y :: l)
 
 /--
+The empty list is sorted.
+-/
+@[grind .]
+theorem nil_sorted : Sorted ([] : List α) := Sorted.nil -- defines `nil_sorted` as a proof of `Sorted []` using the constructor `Sorted.nil`
+
+/--
+A single-element list is sorted.
+-/
+@[grind .]
+theorem singleton_sorted (x : α) : Sorted [x] := Sorted.singleton x
+
+/--
 If a list is sorted, its head is less than or equal to all other elements in the list.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem head_le_of_sorted  (a: α) (l : List α) : -- states and proves theorem `head_le_of_sorted`
-  Sorted (a :: l) → ∀ x ∈ l, a ≤ x := by -- starts tactic mode; the following tactics prove the proposition just stated
+theorem head_le_of_sorted  (a: α) (l : List α) : Sorted (a :: l) → ∀ x ∈ l, a ≤ x := by -- starts tactic mode; the following tactics prove the proposition just stated
   intro h -- moves leading forall variables or implication hypotheses into the local context
   match h with -- splits computation into cases by pattern matching
   | Sorted.singleton .. => simp -- matches a sorted singleton list proof and simplifies this proof case
@@ -51,14 +62,19 @@ theorem head_le_of_sorted  (a: α) (l : List α) : -- states and proves theorem 
 A list is sorted if its tail is sorted and the new head is less than or equal to all elements in the tail.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem cons_sorted (l : List α) :  Sorted l → (a : α) → -- states and proves theorem `cons_sorted`
-  (∀ y ∈ l, a ≤ y) → Sorted (a :: l)  := by
+theorem cons_sorted_of_le (l : List α) :  Sorted l → (a : α) → (∀ y ∈ l, a ≤ y) → Sorted (a :: l)  := by
   intro h₁ a h₀ -- moves leading forall variables or implication hypotheses into the local context
   match l with -- splits computation into cases by pattern matching
   | [] => -- matches the empty list and proves this case with the tactic steps below
     apply Sorted.singleton -- applies `Sorted.singleton` backwards, replacing the current goal by its premises
   | x :: l' => -- matches a nonempty list and proves this case with the tactic steps below
     grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
+
+/-!
+## Example: A sorted list
+-/
+example : Sorted [1, 3, 3, 5, 12, 12, 15] := by -- states and proves an example of a sorted list
+  grind (splits := 100) (ematch := 20) (gen := 100) -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
 /-!
 ## Sorted lists and monotone lists
@@ -71,7 +87,7 @@ Such results are useful in making sure that our definitions are robust and captu
 Predicate for checking if a list is monotone (non-decreasing).
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-def monotone (l : List α) : Prop := ∀ i j, -- defines `monotone`
+def Monotone (l : List α) : Prop := ∀ i j, -- defines `monotone`
   (h₁: i < j) → (h₂ : j < l.length) →
     l[i]' (by grind) ≤ l[j]' (by grind)
 
@@ -79,7 +95,7 @@ def monotone (l : List α) : Prop := ∀ i j, -- defines `monotone`
 Every sorted list is monotone.
 -/
 theorem monotone_of_sorted (l : List α) -- states and proves theorem `monotone_of_sorted`
-  (h : Sorted l) : monotone l := by
+  (h : Sorted l) : Monotone l := by
   induction h with
   | nil => grind -- matches the empty list and asks `grind` to solve this case
   | singleton x => -- matches a sorted singleton list proof and proves this case with the tactic steps below
@@ -101,9 +117,8 @@ theorem monotone_of_sorted (l : List α) -- states and proves theorem `monotone_
 If a list is monotone, its tail is also monotone.
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem tail_monotone_of_monotone {y: α} -- states and proves theorem `tail_monotone_of_monotone`
-  {ys : List α} (h : monotone (y :: ys)) :
-  monotone ys := by -- starts tactic mode; the following tactics prove the proposition just stated
+theorem tail_monotone_of_monotone {y: α}   {ys : List α} (h : Monotone (y :: ys)) : Monotone ys :=
+  by -- starts tactic mode; the following tactics prove the proposition just stated
   intro i j h₁ h₂ -- moves leading forall variables or implication hypotheses into the local context
   have h₁' : i + 1 < j + 1 := by -- records an intermediate fact for the proof
     grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
@@ -112,16 +127,17 @@ theorem tail_monotone_of_monotone {y: α} -- states and proves theorem `tail_mon
   specialize h (i + 1) (j + 1) h₁' h₂'
   grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
+
 @[grind .]
-theorem fst_le_snd_of_monotone {x y : α} {l : List α} (h : monotone (x :: y :: l)) :
-  x ≤ y := by
+theorem fst_le_snd_of_monotone {x y : α} {l : List α} (h : Monotone (x :: y :: l)) : x ≤ y := by
   apply h 0 1 <;> simp
+
 
 /--
 Every monotone list is sorted.
 -/
 theorem sorted_of_monotone (l : List α) -- states and proves theorem `sorted_of_monotone`
-  (h : monotone l) : Sorted l := by
+  (h : Monotone l) : Sorted l := by
   induction l with
   | nil => apply Sorted.nil -- matches the empty list and applies Sorted.nil
   | cons x xs ih => -- matches a nonempty list and returns `cases xs with`
