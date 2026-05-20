@@ -112,6 +112,11 @@ theorem tail_monotone_of_monotone {y: α} -- states and proves theorem `tail_mon
   specialize h (i + 1) (j + 1) h₁' h₂'
   grind -- uses `grind` to combine simplification, constructor facts, and hypotheses until the goal closes
 
+@[grind .]
+theorem fst_le_snd_of_monotone {x y : α} {l : List α} (h : monotone (x :: y :: l)) :
+  x ≤ y := by
+  apply h 0 1 <;> simp
+
 /--
 Every monotone list is sorted.
 -/
@@ -123,9 +128,7 @@ theorem sorted_of_monotone (l : List α) -- states and proves theorem `sorted_of
     cases xs with -- splits or inverts `xs with`, creating one goal for each possible constructor
     | nil => apply Sorted.singleton -- matches the empty list and applies Sorted.singleton
     | cons y ys => -- matches a nonempty list and proves this case with the tactic steps below
-      apply Sorted.step -- applies `Sorted.step` backwards, replacing the current goal by its premises
-      · apply h 0 1 (by simp) (by simp) -- focuses the next proof branch
-      · grind -- focuses the next proof branch
+      apply Sorted.step <;> grind -- applies `Sorted.step` backwards, replacing the current goal by its premises
 
 /-!
 ## Exercise: Sorted lists with equal counts

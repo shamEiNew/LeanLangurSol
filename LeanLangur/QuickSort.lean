@@ -36,14 +36,14 @@ Returns a sublist of elements from `l` that are less than or equal to the `pivot
 -/
 @[grind, simp] -- annotation controlling elaboration, simplification, or automation
 def smaller (pivot : α) (l : List α) : List α := -- defines `smaller`
-  l.filter (fun x => x ≤  pivot) -- maps this case or syntax pattern to its result
+  l.filter (· ≤  pivot) -- maps this case or syntax pattern to its result
 
 /--
 Returns a sublist of elements from `l` that are strictly greater than the `pivot`.
 -/
 @[grind, simp] -- annotation controlling elaboration, simplification, or automation
 def larger (pivot : α) (l : List α) : List α := -- defines `larger`
-  l.filter (fun x => pivot < x) -- maps this case or syntax pattern to its result
+  l.filter (pivot < ·) -- maps this case or syntax pattern to its result
 
 /--
 A partial (non-terminating) implementation of Quicksort.
