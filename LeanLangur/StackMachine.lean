@@ -195,14 +195,14 @@ def run (p: Program) (initStack: Stack) (h: ValidProgram initStack.length p) : S
         simp at h -- simplifies the current goal or hypotheses
       | x :: ys => run p' ys (valid_program_of_pop h) -- matches a nonempty stack and runs the rest after removing `x`
 
-#eval run [push 2, push 3, add] [] (by grind) -- runs this expression as a tutorial check
+#eval run [push 2, push 3, add] [] (by grind) -- [5]
 
-#eval run [push 2, add] [3] (by grind) -- runs this expression as a tutorial check
+#eval run [push 2, add] [3] (by grind) -- [5]
 
 macro "run%" p:term  : term => -- declares a custom macro form
   `(run $p [] (by grind (ematch := 10)))
 
-#eval run% [push 2, push 3, add] -- runs this expression as a tutorial check
+#eval run% [push 2, push 3, add] -- [5]
 
 
 /--

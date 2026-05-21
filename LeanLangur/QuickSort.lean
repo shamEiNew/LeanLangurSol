@@ -1,5 +1,4 @@
-import Mathlib.Data.List.Basic -- imports definitions and theorems used below
-import Mathlib.Tactic -- imports definitions and theorems used below
+import Mathlib -- imports definitions and theorems used below
 import LeanLangur.Basic -- imports definitions and theorems used below
 import LeanLangur.Sorted -- imports definitions and theorems used below
 /-!
@@ -98,6 +97,26 @@ theorem mem_iff_mem_quickSort (l: List α)(x : α) : -- states and proves theore
     x ∈ l ↔ x ∈ quickSort l := by -- starts tactic mode; the following tactics prove the proposition just stated
   fun_induction quickSort <;> grind -- follows the recursive equations of `quickSort` and lets `grind` solve each generated case
 
+/--
+Concatenating two sorted lists with a pivot in between results in a sorted list,
+provided the pivot respects the bounds of both lists.
+-/
+@[grind .] -- annotation controlling elaboration, simplification, or automation
+theorem sorted_sandwitch (l₁ : List α) (h₁ : Sorted l₁) (l₂ : List α) (h₂ : Sorted l₂)
+    (bound : α) (h_bound₁ : ∀ x ∈ l₁, x ≤ bound) (h_bound₂ : ∀ x ∈ l₂, bound ≤ x) : Sorted (l₁ ++ bound :: l₂) := by
+    induction h₁ with
+    | nil => grind -- matches the empty list and asks `grind` to solve this case
+    | singleton x => -- matches a sorted singleton list proof and proves this case with the tactic steps below
+      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
+    | step x y l hxy tail_sorted ih => -- matches a sorted list built from a head and sorted tail and proves this case with the tactic steps below
+      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
+
+/--
+The `quickSort` function correctly sorts any input list.
+-/
+theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- starts tactic mode for theorem `quickSort_sorted`; the following tactics prove the stated goal
+  fun_induction quickSort <;> grind -- follows the recursive equations of `quickSort` and lets `grind` solve each generated case
+
 section Count
 /-!
 ## Exercises
@@ -125,35 +144,3 @@ theorem count_eq_count_quickSort (l : List α) -- states and proves theorem `cou
     l.count x = (quickSort l).count x := by -- starts tactic mode; the following tactics prove the proposition just stated
   sorry
 end Count -- closes the current namespace or section
-
-
-/--
-Concatenating two sorted lists with a pivot in between results in a sorted list,
-provided the pivot respects the bounds of both lists.
--/
-@[grind .] -- annotation controlling elaboration, simplification, or automation
-theorem sorted_sandwitch (l₁ : List α) (h₁ : Sorted l₁) -- states and proves theorem `sorted_sandwitch`
-    (l₂ : List α) (h₂ : Sorted l₂)
-    (bound : α)
-    (h_bound₁ : ∀ x ∈ l₁, x ≤ bound)
-    (h_bound₂ : ∀ x ∈ l₂, bound ≤ x) :
-    Sorted (l₁ ++ bound :: l₂) := by -- starts tactic mode; the following tactics prove the proposition just stated
-    induction h₁ with
-    | nil => grind -- matches the empty list and asks `grind` to solve this case
-    | singleton x => -- matches a sorted singleton list proof and proves this case with the tactic steps below
-      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
-    | step x y l hxy tail_sorted ih => -- matches a sorted list built from a head and sorted tail and proves this case with the tactic steps below
-      grind [Sorted.step] -- uses `grind` with the listed lemmas unfolded or available to close the remaining goal
-
-/--
-The `quickSort` function correctly sorts any input list.
--/
-theorem quickSort_sorted (l : List α) : Sorted (quickSort l) := by -- starts tactic mode for theorem `quickSort_sorted`; the following tactics prove the stated goal
-  fun_induction quickSort -- follows the recursive equations of `quickSort` and lets `grind` solve each generated case
-  · apply nil_sorted -- applies `Sorted.nil` backwards, replacing the current goal by its premises
-  · apply sorted_sandwitch <;> grind
-/-!
-## Next files
-
-* None in the README dependency diagram.
--/
