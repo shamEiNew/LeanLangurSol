@@ -83,13 +83,16 @@ We in some sense axiomatized the property of being sorted by saying that the hea
 
 Such results are useful in making sure that our definitions are robust and capture the intended concept. They also allow us to use whichever characterization is more convenient in a given proof.
 -/
+
+#eval [1, 3, 5][2]
+
 /--
 Predicate for checking if a list is monotone (non-decreasing).
 -/
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def Monotone (l : List α) : Prop := ∀ i j, -- defines `monotone`
   (h₁: i < j) → (h₂ : j < l.length) →
-    l[i]' (by grind) ≤ l[j]' (by grind)
+    l[i] ≤ l[j]
 
 /--
 Every sorted list is monotone.
