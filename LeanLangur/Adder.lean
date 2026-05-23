@@ -2,11 +2,12 @@
 ## Prerequisite files
 
 * `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+* `People.lean` - structures in lean.
 
 ## Main concepts introduced
 
 * typeclasses.
-* custom `Add` instances.
+* instances of typeclasses.
 * typeclass inference.
 -/
 

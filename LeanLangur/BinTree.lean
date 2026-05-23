@@ -3,12 +3,13 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+* `People.lean` - structures in lean (not strictly necessary).
 
 ## Main concepts introduced
 
 * inductive types.
-* recursive functions on trees.
-* membership proofs.
+* recursive functions on inductive types.
+* proofs by induction on inductive types.
 -/
 
 /-!

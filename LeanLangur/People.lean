@@ -61,5 +61,6 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
+* `BinTree.lean` - inductive types; recursive functions on trees; membership proofs. (recommended next file).
 * `IsEven.lean` - inductive propositions; basic use of `grind`.
 -/
