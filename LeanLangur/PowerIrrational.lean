@@ -1,6 +1,12 @@
 import Mathlib
 
 /-!
+## Prerequisite files
+
+Since this is a digression, not many prerequisites are needed, in principle only `Smallest.lean`. However, the issues here are subtle, so you may want to come here after some familiarity with more basic aspects of Lean.
+-/
+
+/-!
 ## Non-computable existence proof
 
 One of the most famous examples of a non-computable existence proof is the following: there exist irrational numbers `a` and `b` such that `a^b` is rational. The proof is as follows: consider `sqrt(2)^sqrt(2)`. If this number is irrational, then we can take `a = sqrt(2)` and `b = sqrt(2)`, and we are done. If this number is rational, then we can take `a = sqrt(2)^sqrt(2)` and `b = sqrt(2)`, and we are also done. In either case, we have found irrational numbers `a` and `b` such that `a^b` is rational.
@@ -53,3 +59,9 @@ noncomputable def explicit_irrational_power_irrational_rational :
 
 
 end langur
+
+/-!
+## Next files
+
+You can continue based on from where you digressed to this point.
+-/

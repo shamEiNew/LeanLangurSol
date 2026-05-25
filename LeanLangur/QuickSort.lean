@@ -6,6 +6,8 @@ import LeanLangur.Sorted -- imports definitions and theorems used below
 
 * `Sorted.lean` - sorted-list predicates and equivalent characterizations of sortedness.
 
+Many conceps are used here, but they are already prerequisites for `Sorted.lean`.
+
 ## Main concepts introduced
 
 * quicksort.

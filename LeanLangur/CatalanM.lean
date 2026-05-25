@@ -71,5 +71,10 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `Combinations.lean` - recursive combinatorial definitions; factorials; state-monad exercises.
+## Next files
+
+* You can go to `FunEquality.lean` to see decidable equality and proof irrelevance.
+* You can go to `PowerIrrationals.lean` to see computability.
+* Or go directly to `Sorted.lean`, then `QuickSort.lean` - quicksort implementation and correctness proof; an extended example of programs with proofs.
+* Or you can go to the exercises in `Combinations.lean` to apply the concepts of memoization and stateful dynamic programming to a more complex combinatorial problem.
 -/

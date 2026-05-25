@@ -2,6 +2,7 @@
 ## Prerequisite files
 
 * `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `Adder.lean` - typeclasses; instances of typeclasses; typeclass inference (not strictly necessary).
 
 ## Main concepts introduced
 

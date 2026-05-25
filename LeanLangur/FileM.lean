@@ -7,9 +7,8 @@ import Lean -- imports definitions and theorems used below
 
 ## Main concepts introduced
 
-* custom monads.
-* safe file programs.
-* security predicates.
+* Embedding a language that includes returning values, reading files, and writing files.
+* A security framework for verifying that file programs only access safe paths and write safe values.
 -/
 
 namespace langur -- starts a namespace to group the tutorial definitions
@@ -216,5 +215,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* This is an apex file. You can go to one of the other advanced files, such as `StackMachine.lean` or `LangurLang.lean`.
 -/

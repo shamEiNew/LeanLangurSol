@@ -2,6 +2,7 @@
 ## Prerequisite files
 
 * `Adder.lean` - typeclasses, custom `Add` instances, and typeclass inference.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
 * `BinTree.lean` - inductive types, recursive functions on trees, and membership proofs.
 
 ## Main concepts introduced
@@ -154,7 +155,10 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* You can go to `FibM.lean` to see memoization and the `State` monad.
+* You can go to `PowerIrrationals.lean` to see computability.
+* Or directly to `Sorted.lean`, then `QuickSort.lean` - quicksort implementation and correctness proof; an extended example of programs with proofs.
+
 -/
 
 example : 1 ≤ 3 := by decide

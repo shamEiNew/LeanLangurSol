@@ -1,7 +1,7 @@
 /-!
 ## Prerequisite files
 
-* None in the README dependency diagram.
+The files `SmallestNat.lean` and `ListOps.lean` are more basic but this is mostly self-contained.
 
 ## Main concepts introduced
 
@@ -61,6 +61,6 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `BinTree.lean` - inductive types; recursive functions on trees; membership proofs. (recommended next file).
+* `BinTree.lean` - inductive types; recursive functions on trees. (recommended next file).
 * `IsEven.lean` - inductive propositions; basic use of `grind`.
 -/

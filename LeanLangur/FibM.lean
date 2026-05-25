@@ -73,7 +73,9 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `CatalanM.lean` - memoized Catalan numbers; stateful dynamic programming.
-* `PyFor.lean` - syntax extensions; Python-style list comprehensions.
-* `TryInterpret.lean` - frontend interpretation; environment manipulation; generated Lean snippets.
+* A slightly more complicated example of memoization is the computation of Catalan numbers in `CatalanM.lean`.
+* You can go to `FunEquality.lean` to see decidable equality and proof irrelevance.
+* You can go to `PowerIrrationals.lean` to see computability.
+* Or go directly to `Sorted.lean`, then `QuickSort.lean` - quicksort implementation and correctness proof; an extended example of programs with proofs.
+
 -/

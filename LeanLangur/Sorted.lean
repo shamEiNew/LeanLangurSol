@@ -4,6 +4,8 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
+* `Smallest.lean` - smallest element in an ordered list.
 
 ## Main concepts introduced
 

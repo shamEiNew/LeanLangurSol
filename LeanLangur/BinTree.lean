@@ -104,7 +104,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `BinarySearchTree.lean` - binary search trees; order invariants; search operations.
-* `FunEquality.lean` - equality of functions; decision procedures; proof irrelevance.
-* `IsEven.lean` - inductive propositions; basic use of `grind`.
+* `IsEven.lean` - inductive propositions.
 -/
