@@ -3,12 +3,13 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+* `People.lean` - structures in lean (not strictly necessary).
 
 ## Main concepts introduced
 
 * inductive types.
-* recursive functions on trees.
-* membership proofs.
+* recursive functions on inductive types.
+* proofs by induction on inductive types.
 -/
 
 /-!
@@ -103,7 +104,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `BinarySearchTree.lean` - binary search trees; order invariants; search operations.
-* `FunEquality.lean` - equality of functions; decision procedures; proof irrelevance.
-* `IsEven.lean` - inductive propositions; basic use of `grind`.
+* `IsEven.lean` - inductive propositions.
 -/

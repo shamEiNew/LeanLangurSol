@@ -5,12 +5,13 @@ import Std -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `PyFor.lean` - syntax extensions and Python-style list comprehensions.
+* `StackMachine.lean` - embedding a small language at a semantic level (not strictly necessary).
 
 ## Main concepts introduced
 
 * domain-specific language syntax.
 * shallow embeddings.
-* imperative programs.
+* embedding imperative features in a pure functional language.
 -/
 
 namespace langur -- starts a namespace to group the tutorial definitions

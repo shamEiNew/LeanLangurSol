@@ -98,6 +98,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `BinTree.lean` - inductive types; recursive functions on trees; membership proofs.
-* `Adder.lean` - typeclasses; custom `Add` instances; typeclass inference.
+Continue to the file `People.lean` to see definitions of structures.
 -/

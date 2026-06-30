@@ -34,5 +34,5 @@ Recall that the recursive definition of combinations is given by:
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* You can go to one of the advanced files, such as `StackMachine.lean` or `Eratosthenes.lean`.
 -/

@@ -111,5 +111,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* This is an apex file. You can go to `LoadFile.lean` to see file I/O and syntax quotations, or to `TryInterpret.lean` to see how to run the Lean interpreter.
 -/

@@ -4,6 +4,8 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `BinTree.lean` - inductive types, recursive functions on trees, and membership proofs.
+* `Sorted.lean` - sorted-list predicates and equivalent characterizations of sortedness.
+* `QuickSort.lean` - quicksort algorithm and termination arguments.
 
 ## Main concepts introduced
 
@@ -215,7 +217,7 @@ theorem fastCheckMem_correct (label : α)(l: BinarySearchTree α)(h : IsOrdered 
 /-!
 ## Exercise: Deletion
 
-Define a function `deleteLabel` that removes a label from an ordered binary search tree while maintaining the tree structure and order properties. Prove that after deletion, the label is no longer in the tree, and that all other labels are still present.
+Define a function `deleteLabel` that removes a label from an ordered binary search tree returning an `Option (BinarySearchTree α)` while maintaining the tree structure and order properties. Prove that after deletion, the label is no longer in the tree, and that all other labels are still present.
 -/
 
 end binary_search_tree -- closes the current namespace or section
@@ -224,5 +226,7 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* As another hard exercise, you can move to `Eratosthenes.lean` and implement the Sieve of Eratosthenes.
+* You can go to `StackMachine.lean` to see how to embed a small language at a semantic level.
+* You can also go to metaprogramming files from here - `PyFor.lean` is the best starting point for learning about metaprogramming in Lean.
 -/

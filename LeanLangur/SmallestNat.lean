@@ -1,13 +1,14 @@
 import Mathlib -- imports definitions and theorems used below
 /-!
-## Prerequisite files
+## Background and Concepts introduced in this file
 
-* `Basic.lean` - Lean worksheet commands with `#eval` and `#check` and simple definitions.
+This is the first file in the tutorial proper. However, there are three preliminary files that introduce some of the foundations of Lean.
 
-## Main concepts introduced
+* `SimpleTerms.lean` - simple terms, types, and evaluation.
+* `PropsProofs.lean` - propositions and proofs - "propositions as types".
+* `SumToN.lean` - a simple example of a program and its correctness proof, with some tactics.
 
-* functions and proofs.
-* macros and notation.
+We assume that you are familiar with proving using tactics in Lean, as covered in *A glimpse of Lean* even before starting these files. If you are not, you may want to start with the many excellent resources on that topic.
 -/
 
 /-!
@@ -112,6 +113,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `ListOps.lean` - implicit and explicit parameters; monadic `do` notation for lists.
-* `FibM.lean` - memoization; the `State` monad.
+Continue to `ListOps.lean` to see implicit parameters and some examples of `do` notation.
 -/

@@ -9,7 +9,6 @@ import Mathlib -- imports definitions and theorems used below
 ## Main concepts introduced
 
 * inductive propositions.
-* basic use of `grind`.
 -/
 
 /-!
@@ -79,8 +78,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `Sorted.lean` - sorted-list predicates; equivalent characterizations of sortedness.
-* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
-* `Smallest.lean` - generic smallest-element functions; linear-order typeclass parameters.
-* `Eratosthenes.lean` - prime numbers; the Sieve of Eratosthenes exercise.
+* `Adder.lean` - typeclasses; instances of typeclasses; typeclass inference. (recommended next file).
 -/

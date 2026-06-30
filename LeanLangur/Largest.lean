@@ -2,7 +2,9 @@ import Mathlib.Order.Lattice -- imports definitions and theorems used below
 /-!
 ## Prerequisite files
 
-* `Adder.lean` - typeclasses, custom `Add` instances, and typeclass inference.
+* `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
+* `SmallestNat.lean` - smallest element in a list of natural numbers.
 
 ## Main concepts introduced
 
@@ -176,5 +178,8 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* You can go to `FunEquality.lean` to see decidable equality and proof irrelevance.
+* You can go to `FibM.lean` to see memoization and the `State` monad.
+* You can go to `PowerIrrationals.lean` to see computability.
+* Or directly to `Sorted.lean`, then `QuickSort.lean` - quicksort implementation and correctness proof; an extended example of programs with proofs.
 -/

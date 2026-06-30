@@ -3,6 +3,8 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
+* `SmallestNat.lean` - smallest element in a list of natural numbers.
 
 ## Main concepts introduced
 
@@ -63,7 +65,7 @@ end partial_order -- closes the current namespace or section
 
 end langur -- closes the current namespace or section
 /-!
-## Next files
+## Next file
 
-* None in the README dependency diagram.
+* `Largest.lean` - in addition to the concepts introduced in this file, we see `Option` types and some other concepts.
 -/

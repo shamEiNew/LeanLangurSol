@@ -141,5 +141,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* None in the README dependency diagram.
+* This was a digression. You can go to any of the meta-programming files from here.
 -/

@@ -3,13 +3,12 @@ import LeanLangur.Basic -- imports definitions and theorems used below
 /-!
 ## Prerequisite files
 
-* None in the README dependency diagram.
+* `FibM.lean` - memoization and the `State` monad.
+* This is conceptually advanced, so it is recommended that you have reached the level of `QuickSort.lean` before reading this file.
 
 ## Main concepts introduced
 
-* stack-machine instructions.
-* safe evaluators.
-* validity predicates.
+* Embedding a small language at a semantic level.
 -/
 
 /-!

@@ -4,6 +4,8 @@ import Mathlib -- imports definitions and theorems used below
 ## Prerequisite files
 
 * `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
+* `Smallest.lean` - smallest element in an ordered list.
 
 ## Main concepts introduced
 
@@ -83,6 +85,9 @@ We in some sense axiomatized the property of being sorted by saying that the hea
 
 Such results are useful in making sure that our definitions are robust and capture the intended concept. They also allow us to use whichever characterization is more convenient in a given proof.
 -/
+
+#eval [1, 3, 5][2]
+
 /--
 Predicate for checking if a list is monotone (non-decreasing).
 -/

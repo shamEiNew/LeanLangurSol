@@ -2,11 +2,12 @@
 ## Prerequisite files
 
 * `ListOps.lean` - implicit and explicit parameters and monadic `do` notation for lists.
+* `People.lean` - structures in lean.
 
 ## Main concepts introduced
 
 * typeclasses.
-* custom `Add` instances.
+* instances of typeclasses.
 * typeclass inference.
 -/
 
@@ -98,7 +99,5 @@ end langur -- closes the current namespace or section
 /-!
 ## Next files
 
-* `Largest.lean` - programs with proofs; nonempty-list algorithms over linear orders.
-* `FunEquality.lean` - equality of functions; decision procedures; proof irrelevance.
-* `FibM.lean` - memoization; the `State` monad.
+* `NonAtom.lean` - constructing typeclasses; typeclass fields and instances.
 -/

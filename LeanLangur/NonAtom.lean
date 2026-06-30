@@ -2,6 +2,7 @@
 ## Prerequisite files
 
 * `IsEven.lean` - inductive propositions and basic use of `grind`.
+* `Adder.lean` - typeclasses; instances of typeclasses; typeclass inference (not strictly necessary).
 
 ## Main concepts introduced
 
@@ -57,6 +58,9 @@ instance: NonAtom Bool where -- provides an instance for typeclass search
     secondAtom := true
     firstNeqSecond := by decide -- proves the inequality by computation with decidable equality
 
+#synth NonAtom Nat
+
+
 /-- If `α` is `NonAtom`, then `List α` is also `NonAtom` (empty list vs single-element list). -/
 instance [NonAtom α] : NonAtom (List α) where -- provides an instance for typeclass search
     firstAtom := []
@@ -84,6 +88,8 @@ instance [NonAtom α] [Inhabited β] : NonAtom (α × β) where -- provides an i
     firstAtom := (firstAtom α, (default : β))
     secondAtom := (secondAtom α, (default : β))
     firstNeqSecond := by simp [firstAtomNeqSecond α] -- proves the field by simplifying the two constructors or expressions
+
+#synth NonAtom (Nat × Unit)
 
 /-- If `α` is `Inhabited` and `β` is `NonAtom`, then `α × β` is `NonAtom`. -/
 instance [Inhabited α] [NonAtom β] : NonAtom (α × β) where -- provides an instance for typeclass search
