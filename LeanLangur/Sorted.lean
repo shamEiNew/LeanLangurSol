@@ -89,7 +89,7 @@ Predicate for checking if a list is monotone (non-decreasing).
 @[grind .] -- annotation controlling elaboration, simplification, or automation
 def Monotone (l : List α) : Prop := ∀ i j, -- defines `monotone`
   (h₁: i < j) → (h₂ : j < l.length) →
-    l[i]' (by grind) ≤ l[j]' (by grind)
+    l[i] ≤ l[j]
 
 /--
 Every sorted list is monotone.
