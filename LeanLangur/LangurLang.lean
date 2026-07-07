@@ -156,7 +156,6 @@ def climbProgramM -- defines `climbProgramM`
   (pgm: TSyntax ``langur_program) (init: State) : TermElabM (State) := do
   let (_, m) ← interpretProgramM pgm |>.run init -- binds an intermediate value for the following expression
   return m -- returns this value from the monadic block
-
 elab "#leap" ss:langur_program r:"return" : command  => -- declares an elaborator for custom syntax
   Command.liftTermElabM do
   let (_, m) ← interpretProgramM ss |>.run {} -- binds an intermediate value for the following expression

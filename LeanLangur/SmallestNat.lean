@@ -36,7 +36,7 @@ def smallestI (l: List Nat) : Nat := -- defines `smallestI`
     min x (smallestI (y :: zs))
   | [] => default  -- placeholder for empty list
 
-#eval smallestI [3, 1, 4, 1, 5, 9, 2, 6, 5]  -- evaluates to 1
+#eval smallestI [5, 8, 12] -- evaluates to 1
 
 /--
 Implementation of the smallest element in a non-empty list of natural numbers.
@@ -48,12 +48,40 @@ def smallest (l: List Nat) (h: l ≠ []) : Nat := -- defines `smallest`
   | x :: y :: zs => -- matches a list with head `x` and nonempty tail `y :: zs`, then returns the smaller of `x` and the recursive result
     min x (smallest (y :: zs) (by simp))
 
+
+example : 1 ≤ 3 :=
+  calc
+    1 <= 2  := Nat.le_succ 1
+    2 <= 3 := Nat.le_succ 2
+
+example :  List Nat := [1, 2, 3]
+def M : List Nat := [1, 2, 3]
+
+#check Nat
+
 /--
 The element returned by `smallest` is indeed a member of the list.
 -/
 theorem smallest_mem (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
-    smallest l h ∈ l := by -- starts tactic mode; the goal is to prove the computed smallest element occurs in `l`
-  fun_induction smallest <;> grind -- `fun_induction` creates one goal for each recursive clause of `smallest`; `grind` solves each membership goal
+    smallest l h ∈ l := by          -- starts tactic mode; the goal is to prove the computed smallest element occurs in `l`
+  induction l with
+  | nil => exact False.elim (h rfl)
+  | cons x xs ih =>
+      match xs with
+      | [] => apply List.Mem.head
+
+      | y :: zs =>
+        dsimp [smallest]
+        rw [Nat.min_def]
+        split_ifs with h_le
+        · -- Subcase A: x ≤ smallest (y :: zs) _, so min evaluates to `x`
+          apply List.Mem.head
+        · -- Subcase B: x > smallest (y :: zs) _, so min evaluates to `smallest (y :: zs) _`
+          apply List.Mem.tail
+          apply ih
+
+
+    -- `fun_induction` creates one goal for each recursive clause of `smallest`; `grind` solves each membership goal
 
 theorem smallest_mem' (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
     smallest l h ∈ l := by match l with
@@ -62,8 +90,11 @@ theorem smallest_mem' (l: List Nat) (h: l ≠ []) : -- states and proves theorem
     simp only [List.mem_cons, List.not_mem_nil, or_false]  -- base case: if the list is a singleton, the smallest is that element, which is trivially in the list
   | x :: y :: zs => -- inductive case: if the list has at least
     simp [smallest]
-    have ih := smallest_mem' (y :: zs) (by simp) -- induction hypothesis: the smallest of the tail is in the tail
+    have ih := smallest_mem' (y :: zs) (by simp)
     grind
+
+
+    --e tail is in the tail
 
 example (l: List Nat) (h: l ≠ []) : -- states and proves theorem `smallest_mem`
     smallest l h ∈ l := by
@@ -92,8 +123,8 @@ macro "smallest%" l:term : term => do -- declares a custom macro form
 
 #print smallest_mem -- prints Lean's generated declaration for inspection
 
-#print smallest_mem._proof_1_2 -- prints Lean's generated declaration for inspection
-#print smallest_mem._proof_1_3 -- prints Lean's generated declaration for inspection
+-- #print smallest_mem._proof_1_2 -- prints Lean's generated declaration for inspection
+-- #print smallest_mem._proof_1_3 -- prints Lean's generated declaration for inspection
 #print smallest.induct_unfolding -- prints Lean's generated declaration for inspection
 
 /-!
@@ -104,8 +135,12 @@ Prove that if `p` is a predicate on natural numbers and `l` is a list of natural
 It will be useful to use the above results. Think about the mathematical argument for this fact, and then try to translate it into Lean. You may find it helpful to introduce some intermediate variables and hypotheses to structure the proof.
 -/
 theorem smallest_le_smallest_of_filter (l: List Nat) (p: Nat → Bool) (h: l.filter p ≠ []) : -- states and proves theorem `smallest_le_smallest_of_filter`
-  smallest l (by grind) ≤ smallest (l.filter p) h := by -- starts tactic mode; the goal compares the smallest element of `l` with that of its nonempty filtered sublist
-  sorry
+  smallest l (by grind) ≤ smallest (l.filter p) h := by
+  have hl : l ≠ [] := by grind
+  have h1 : smallest (l.filter p) h ∈ l.filter p := smallest_mem _ h
+  have h2 : smallest (l.filter p) h ∈ l := List.mem_of_mem_filter h1
+  exact smallest_le_all l hl _ h2                             -- starts tactic mode; the goal compares the smallest element of `l` with that of its nonempty filtered sublist
+
 
 end nat -- closes the current namespace or section
 

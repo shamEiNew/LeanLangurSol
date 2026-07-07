@@ -57,7 +57,11 @@ def dblList {α : Type} (l: List α) : List α := -- defines `dblList`
 #eval @dblList _ [1, 3 ,5] -- runs this expression as a tutorial check
 
 /-!
-List of pairs using `do` notation. The `do` notation is a convenient way to compose operations that involve iterating over lists. It allows us to write code that looks more like a traditional imperative style, while still being purely functional. The same notation and behaviour holds for so-called **Monads** in general. We will encounter other monads later, in particular `State` monads and `Option`.
+List of pairs using `do` notation. The `do` notation is a convenient way to compose operations that
+involve iterating over lists.
+It allows us to write code that looks more like a traditional imperative style,
+while still being purely functional. The same notation and behaviour holds for so-called **Monads** in general.
+We will encounter other monads later, in particular `State` monads and `Option`.
 -/
 
 /--
@@ -81,6 +85,16 @@ Using the `do` notation, implement a function `innerPairs` that in a special cas
 ```
 More generally, we are given `ll: List (List α)` and we want `innerPairs` to return a list of all pairs `(x, y)` such that `x` and `y` are both elements of the same inner list in `ll`. In the above example, the answer would be `[(1, 1), (1, 2), (2, 1), (2, 2), (3, 3), (3, 4), (4, 3), (4, 4)]`.
 -/
+
+def innerPairs {α : Type} (l: List (List α)) : List (α × α) := do
+  let l1 ← l
+  let x ← l1 -- binds an intermediate value for the following expression
+  let y ← l1 -- binds an intermediate value for the following expression
+  return (x, y) -- returns this value from the monadic block
+
+
+#eval innerPairs [[1, 2], [3, 4]]
+
 
 /-!
 List of sums using `do` notation. Requires the type `α` to have an instance of the `Add` typeclass to tell Lean how to add elements of type `α`. This example is just a preview of using typeclasses.
