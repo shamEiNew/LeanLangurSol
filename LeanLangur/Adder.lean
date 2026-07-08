@@ -49,6 +49,8 @@ Hint: Type class instance resolution failures can be inspected with the `set_opt
 instance : Add String where -- provides an instance for typeclass search
   add s t := s ++ " " ++ t
 
+#eval (λ n : Nat ↦ n + 1) 1
+
 #eval add "Hello" "world" -- runs this expression as a tutorial check
 
 #eval "Hello" + "world" -- runs this expression as a tutorial check

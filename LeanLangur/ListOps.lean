@@ -103,13 +103,21 @@ List of sums using `do` notation. Requires the type `α` to have an instance of 
 /--
 Computes all possible sums of elements from two lists using `do` notation.
 -/
-def sums {α : Type}[Add α] (l₁: List α) (l₂: List α ) : List α := do -- defines `sums`
+def sums {α : Type}[Add α ](l₁: List α) (l₂: List α ) : List α := do -- defines `sums`
   let x ← l₁ -- binds an intermediate value for the following expression
   let y ← l₂ -- binds an intermediate value for the following expression
   return x + y -- returns this value from the monadic block
 
+#eval sums [1, 2, 3] [1, 1, 1]
+
+example : 2 + 2 =4 := by rfl
+example (n:Nat):n+0=n := by rfl
+
+
+
 end langur -- closes the current namespace or section
 /-!
+
 ## Next files
 
 Continue to the file `People.lean` to see definitions of structures.

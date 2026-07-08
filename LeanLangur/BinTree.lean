@@ -48,7 +48,10 @@ def BinTree.toList {α : Type} : BinTree α → List α -- defines `BinTree.toLi
 def exampleTree : BinTree Nat := -- defines `exampleTree`
   node (node (leaf 1) (leaf 2)) (leaf 3)
 
-#eval exampleTree.toList  -- Output: [1, 2, 3]
+def exampleTreeMine : BinTree Nat :=
+  node (node (node (leaf 1) (leaf 2)) (leaf 4)) (leaf 3)
+
+#eval exampleTreeMine.toList  -- Output: [1, 2, 3]
 
 /--
 Inductive predicate for membership in a binary tree.
