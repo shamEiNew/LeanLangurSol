@@ -121,6 +121,30 @@ def listToBinTree {α : Type} [Inhabited α] : List α → BinTree α
   | [x]     => .leaf x
   | x :: xs => .node (.leaf x) (listToBinTree xs)
 
+theorem mem_iff_mem_totree {α : Type} [Inhabited α] (l : List α) (x:α) :
+  x ∈ listToBinTree l ↔  x ∈ l ∨ (l = [] ∧ x = default) := by
+  apply Iff.intro
+  · induction l with
+      | nil => simp [listToBinTree] ; exact .symm
+      | cons x xs ih =>
+        match xs with
+        | [] => simp [listToBinTree] ; exact .symm
+          | y :: ys =>
+            simp [listToBinTree]
+            intro ih
+            grind only [usr List.eq_or_mem_of_mem_cons]
+  · induction l with
+      | nil => simp [listToBinTree]; grind
+      | cons x xs ih =>
+        match xs with
+        | [] => simp [listToBinTree] ; grind
+        | y :: ys =>
+          simp [listToBinTree]
+          intro ih'
+          grind
+
+
+
 #eval listToBinTree [1, 2, 3]
 
 end langur -- closes the current namespace or section
