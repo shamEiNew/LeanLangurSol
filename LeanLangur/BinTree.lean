@@ -33,6 +33,17 @@ inductive BinTree (α : Type) where -- declares the inductive type or propositio
   | node : BinTree α → BinTree α → BinTree α -- declares another constructor or syntax alternative
 deriving Repr, Inhabited -- asks Lean to generate standard instances automatically
 
+
+--infinite branch
+inductive NatTree where
+  | leaf : Nat → NatTree
+  | node : (Nat → NatTree) → NatTree
+
+
+
+#check NatTree.rec
+#check BinTree.rec
+
 open BinTree -- opens names so constructors or helpers can be written unqualified
 
 /--
@@ -101,8 +112,17 @@ theorem mem_iff_mem_toList {α : Type} (t : BinTree α) (x : α) : -- states and
 /-!
 ## Exercise: List to BinTree
 
-Define a function `listToBinTree : List α → BinTree α` that converts a list to a binary tree (this is not unique). Then, prove that for any list `l` and element `x`, `x ∈ listToBinTree l` if and only if `x ∈ l`.
+Define a function `listToBinTree : List α → BinTree α` that converts a list to a binary tree (this is not unique).
+Then, prove that for any list `l` and element `x`, `x ∈ listToBinTree l` if and only if `x ∈ l`.
 -/
+
+def listToBinTree {α : Type} [Inhabited α] : List α → BinTree α
+  | []      => .leaf default
+  | [x]     => .leaf x
+  | x :: xs => .node (.leaf x) (listToBinTree xs)
+
+#eval listToBinTree [1, 2, 3]
+
 end langur -- closes the current namespace or section
 /-!
 ## Next files
