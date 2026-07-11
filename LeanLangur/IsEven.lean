@@ -32,6 +32,8 @@ inductive IsEven : Nat → Prop -- declares the inductive type or proposition `I
 
 open IsEven -- opens names so constructors or helpers can be written unqualified
 
+#check IsEven.rec
+#check Nat.rec
 /--
 Zero is even.
 -/
@@ -51,8 +53,14 @@ theorem addTwo_even (n: Nat) (h: IsEven n) : -- states and proves theorem `addTw
 /--
 Twice any natural number is even.
 -/
+
+--In this case our `motive` becomes the hypothesis of the theorem.
+-- induction on on second part `succ n ih` is simply
+-- that `motive n` holds and we need to prove that `motive (succ n)` holds.
 theorem IsEven_two_mul (n : Nat) : IsEven (2 * n) := by -- starts tactic mode for theorem `IsEven_two_mul`; the following tactics prove the stated goal
-  induction n <;> grind -- performs induction on `n` and sends each base/step goal to `grind`
+  induction n with
+  | zero => apply zeroEven
+  | succ n ih => apply addTwoEven ; assumption
 
 /--
 The successor of an even number is not even (i.e., it is odd).
@@ -60,20 +68,40 @@ The successor of an even number is not even (i.e., it is odd).
 theorem succ_odd_of_isEven {n : Nat} -- states and proves theorem `succ_odd_of_isEven`
   (h : IsEven n) :
     ¬ IsEven (n + 1) := by -- starts tactic mode; the following tactics prove the proposition just stated
-  induction h <;> grind -- performs induction on `h` and sends each base/step goal to `grind`
+  induction h with
+  | zeroEven => intro h1;contradiction
+  | addTwoEven h ih =>
+    intro h2
+    cases h2 with
+    | addTwoEven h3 => exact (ih h3)
+
+
+
 
 /--
 For any natural number `n`, either `n` is even or `n + 1` is even.
 -/
 theorem nOrSuccNeven (n : Nat) : IsEven n ∨ IsEven (n + 1) -- states and proves theorem `nOrSuccNeven`
   := by -- starts tactic mode; the following tactics prove the proposition just stated
-  induction n <;> grind -- performs induction on `n` and sends each base/step goal to `grind`
+  induction n with
+  | zero => left; apply zeroEven
+  | succ n ih =>
+    cases ih with
+    | inl h => right; apply addTwoEven; assumption
+    | inr h => left; assumption
 
 /-!
 ## Exercise: Odd numbers
 
-Define an inductive predicate `IsOdd : Nat → Prop` for odd natural numbers, and prove that any natural number is either even or odd, but not both (As two separate propositions).
+Define an inductive predicate `IsOdd : Nat → Prop` for odd natural numbers,
+and prove that any natural number is either even or odd, but not both (As two separate propositions).
 -/
+
+inductive IsOdd : Nat → Prop
+  | oneOdd : IsOdd 1
+  | addTwoOdd (h : IsOdd n) : IsOdd (n + 2)
+
+
 end langur -- closes the current namespace or section
 /-!
 ## Next files

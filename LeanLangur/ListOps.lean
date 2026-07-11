@@ -93,7 +93,21 @@ def innerPairs {α : Type} (l: List (List α)) : List (α × α) := do
   return (x, y) -- returns this value from the monadic block
 
 
-#eval innerPairs [[1, 2], [3, 4]]
+def innerPairs' {α : Type} (l: List (List α)) : List (α × α) :=
+  l.flatMap (fun l1 => -- binds an intermediate value for the following expression
+    l1.flatMap (fun x => -- binds an intermediate value for the following expression
+      l1.map (fun y => (x, y)) -- returns this value from the monadic block
+    )
+  )
+
+#check List.flatMap
+
+#check StateM
+
+
+#eval innerPairs [[1, 2], [3, 4]]==innerPairs' [[1, 2], [3, 4]]
+
+#check Option.bind
 
 
 /-!

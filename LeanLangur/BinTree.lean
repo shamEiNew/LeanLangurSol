@@ -143,7 +143,20 @@ theorem mem_iff_mem_totree {α : Type} [Inhabited α] (l : List α) (x:α) :
           intro ih'
           grind
 
+#check Monad
 
+#check @List.map
+#check List.map
+#check List.range--pointwise
+
+#eval List.map (fun x => x + 1) [1, 2, 3]
+#eval List.map (fun s ↦ s.length) ["10", "22", "33"]
+#eval List.map (fun s => if s.length = 0 then 0 else s.length) ["10", "22", "33", ""]
+#eval [1, 3, 5].map List.range
+#eval [2, 2, 3].mapM List.range
+#eval [1, 3, 5].flatMap List.range
+
+#check List.mapM
 
 #eval listToBinTree [1, 2, 3]
 
