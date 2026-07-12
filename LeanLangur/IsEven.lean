@@ -101,6 +101,13 @@ inductive IsOdd : Nat → Prop
   | oneOdd : IsOdd 1
   | addTwoOdd (h : IsOdd n) : IsOdd (n + 2)
 
+theorem even_or_odd : ∀ n, IsEven n ∨ IsOdd n
+  | 0     => Or.inl IsEven.zeroEven
+  | 1     => Or.inr IsOdd.oneOdd
+  | m + 2 => by
+      rcases even_or_odd m with h | h
+      · exact Or.inl (IsEven.addTwoEven h)
+      · exact Or.inr (IsOdd.addTwoOdd h)
 
 end langur -- closes the current namespace or section
 /-!
