@@ -101,7 +101,9 @@ inductive IsOdd : Nat → Prop
   | oneOdd : IsOdd 1
   | addTwoOdd (h : IsOdd n) : IsOdd (n + 2)
 
-
+#check IsOdd 1 --1
+#check IsOdd.addTwoOdd IsOdd.oneOdd --3
+#check IsOdd.addTwoOdd (IsOdd.addTwoOdd IsOdd.oneOdd) --5
 /-
 `induction` is tied directly to `Nat.rec`: it only offers `cases 0` and `succ k`, with one IH about k.
 But IsEven/IsOdd's constructors (addTwoEven, addTwoOdd) *step by 2, not 1*.
@@ -131,7 +133,43 @@ theorem even_or_odd : ∀ n, IsEven n ∨ IsOdd n
       · exact Or.inl (IsEven.addTwoEven h)
       · exact Or.inr (IsOdd.addTwoOdd h)
 
-#print even_or_odd
+/-!
+Proves the fact that every natural number is cannot be both even and odd, i.e.,
+the two properties are mutually exclusive.
+This proof uses `rcases`.
+`rcases` works with inductive types and splits based on number of constructors.
+For example `even_or_odd m` case split into two constructor,
+where as ` not_both_even_odd m with h3` doesn't split and just acts as `have` because of single case.
+`cases` helps us to invert our constructor, so it helps us to get to the `m` which constructed `m+2`.
+-/
+theorem not_both_even_odd : ∀ n, ¬ (IsEven n ∧ IsOdd n)
+  | 0     => by intro h; obtain ⟨-, h1⟩ := h ; contradiction
+  | 1     => by intro h; obtain ⟨h1, -⟩ := h ; contradiction
+  | m + 2 => by
+    intro h
+    obtain ⟨h1, h2⟩ := h
+    cases h1 with
+    | addTwoEven h1'
+    cases h2 with
+    | addTwoOdd h2'
+    rcases not_both_even_odd m with h3
+    · exact h3 ⟨h1', h2'⟩
+
+/-
+Proof 2 without rcases
+-/
+theorem not_both_even_odd' : ∀ n, ¬ (IsEven n ∧ IsOdd n)
+  | 0     => by intro h; obtain ⟨-, h1⟩ := h ; contradiction
+  | 1     => by intro h; obtain ⟨h1, -⟩ := h ; contradiction
+  | m + 2 => by
+    intro h
+    obtain ⟨h1, h2⟩ := h
+    cases h1 with
+    | addTwoEven h1' =>
+      cases h2 with
+      | addTwoOdd h2' =>
+        exact (not_both_even_odd m) ⟨h1', h2'⟩
+
 end langur -- closes the current namespace or section
 /-!
 ## Next files
