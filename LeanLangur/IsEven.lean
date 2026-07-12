@@ -101,6 +101,28 @@ inductive IsOdd : Nat → Prop
   | oneOdd : IsOdd 1
   | addTwoOdd (h : IsOdd n) : IsOdd (n + 2)
 
+
+/-
+`induction` is tied directly to `Nat.rec`: it only offers `cases 0` and `succ k`, with one IH about k.
+But IsEven/IsOdd's constructors (addTwoEven, addTwoOdd) *step by 2, not 1*.
+In the `succ` case the goal is about `n+1`, while the only IH available is about `n` — there's no constructor
+bridging `IsEven n (or IsOdd n)` directly to a fact about `n+1`.
+The step size of the recursor (1) didn't match the step size of the inductive definitions (2),
+so left/right had no matching constructor to apply.
+
+The below proof is still induction, just via a *custom recursor* the equation compiler builds by
+unfolding `Nat.rec` (zero/succ) twice rather than once — mechanically equivalent to nested induction/cases,
+not a different kind of reasoning. Two properties are checked automatically, not assumed:
+
+*Exhaustiveness*: Lean unfolds `Nat.rec` repeatedly, `n = 0` ; `n = succ k` recurse on `k`, `k = 0` gives
+`n = 1` ; `k = succ j` gives `n = j+2` . Every Nat provably lands in exactly one pattern;
+omitting any (e.g. 1) triggers a compile-time "missing cases" error.
+*Termination*: the recursive call `even_or_odd m` is accepted because `m` sits two constructor-layers
+inside the scrutinee `m+2 = succ (succ m)`.
+Lean's termination checker allows recursion on any variable structurally nested beneath the
+matched constructors, not only "one layer down." *No termination_by needed*.
+-/
+
 theorem even_or_odd : ∀ n, IsEven n ∨ IsOdd n
   | 0     => Or.inl IsEven.zeroEven
   | 1     => Or.inr IsOdd.oneOdd
@@ -109,6 +131,7 @@ theorem even_or_odd : ∀ n, IsEven n ∨ IsOdd n
       · exact Or.inl (IsEven.addTwoEven h)
       · exact Or.inr (IsOdd.addTwoOdd h)
 
+#print even_or_odd
 end langur -- closes the current namespace or section
 /-!
 ## Next files
