@@ -89,13 +89,18 @@ instance {α : Type} [Add α][Zero α] : Add α  where -- provides an instance f
 /-!
 ## Exercise: Pointwise addition
 
-Given a function `f: α → β` and a typeclass `Add β`, we can define pointwise addition on functions. Implement the instance of `Add (α → β)` that defines pointwise addition on functions. If correct, you should be able to uncomment the example below so it compiles.
+Given a function `f: α → β` and a typeclass `Add β`, we can define pointwise addition on functions.
+Implement the instance of `Add (α → β)` that defines pointwise addition on functions.
+If correct, you should be able to uncomment the example below so it compiles.
 -/
 
+instance {α β : Type} [Add β ]:
+  Add  (α → β) where
+  add (f g) x := (f x )+ (g x)
 
--- example : (fun x ↦ x + 1) + (fun x ↦ x * 2) = (fun x ↦  x + 1 + (x * 2)) := by
---   funext x
---   rfl
+example : (fun x ↦ x + 1) + (fun x ↦ x * 2) = (fun x ↦  x + 1 + (x * 2)) := by
+  funext x
+  rfl
 
 end langur -- closes the current namespace or section
 /-!
